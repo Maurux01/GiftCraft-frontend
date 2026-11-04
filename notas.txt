@@ -1,0 +1,14 @@
+quitar card de mauricio
+cambiar foto de mauro
+cambiar el desplegable de about us (corregir)
+
+VISTA DE ADMIN
+
+dashboard (array objetos + botones )
+leidy natalia 
+
+
+
+modal 
+
+alexa y mauro
