@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Gugi&family=Londrina+Shadow&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Rubik+Spray+Paint&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap"
         rel="stylesheet">
-    <link href="/CSS/Admin-CSS/dashboard-admin.css" rel="stylesheet">
+    <link href="../../CSS/Admin-CSS/dashboard-admin.css" rel="stylesheet">
 </head>
 
 <body>
@@ -37,27 +37,25 @@
         <br>
 
         <!-- Botón para activar el Modal -->
-        <button type="button" class="btn btn-verde-minecraft" data-bs-toggle="modal"
+        <button type="button" class="btn btn-verde-minecraft mb-3" data-bs-toggle="modal"
             data-bs-target="#modalAgregarProducto">
             + Agregar nuevo producto
         </button>
 
-    
         <div class="card card-crema border-0 rounded-4 shadow-sm p-3 mb-3">
-          <!-- Encabezados de la lista -->
-            <div class="row align-items-center text-muted fw-bold pb-2 border-bottom d-none d-md-flex g-1">
+            <!-- Encabezados de la lista (Suman exactamente 12 columnas: 1+2+2+2+1+1+1+2 = 12) -->
+            <div class="row align-items-center text-muted fw-bold pb-2 border-bottom d-none d-md-flex">
                 <div class="col-md-1 text-nowrap"><i class="bi bi-image me-1"></i> Imagen</div>
                 <div class="col-md-2 text-nowrap"><i class="bi bi-tag me-1"></i> Nombre</div>
-                <div class="col-md-1 text-nowrap"><i class="bi bi-folder me-1"></i>Categoría </div>
+                <div class="col-md-2 text-nowrap"><i class="bi bi-folder me-1"></i> Categoría</div>
                 <div class="col-md-2 text-nowrap">Descripción</div>
                 <div class="col-md-1 text-nowrap">Precio</div>
                 <div class="col-md-1 text-nowrap">Stock</div>
                 <div class="col-md-1 text-nowrap">Colores</div>
-                <div class="col-md-1 text-nowrap">Tamaños</div>
-                <div class="col-md-2 text-end text-nowraptext-nowrap">Acciones</div>
+                <div class="col-md-2 text-md-end text-nowrap">Acciones</div>
             </div>
 
-            <!--Fila producto-->
+            <!-- Fila producto (Mismas proporciones exactas de columnas) -->
             <div class="row align-items-center py-3 border-bottom">
                 <div class="col-4 col-md-1">
                     <img src="/ASSETS/img/abeja.webp" alt="Flor roja" class="rounded-3 shadow-sm"
@@ -66,14 +64,13 @@
                 <div class="col-8 col-md-2 fw-bold text-dark">
                     Flor roja
                 </div>
-                <div class="col-6 col-md-1 mt-2 mt-md-0">
-                    <span
-                        class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1">Flores</span>
+                <div class="col-6 col-md-2 mt-2 mt-md-0">
+                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1">Flores</span>
                 </div>
                 <div class="col-6 col-md-2 text-muted small text-truncate">
                     Una flor clásica de Minecraft
                 </div>
-                <div class="col-6 col-md-1 text-success fw-semibold ">
+                <div class="col-6 col-md-1 text-success fw-semibold">
                     $ 50.000
                 </div>
                 <div class="col-6 col-md-1">
@@ -81,44 +78,25 @@
                 </div>
                 <div class="col-6 col-md-1">
                     <div class="d-flex gap-1 align-items-center">
-                        <span class="rounded-circle shadow-sm"
-                            style="width: 14px; height: 14px; background-color: #dc3545;" title="Rojo"></span>
-                        <span class="rounded-circle shadow-sm"
-                            style="width: 14px; height: 14px; background-color: #198754;" title="Verde"></span>
-                        <span class="rounded-circle shadow-sm"
-                            style="width: 14px; height: 14px; background-color: #0d6efd;" title="Azul"></span>
-                    </div>
-                </div>
-                <div class="col-6 col-md-1">
-                    <div class="d-flex gap-1">
-                        <span
-                            class="badge bg-light text-dark border rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 24px; height: 24px; font-size: 0.7rem;">S</span>
-                        <span
-                            class="badge bg-light text-dark border rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 24px; height: 24px; font-size: 0.7rem;">M</span>
-                        <span
-                            class="badge bg-light text-dark border rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 24px; height: 24px; font-size: 0.7rem;">L</span>
+                        <span class="rounded-circle shadow-sm" style="width: 14px; height: 14px; background-color: #dc3545;" title="Rojo"></span>
+                        <span class="rounded-circle shadow-sm" style="width: 14px; height: 14px; background-color: #198754;" title="Verde"></span>
+                        <span class="rounded-circle shadow-sm" style="width: 14px; height: 14px; background-color: #0d6efd;" title="Azul"></span>
                     </div>
                 </div>
                 <div class="col-12 col-md-2 text-md-end mt-2 mt-md-0">
                     <div class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-light btn-sm text-primary border shadow-sm p-2 rounded-3"
-                            title="Editar">
+                        <button type="button" class="btn btn-light btn-sm text-primary border shadow-sm p-2 rounded-3" title="Editar">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button type="button" class="btn btn-light btn-sm text-danger border shadow-sm p-2 rounded-3"
-                            title="Eliminar">
+                        <button type="button" class="btn btn-light btn-sm text-danger border shadow-sm p-2 rounded-3" title="Eliminar">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
+    
+        
 
 
         <!-- boton agregar nuevo producto- -->
