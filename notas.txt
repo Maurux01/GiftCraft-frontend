@@ -4,11 +4,12 @@ cambiar el desplegable de about us (corregir)
 
 VISTA DE ADMIN
 
-dashboard (array objetos + botones )
+dashboard (array objetos + botones ) (css)
 leidy natalia 
 
 
 
-modal 
 
 alexa y mauro
+modal (listo)
+falta acciones (editar-borrar articulos)

@@ -1,21 +1,21 @@
-// mauro-header.html, css
-// Renderiza componentes reutilizables (header/footer) en todas las páginas
+// Renderiza componentes reutilizables (header/footer) en todas las paginas
+
+function getRootPrefix() {
+    // Prefijo relativo desde la pagina actual hasta la raiz del proyecto.
+    // Se infiere de la ruta del propio script components.js (ej. "../../JS/components.js").
+    const script = document.querySelector('script[src*="components.js"]');
+    const src = script ? (script.getAttribute('src') || '') : '';
+    const match = src.match(/^(\.\.\/)+/);
+    return match ? match[0] : '';
+}
 
 function getBasePath() {
-    const path = window.location.pathname || '';
-    if (/\/HTML\//i.test(path)) {
-        return '../';
-    }
-    return '';
+    return getRootPrefix();
 }
 
 function getComponentsBasePath() {
-    // Las páginas están en la raíz o en /HTML/. Los componentes viven en /HTML/Components/.
-    const path = window.location.pathname || '';
-    if (/\/HTML\//i.test(path)) {
-        return 'Components/';
-    }
-    return 'HTML/Components/';
+    // Los componentes viven siempre en <raiz>/HTML/Components/.
+    return getRootPrefix() + 'HTML/Components/';
 }
 
 function cargarComponente(id, archivo) {
@@ -43,8 +43,7 @@ function cargarComponente(id, archivo) {
 }
 
 function ajustarRutasHeader(contenedor) {
-    const enHtml = /\/HTML\//i.test(window.location.pathname || '');
-    const prefix = enHtml ? '../' : '';
+    const prefix = getRootPrefix();
     contenedor.querySelectorAll('a[href^="/"]').forEach(a => {
         const href = a.getAttribute('href');
         a.setAttribute('href', prefix + href.replace(/^\/+/, ''));
@@ -56,8 +55,7 @@ function ajustarRutasHeader(contenedor) {
 }
 
 function ajustarRutasFooter(contenedor) {
-    const enHtml = /\/HTML\//i.test(window.location.pathname || '');
-    const prefix = enHtml ? '../' : '';
+    const prefix = getRootPrefix();
     contenedor.querySelectorAll('a[href^="/"]').forEach(a => {
         const href = a.getAttribute('href');
         a.setAttribute('href', prefix + href.replace(/^\/+/, ''));
@@ -122,7 +120,7 @@ function cargarEstiloFooter() {
     }
 }
 
-// Ejecutar al cargar la página
+// Ejecutar al cargar la pagina
 document.addEventListener('DOMContentLoaded', () => {
     cargarEstiloHeader();
     cargarEstiloFooter();
