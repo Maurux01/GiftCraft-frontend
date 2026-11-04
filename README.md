@@ -20,7 +20,6 @@ LINK DEL DEPLOY: https://andresmauricioarangog.github.io/Giftcraft-Front/
 El despliegue y publicación de la plataforma en la web se hará el día 16/12/2026.
 
     Power Rangers 
-    * Andrés Mauricio Arango Grisales 
     * Alexandra Vanessa Del Valle Aragón  
     * Leidy Johanna González García 
     * Mauro Felipe Infante Del Portillo 
