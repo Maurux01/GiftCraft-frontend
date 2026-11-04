@@ -1,4 +1,14 @@
-// Mauro parte
+// array objetos -mauro (se llena con los productos que el cliente agrega desde el modal)
+const productos = [];
+
+// transformacion del array a json
+const jsonString = JSON.stringify(productos);
+
+// prueba en print que el array sale en json
+console.log(jsonString);
+
+// Exponer para inspeccion facil en consola del navegador
+window.productos = productos;
 
 // Funcion que toma los valores del formulario "formProducto" del dashboard.html
 // y los guarda como un objeto dentro del array "productos".
@@ -63,7 +73,8 @@ function inicializarFormularioProducto() {
         const productoGuardado = guardarProductoDelFormulario(formProducto);
         console.log('Producto guardado:', productoGuardado);
         console.log('Array de productos:', productos);
-        console.log('JSON:', JSON.stringify(productos));
+        const productosJSON = JSON.stringify(productos);
+        console.log('JSON del array:', productosJSON);
 
         // Limpia el formulario y cierra el modal
         formProducto.reset();
