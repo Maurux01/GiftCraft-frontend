@@ -143,15 +143,13 @@ function cargarProductos() {
                     ${badgesTamanios}
                 </div>
             </div>
-            <div class="col-12 col-md-2 text-md-end mt-2 mt-md-0">
-                <div class="d-inline-flex gap-2">
-                    <button type="button" class="btn btn-light btn-sm text-primary border shadow-sm p-2 rounded-3" title="Editar">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button type="button" class="btn btn-light btn-sm text-danger border shadow-sm p-2 rounded-3" title="Eliminar" onclick="eliminarProducto(${producto.id})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
+            <div class="col-6 col-md-1">
+                <button type="button" class="btn btn-light btn-sm text-primary border shadow-sm p-1 rounded-3" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button type="button" class="btn btn-light btn-sm text-danger border shadow-sm p-1 rounded-3" title="Eliminar" onclick="eliminarProducto(${producto.id})">
+                    <i class="bi bi-trash"></i>
+                </button>
             </div>
         `;
         contenedor.appendChild(fila);
