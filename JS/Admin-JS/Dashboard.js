@@ -11,9 +11,10 @@ const productos = [
 const jsonString = JSON.stringify(productos);
 
 // prueba en print que el array sale en json
-// console.log(jsonString);
+console.log(jsonString);
 
-console.log(productos);
+
+
 
 
 
