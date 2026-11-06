@@ -1,22 +1,68 @@
-// array objetos -mauro
+document.addEventListener("DOMContentLoaded", () => {
+    const formProducto = document.getElementById("formProducto");
 
-const productos = [
-    {id:1,imagen:"ASSETS\Products\bee-1024px.png", nombre: "Abeja", tipo:"Animal"},
-    {id:2,imagen:"ASSETS\Products\cow-1024px.png", nombre: "Vaca", tipo:"Animal"},
-    {id:3,imagen:"ASSETS\Products\poppy-1024.png", nombre: "Tulipan", tipo:"Planta"},
-    {id:4,imagen:"ASSETS\Products\cactus-1024.png", nombre: "Cactus", tipo:"Planta"},
-];
+    formProducto.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-// transformacion del array a json
-const jsonString = JSON.stringify(productos);
+        const nombre = document.getElementById("nombreProducto").value;
+        const categoria = document.getElementById("categoriaProducto").value;
+        const descripcion = document.getElementById("descripcionProducto").value;
+        const precio = document.getElementById("precioProducto").value;
+        const stock = document.getElementById("stockProducto").value;
 
-// prueba en print que el array sale en json
-console.log(jsonString);
+        // Tamaños
+        const tamanios = [];
+        if (document.getElementById("sizeS").checked) tamanios.push("S");
+        if (document.getElementById("sizeM").checked) tamanios.push("M");
+        if (document.getElementById("sizeL").checked) tamanios.push("L");
 
+        // Capturar la imagen seleccionada
+        const imagenInput = document.getElementById("imagenesProducto");
+        
+        if (imagenInput.files && imagenInput.files[0]) {
+            const archivo = imagenInput.files[0];
+            
+            // Usamos FileReader para convertir la imagen a Base64 (texto seguro para localStorage)
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const imagenBase64 = event.target.result; // Aquí está la foto convertida
 
+                // Crear objeto del producto con la imagen incluida
+                const nuevoProducto = {
+                    id: Date.now(),
+                    nombre,
+                    categoria,
+                    descripcion,
+                    precio,
+                    stock,
+                    tamanios,
+                    imagen: imagenBase64 // Guardamos la imagen en Base64
+                };
 
+                // Guardar en localStorage
+                guardarEnLocalStorage(nuevoProducto);
 
+                // Limpiar formulario y cerrar modal
+                formProducto.reset();
+                const modalElement = document.getElementById("modalAgregarProducto");
+                const modal = bootstrap.Modal.getInstance(modalElement);
+                if (modal) modal.hide();
 
+                // Acá lo cambio ahorita para que se pint en el html de admin
+                alert("¡Producto guardado con éxito!");
+            };
 
+            // Leemos el archivo como una URL de datos (Base64)
+            reader.readAsDataURL(archivo);
+        } else {
+            alert("Por favor selecciona una imagen.");
+        }
+    });
+});
 
-
+function guardarEnLocalStorage(producto) {
+    let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
+    productos.push(producto);
+    localStorage.setItem("productosGiftcraft", JSON.stringify(productos));
+}
