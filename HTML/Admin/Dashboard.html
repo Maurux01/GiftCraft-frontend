@@ -60,11 +60,12 @@
                 <div class="col-md-1 text-nowrap">Precio</div>
                 <div class="col-md-1 text-nowrap">Stock</div>
                 <div class="col-md-1 text-nowrap">Colores</div>
-                <div class="col-md-2 text-md-end text-nowrap">Acciones</div>
+                <div class="col-md-1 text-nowrap">Tamaño</div>
+                <div class="col-md-1 text-md-end text-nowrap">Acciones</div>
             </div>
 
             <!-- Fila producto (Mismas proporciones exactas de columnas) -->
-            <div id="listaProductosContainer">
+            <div class="col-12" id="listaProductosContainer">
                 <!-- Aquí se pintarán automáticamente todos los productos guardados en localstorage-->
             </div>
         </div>
@@ -87,6 +88,8 @@
                     <!-- Cuerpo del Modal (Formulario) -->
                     <div class="modal-body">
                         <form id="formProducto">
+                            <!--Oculto para manejar la edición-->
+                            <input type="hidden" id="productoId">
                             <div class="row g-3">
 
                                 <!-- Nombre del Producto -->

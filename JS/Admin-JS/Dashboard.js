@@ -1,12 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
     const formProducto = document.getElementById("formProducto");
 
-    //Cargar los productos guardados al abrir la página
+    // 1. Cargar los productos guardados al abrir o refrescar la página
     cargarProductos();
 
     formProducto.addEventListener("submit", (e) => {
         e.preventDefault();
 
+        const idEditando = document.getElementById("productoId").value;
         const nombre = document.getElementById("nombreProducto").value;
         const categoria = document.getElementById("categoriaProducto").value;
         const descripcion = document.getElementById("descripcionProducto").value;
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
             colores.push(input.value); 
         });
 
-        // Capturar Tamaños
+        // Capturar Tamaños (S, M, L)
         const tamanios = [];
         if (document.getElementById("sizeS").checked) tamanios.push("S");
         if (document.getElementById("sizeM").checked) tamanios.push("M");
@@ -29,16 +30,34 @@ document.addEventListener("DOMContentLoaded", () => {
         // Capturar la imagen seleccionada
         const imagenInput = document.getElementById("imagenesProducto");
 
-        if (imagenInput.files && imagenInput.files[0]) {
-            const archivo = imagenInput.files[0];
-            const reader = new FileReader();
+        let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
 
-            reader.onload = function (event) {
-                const imagenBase64 = event.target.result; // Foto convertida a Base64
-
-                // Crear objeto del producto
+        // Función interna para proceder a guardar o actualizar en localStorage
+        const guardarDatos = (imagenBase64) => {
+            if (idEditando) {
+                // --- MODO ACTUALIZAR ---
+                productos = productos.map(prod => {
+                    if (prod.id == idEditando) {
+                        return {
+                            ...prod,
+                            nombre,
+                            categoria,
+                            descripcion,
+                            precio,
+                            stock,
+                            tamanios,
+                            colores,
+                            // Si no seleccionó una nueva foto al editar, mantiene la anterior
+                            imagen: imagenBase64 ? imagenBase64 : prod.imagen 
+                        };
+                    }
+                    return prod;
+                });
+                alert("¡Producto actualizado con éxito!");
+            } else {
+                // --- MODO CREAR NUEVO ---
                 const nuevoProducto = {
-                    id: Date.now(), // ID único basado en el tiempo
+                    id: Date.now(),
                     nombre,
                     categoria,
                     descripcion,
@@ -46,32 +65,42 @@ document.addEventListener("DOMContentLoaded", () => {
                     stock,
                     tamanios,
                     colores,
-                    imagen: imagenBase64
+                    imagen: imagenBase64 ? imagenBase64 : "../../ASSETS/img/abeja.webp"
                 };
-
-                // Guardar en localStorage
-                guardarEnLocalStorage(nuevoProducto);
-
-                // Limpiar formulario y cerrar modal
-                formProducto.reset();
-                const modalElement = document.getElementById("modalAgregarProducto");
-                const modal = bootstrap.Modal.getInstance(modalElement);
-                if (modal) modal.hide();
-
-                // Recargar la tabla para mostrar el nuevo producto de inmediato
-                cargarProductos();
-
+                productos.push(nuevoProducto);
                 alert("¡Producto guardado con éxito!");
-            };
+            }
 
+            // Guardar array actualizado en localStorage
+            localStorage.setItem("productosGiftcraft", JSON.stringify(productos));
+
+            // Limpiar formulario y cerrar modal
+            formProducto.reset();
+            document.getElementById("productoId").value = ""; // Limpiar ID de edición
+            
+            const modalElement = document.getElementById("modalAgregarProducto");
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) modal.hide();
+
+            // Recargar tabla
+            cargarProductos();
+        };
+
+        // Si el usuario subió una nueva imagen, la leemos; si no, guardamos directo
+        if (imagenInput.files && imagenInput.files[0]) {
+            const archivo = imagenInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                guardarDatos(event.target.result);
+            };
             reader.readAsDataURL(archivo);
         } else {
-            alert("Por favor selecciona una imagen.");
+            guardarDatos(null);
         }
     });
 });
 
-// Función para guardar en el localStorage
+// Función para guardar en el localStorage (por compatibilidad)
 function guardarEnLocalStorage(producto) {
     let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
     productos.push(producto);
@@ -84,8 +113,6 @@ function cargarProductos() {
     if (!contenedor) return;
 
     let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
-    
-    // Limpiar contenedor antes de renderizar
     contenedor.innerHTML = "";
 
     if (productos.length === 0) {
@@ -93,9 +120,7 @@ function cargarProductos() {
         return;
     }
 
-    // Recorrer cada producto guardado y crear su estructura HTML
     productos.forEach(producto => {
-        // Generar dinámicamente los círculos de colores
         let circulosColores = '';
         if (producto.colores && producto.colores.length > 0) {
             producto.colores.forEach(color => {
@@ -103,7 +128,6 @@ function cargarProductos() {
             });
         }
 
-        // Generar dinámicamente los badges de tamaños
         let badgesTamanios = '';
         if (producto.tamanios && producto.tamanios.length > 0) {
             producto.tamanios.forEach(t => {
@@ -143,12 +167,12 @@ function cargarProductos() {
                     ${badgesTamanios}
                 </div>
             </div>
-            <div class="col-12 col-md-2 text-md-end mt-2 mt-md-0">
+            <div class="col-12 col-md-1 text-md-end mt-2 mt-md-0">
                 <div class="d-inline-flex gap-2">
-                    <button type="button" class="btn btn-light btn-sm text-primary border shadow-sm p-2 rounded-3" title="Editar">
+                    <button type="button" class="btn btn-light btn-sm text-primary border shadow-sm p-1 rounded-3" title="Editar" onclick="prepararEdicion(${producto.id})">
                         <i class="bi bi-pencil"></i>
                     </button>
-                    <button type="button" class="btn btn-light btn-sm text-danger border shadow-sm p-2 rounded-3" title="Eliminar" onclick="eliminarProducto(${producto.id})">
+                    <button type="button" class="btn btn-light btn-sm text-danger border shadow-sm p-1 rounded-3" title="Eliminar" onclick="eliminarProducto(${producto.id})">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
@@ -158,10 +182,48 @@ function cargarProductos() {
     });
 }
 
+// Función que carga los datos del producto al formulario y abre el modal para editar
+function prepararEdicion(id) {
+    let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
+    const productoAEditar = productos.find(prod => prod.id === id);
+
+    if (!productoAEditar) return;
+
+    // Rellenar los inputs del formulario con los datos existentes
+    document.getElementById("productoId").value = productoAEditar.id;
+    document.getElementById("nombreProducto").value = productoAEditar.nombre;
+    document.getElementById("categoriaProducto").value = productoAEditar.categoria;
+    document.getElementById("descripcionProducto").value = productoAEditar.descripcion;
+    document.getElementById("precioProducto").value = productoAEditar.precio;
+    document.getElementById("stockProducto").value = productoAEditar.stock;
+
+    // Marcar tamaños si existen
+    document.getElementById("sizeS").checked = productoAEditar.tamanios.includes("S");
+    document.getElementById("sizeM").checked = productoAEditar.tamanios.includes("M");
+    document.getElementById("sizeL").checked = productoAEditar.tamanios.includes("L");
+
+    // Rellenar colores si existen
+    if (productoAEditar.colores) {
+        const inputsColor = document.querySelectorAll(".input-color");
+        productoAEditar.colores.forEach((color, index) => {
+            if (inputsColor[index]) {
+                inputsColor[index].value = color;
+            }
+        });
+    }
+
+    // Abrir el modal de Bootstrap de manera automática
+    const modalElement = document.getElementById("modalAgregarProducto");
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+}
+
 // Función para eliminar un producto del localStorage
 function eliminarProducto(id) {
-    let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
-    productos = productos.filter(prod => prod.id !== id);
-    localStorage.setItem("productosGiftcraft", JSON.stringify(productos));
-    cargarProductos(); // Actualizar la vista al borrar
+    if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+        let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
+        productos = productos.filter(prod => prod.id !== id);
+        localStorage.setItem("productosGiftcraft", JSON.stringify(productos));
+        cargarProductos();
+    }
 }
