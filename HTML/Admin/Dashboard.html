@@ -17,6 +17,12 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Gugi&family=Londrina+Shadow&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Rubik+Spray+Paint&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap"
         rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Fascinate&family=Gugi&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Londrina+Shadow&family=Oswald:wght@200..700&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Rubik+Spray+Paint&family=Silkscreen:wght@400;700&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap"
+        rel="stylesheet">
+
+
+    <!--css-->
     <link href="../../CSS/style.css" rel="stylesheet">
     <link href="../../CSS/Admin-CSS/dashboard-admin.css" rel="stylesheet">
 </head>
@@ -58,47 +64,12 @@
             </div>
 
             <!-- Fila producto (Mismas proporciones exactas de columnas) -->
-            <div class="row align-items-center py-3 border-bottom">
-                <div class="col-4 col-md-1">
-                    <img src="../../ASSETS/img/abeja.webp" alt="Flor roja" class="rounded-3 shadow-sm"
-                        style="width: 45px; height: 45px; object-fit: cover;">
-                </div>
-                <div class="col-8 col-md-2 fw-bold text-dark">
-                    Flor roja
-                </div>
-                <div class="col-6 col-md-2 mt-2 mt-md-0">
-                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1">Flores</span>
-                </div>
-                <div class="col-6 col-md-2 text-muted small text-truncate">
-                    Una flor clásica de Minecraft
-                </div>
-                <div class="col-6 col-md-1 text-success fw-semibold">
-                    $ 50.000
-                </div>
-                <div class="col-6 col-md-1">
-                    <span class="badge bg-secondary-subtle text-dark px-2 py-1">12</span>
-                </div>
-                <div class="col-6 col-md-1">
-                    <div class="d-flex gap-1 align-items-center">
-                        <span class="rounded-circle shadow-sm" style="width: 14px; height: 14px; background-color: #dc3545;" title="Rojo"></span>
-                        <span class="rounded-circle shadow-sm" style="width: 14px; height: 14px; background-color: #198754;" title="Verde"></span>
-                        <span class="rounded-circle shadow-sm" style="width: 14px; height: 14px; background-color: #0d6efd;" title="Azul"></span>
-                    </div>
-                </div>
-                <div class="col-12 col-md-2 text-md-end mt-2 mt-md-0">
-                    <div class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-light btn-sm text-primary border shadow-sm p-2 rounded-3" title="Editar">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button type="button" class="btn btn-light btn-sm text-danger border shadow-sm p-2 rounded-3" title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                </div>
+            <div id="listaProductosContainer">
+                <!-- Aquí se pintarán automáticamente todos los productos guardados en localstorage-->
             </div>
         </div>
-    
-        
+
+
 
 
         <!-- boton agregar nuevo producto- -->
@@ -160,12 +131,12 @@
                                     <label class="form-label">Colores disponibles *</label>
                                     <div class="d-flex gap-1 align-items-center">
                                         <!-- Selectores de color nativos simples alineados en fila -->
-                                        <input type="color" class="form-control form-control-color" value="#ff0000"
-                                            title="Color 1">
-                                        <input type="color" class="form-control form-control-color" value="#00ff00"
-                                            title="Color 2">
-                                        <input type="color" class="form-control form-control-color" value="#0000ff"
-                                            title="Color 3">
+                                        <input type="color" class="form-control form-control-color input-color" value="#ff0000"
+                                            title="Color 1" id="color1">
+                                        <input type="color" class="form-control form-control-color input-color" value="#00ff00"
+                                            title="Color 2" id="color2">
+                                        <input type="color" class="form-control form-control-color input-color" value="#0000ff"
+                                            title="Color 3" id="color3">
                                         <button type="button" class="btn btn-outline-secondary btn-sm">+</button>
                                     </div>
                                 </div>
@@ -190,8 +161,8 @@
                                 <div class="col-12">
                                     <label for="imagenesProducto" class="form-label">Agregar imágenes *</label>
                                     <div class="border rounded p-4 text-center bg-light">
-                                        <input type="file" class="form-control d-none" id="imagenesProducto" multiple
-                                            required>
+                                        <input type="file" class="form-control d-none" id="imagenesProducto"
+                                            accept="image/*" required>
                                         <label for="imagenesProducto" style="cursor: pointer;"
                                             class="text-muted d-block">
                                             <p class="mb-1">🔄 Arrastra tus imágenes aquí o selecciona archivos</p>
@@ -212,10 +183,11 @@
                     </div>
 
                 </div>
-
+            </div>
+        </div>
     </main>
 
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- personal JS -->
