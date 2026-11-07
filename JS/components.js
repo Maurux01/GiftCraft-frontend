@@ -130,3 +130,4 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarComponente('header-placeholder', 'header.html');
     cargarComponente('footer-placeholder', 'footer.html');
 });
+

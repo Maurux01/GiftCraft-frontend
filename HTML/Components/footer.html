@@ -54,9 +54,22 @@
 
 
             <!-- Columna 2: Loro animado con gif -->
-            <div class="col-12 col-md-4 d-flex justify-content-center align-items-center mt-3 mt-md-0">
-                <img src="https://minecraft.wiki/images/thumb/Dancing_Green_Parrot.gif/120px-Dancing_Green_Parrot.gif?67503"
-                    alt="Loro verde de Minecraft bailando" width="180" class="img-fluid">
+            <div
+                class="col-12 col-md-4 d-flex justify-content-center align-items-center position-relative mt-3 mt-md-0">
+
+                <!-- Burbuja de diálogo estilo videojuego (Aparece al hacer hover) -->
+                <div id="burbujaLoro"
+                    class="position-absolute bottom-100 mb-2 px-3 py-1 bg-white text-dark rounded-pill shadow-sm small fw-bold border"
+                    style="display: none; white-space: nowrap; z-index: 10;">
+                    ¡Buen Viaje! 🦜
+                </div>
+
+                <!-- Imagen del Loro con eventos de cambio y burbuja -->
+                <img src="../../ASSETS/img/header/footer/Loro_pixeleado.png" alt="Loro Giftcraft" class="footer-muñeco"
+                    id="imgMuñeco"
+                    onmouseover="this.src='../../ASSETS/img/header/footer/Loro_vuelo.png'; document.getElementById('burbujaLoro').style.display='block';"
+                    onmouseout="this.src='../../ASSETS/img/header/footer/Loro_pixeleado.png'; document.getElementById('burbujaLoro').style.display='none';"
+                    style="width: 300px; cursor: pointer; transition: transform 0.2s ease;">
             </div>
 
 
