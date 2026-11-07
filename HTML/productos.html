@@ -398,6 +398,99 @@
         </div>
     </div>
 
+    <!-- MODAL -->
+<!-- Botón "Personalizar" -->
+<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalPersonalizarProducto">
+  <i class="bi bi-pencil"></i> Personalizar
+</button>
+
+<!-- Modal de Personalización Centrado -->
+<div class="modal fade" id="modalPersonalizarProducto" tabindex="-1" aria-labelledby="modalPersonalizarLabel" aria-hidden="true">
+  <!-- modal-xl o modal-lg para dar buen espacio a las dos columnas -->
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      
+      
+      <!-- Encabezado con el botón de cerrar X -->
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Cuerpo del Modal en dos columnas -->
+      <div class="modal-body pt-0">
+        <div class="row g-4 align-items-center">
+          
+          <!-- COLUMNA IZQUIERDA: Contenedor único para la Imagen Dinámica -->
+          <div class="col-md-6 text-center">
+            <!-- Este ID 'imagenVisualizacion' servirá para cambiar el src mediante JS según la selección -->
+            <img id="imagenVisualizacion" src="..." class="img-fluid rounded" alt="Figura de madera">
+          </div>
+          
+          <!-- COLUMNA DERECHA: Información y Controles de Personalización -->
+          <div class="col-md-6">
+            <!-- Nombre del Producto -->
+            <h2 class="modal-title fw-bold mb-2" id="modalPersonalizarLabel">Flor Roja</h2>
+            
+            <!-- Descripción -->
+            <p class="text-muted mb-3">Una flor clásica de Minecraft, perfecta para dar un toque especial a tu colección.</p>
+            
+            <!-- Precio -->
+            <h3 class="text-primary fw-bold mb-2">$ 40.000</h3>
+            
+            <!-- Stock disponible -->
+            <p class="text-success small mb-3">
+              <i class="bi bi-box-seam"></i> Stock: 15 disponibles
+            </p>
+            
+            <hr class="my-3">
+            
+            <!-- SECCIÓN 1: Colores Disponibles -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">🎨 Colores disponibles</label>
+              <div class="d-flex gap-2">
+                <!-- Inputs de radio tipo botón oculto o círculos nativos simples -->
+                <input type="radio" class="btn-check" name="opcionColor" id="color1" autocomplete="off" checked>
+                <label class="btn btn-danger rounded-circle p-3" for="color1" title="Rojo"></label>
+                
+                <input type="radio" class="btn-check" name="opcionColor" id="color2" autocomplete="off">
+                <label class="btn btn-warning rounded-circle p-3" for="color2" title="Amarillo"></label>
+                
+                <input type="radio" class="btn-check" name="opcionColor" id="color3" autocomplete="off">
+                <label class="btn btn-primary rounded-circle p-3" for="color3" title="Azul"></label>
+              </div>
+            </div>
+            
+            <!-- SECCIÓN 2: Tamaños Disponibles -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">📏 Tamaños disponibles</label>
+              <div class="d-flex gap-2">
+                <!-- Botones selectores para Pequeño, Mediano, Grande -->
+                <input type="radio" class="btn-check" name="opcionTamano" id="tamanoP" autocomplete="off" checked>
+                <label class="btn btn-outline-secondary" for="tamanoP">Pequeño</label>
+                
+                <input type="radio" class="btn-check" name="opcionTamano" id="tamanoM" autocomplete="off">
+                <label class="btn btn-outline-secondary" for="tamanoM">Mediano</label>
+                
+                <input type="radio" class="btn-check" name="opcionTamano" id="tamanoG" autocomplete="off">
+                <label class="btn btn-outline-secondary" for="tamanoG">Grande</label>
+              </div>
+            </div>
+            
+            <!-- Botón de Acción Principal para añadir al carrito -->
+            <div class="d-grid">
+              <button type="button" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-cart-plus-fill"></i> Agregar al carrito
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
     <script>
         (function () {
             const carrito = document.getElementById('offcanvasCart');
