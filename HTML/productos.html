@@ -17,19 +17,16 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Gugi&family=Londrina+Shadow&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Rubik+Spray+Paint&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap"
         rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Fascinate&family=Gugi&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Londrina+Shadow&family=Oswald:wght@200..700&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Rubik+Spray+Paint&family=Silkscreen:wght@400;700&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Fascinate&family=Gugi&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Londrina+Shadow&family=Oswald:wght@200..700&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Rubik+Spray+Paint&family=Silkscreen:wght@400;700&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap" rel="stylesheet">
     <!--css-->
-    <link href="../CSS/style.css" rel="stylesheet">
+    <link href="../CSS/productos.css" rel="stylesheet">
 </head>
 
 <body>
     <div id="header-placeholder"></div>
 
     <main class="container py-4">
-        <div class="row row-cols-1 row-cols-md-3 g-4" id="contenedorProductos">
+        <div class="row row-cols-1 row-cols-md-3 g-3" id="contenedorProductos">
             <!-- Aquí se insertan dinámicamente las cards -->
 
         </div>
@@ -81,20 +78,12 @@
     </div>
 
     <!-- MODAL -->
-    <!-- Botón "Personalizar" -->
-    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-        data-bs-target="#modalPersonalizarProducto">
-        <i class="bi bi-pencil"></i> Personalizar
-    </button>
-
     <!-- Modal de Personalización Centrado -->
     <div class="modal fade" id="modalPersonalizarProducto" tabindex="-1" aria-labelledby="modalPersonalizarLabel"
         aria-hidden="true">
         <!-- modal-xl o modal-lg para dar buen espacio a las dos columnas -->
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-
-
                 <!-- Encabezado con el botón de cerrar X -->
                 <div class="modal-header border-0">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -111,19 +100,17 @@
                         </div>
 
                         <!-- COLUMNA DERECHA: Información y Controles de Personalización -->
-
                         <div class="col-md-6">
-
                             <!-- Nombre del producto -->
                             <h2 class="modal-title fw-bold mb-2" id="modalPersonalizarLabel">
                                 Nombre del producto
                             </h2>
 
                             <!-- Descripción -->
-                            <p class="text-muted mb-3" id="modalDescripcion"></p>
+                            <p class="text-muted mb-3 modal-descripcion" id="modalDescripcion"></p>
 
                             <!-- Precio -->
-                            <h3 class="text-primary fw-bold mb-2" id="modalPrecio"></h3>
+                            <h3 class="fw-bold mb-2 modal-precio" id="modalPrecio"></h3>
 
                             <!-- Stock -->
                             <p class="text-success small mb-3" id="modalStock">
@@ -147,13 +134,13 @@
                                     📏 Tamaños disponibles
                                 </label>
 
-                                <div id="modalTamanios" class="d-flex gap-2 flex-wrap"></div>
+                                <div id="modalTamanios" class=" gap-2 flex-wrap modal-tamaños"></div>
                             </div>
 
                             <!-- Agregar al carrito -->
                             <div class="d-grid">
                                 <button type="button"
-                                    class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2"
+                                    class="btn btn-add-cart btn-lg d-flex align-items-center justify-content-center gap-2"
                                     id="btnAgregarDesdeModal">
                                     <i class="bi bi-cart-plus-fill"></i>
                                     Agregar al carrito

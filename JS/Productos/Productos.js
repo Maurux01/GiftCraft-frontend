@@ -28,8 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         columna.classList.add("col");
 
         columna.innerHTML = `
-            <div class="card h-100 shadow-sm">
-
+            <div class="card h-100">
                 <img
                     src="${producto.imagen || ''}"
                     class="card-img-top"
@@ -38,36 +37,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 >
 
                 <div class="card-body">
+                    <div class="card-info">
+                        <h5 class="card-title">${producto.nombre}</h5>
+                        <p class="card-text">${producto.categoria}</p>
+                        <p class="card-precio">$${Number(producto.precio).toLocaleString("es-CO")}</p>
+                    </div>
 
-                    <h5 class="card-title">${producto.nombre}</h5>
-
-                    <p class="card-text">
-                        <strong>ID:</strong> ${producto.id}<br>
-                        <strong>Nombre:</strong> ${producto.nombre}<br>
-                        <strong>Categoría:</strong> ${producto.categoria}<br>
-                        <strong>Descripción:</strong> ${producto.descripcion || "Sin descripción"}<br>
-                        <strong>Precio:</strong> $${Number(producto.precio).toLocaleString("es-CO")}<br>
-                        <strong>Stock:</strong> ${producto.stock}<br>
-                        <strong>Tamaños disponibles:</strong> ${producto.tamanios?.join(", ") || "No especificados"}<br>
-                        <strong>Colores disponibles:</strong> ${producto.colores?.join(", ") || "No especificados"}
-                    </p>
-
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-3">
                         <button
-                            class="btn btn-primary"
+                            class="btn btn-personalizar"
                             type="button"
                             data-producto-id="${producto.id}"
                             data-bs-toggle="modal"
                             data-bs-target="#modalPersonalizarProducto"
                         >
-                            Ver detalles
+                            <i class="bi bi-pencil"></i>
+                            Personalizar
                         </button>
 
                         <button
-                            class="btn btn-outline-primary"
+                            class="btn btn-carrito"
                             type="button"
                             aria-label="Agregar al carrito"
                             data-producto-id="${producto.id}"
+                             data-bs-target="#offcanvasCart"
                         >
                             <i class="bi bi-cart-plus"></i>
                         </button>
@@ -153,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (index === 0) input.checked = true;
 
                 const label = document.createElement("label");
-                label.className = "btn btn-outline-secondary";
+                label.className = "btn btn-tamanio";
                 label.htmlFor = input.id;
                 label.textContent = tamano;
 
