@@ -1,0 +1,121 @@
+:root {
+    /*Paleta de colores*/
+    --MoradoCreativo: #8B5CF6;
+    --VerdeMundo: #A8B89A;
+    --MarronTierra: #8B6955;
+    --RosaAventura: #D98FA3;
+    --CremaCrafteo: #FFF7E8;
+
+    /*Fuentes*/
+    --font-pixel-style: "Press Start 2P", system-ui;
+    --font-pixel-title: "Silkscreen", monospace;
+    --font-pixel-sub: "Pixelify Sans", monospace;
+    --font-body: "Inter", sans-serif;
+}
+
+body {
+    background-image: url(../ASSETS/img/carrusel/fondo2-carrusel.png);
+}
+
+/*Tarjeta de productos*/
+.card {
+    border-radius: 20px;
+    border-color: var(--VerdeMundo);
+}
+
+.card-body {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+}
+
+.card-title {
+    font-family: var(--font-pixel-style);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    padding: 0;
+
+}
+
+.card-text {
+    font-family: var(--font-pixel-sub);
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.card-precio {
+    font-family: var(--font-pixel-sub);
+    color: var(--MoradoCreativo);
+    font-size: 2rem;
+}
+
+.btn-personalizar {
+    border-radius: 10px;
+    border-color: var(--MoradoCreativo);
+    font-family: var(--font-pixel-sub);
+    background-color: #E7D2F0;
+    color: #6E2D86;
+}
+
+.btn-personalizar i {
+    padding: 0px 5px;
+}
+
+.btn-personalizar:hover {
+    background-color: #6E2D86;
+    color: #E7D2F0;
+}
+
+.btn-carrito {
+    border-radius: 10px;
+    font-family: var(--font-pixel-sub);
+    background-color: #EA6181;
+    color: #FEFAF8;
+}
+
+.btn-carrito:hover {
+    border-radius: 10px;
+    font-family: var(--font-pixel-sub);
+    background-color: #FEFAF8;
+    color: #EA6181;
+}
+
+/*MODAL DE PERSONALIZACIÓN*/
+.modal-title {
+    font-family: var(--font-pixel-style);
+    text-transform: capitalize;
+    color: black;
+}
+
+.modal-descripcion {
+    font-family: var(--font-pixel-sub);
+    text-transform: capitalize;
+}
+
+.modal-precio {
+    font-family: var(--font-pixel-style);
+    text-transform: capitalize;
+    color: var(--MoradoCreativo);
+}
+
+.modal-tamaños{
+    border-color: var(--MarronTierra);
+}
+
+.modal-tamaños:hover{
+    background-color: #FBE8EE;
+    border-color: #A92B56;
+    color: #A92B56;
+}
+
+.btn-add-cart{
+    background-color: #EA6181;
+    color: var(--CremaCrafteo);
+}
+
+.btn-add-cart:hover{
+    background-color:var(--CremaCrafteo);
+    color:#EA6181;
+}
+
