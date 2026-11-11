@@ -99,6 +99,8 @@ function cambiarCantidad(index, nuevaCantidad) {
         carrito[index].cantidad = cantidadNumerica;
         localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
         renderizarCarrito();
+        //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+        actualizarContadorCarrito();
     }
 }
 
@@ -107,11 +109,15 @@ function eliminarProducto(index) {
     carrito.splice(index, 1);
     localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
     renderizarCarrito();
+    //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+    actualizarContadorCarrito();
 }
 
 function vaciarCarrito() {
     localStorage.removeItem("carritoGiftcraft");
     renderizarCarrito();
+    //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+    actualizarContadorCarrito();
 }
 
 function actualizarTotales(subtotal) {
