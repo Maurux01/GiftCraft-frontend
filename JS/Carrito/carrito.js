@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inicializarMetodosPago();
 });
 
-//Obtener carrito de localStorage de forma segura
 function obtenerCarrito() {
     const datos = localStorage.getItem("carritoGiftcraft");
     if (datos && datos !== "undefined") {
@@ -17,7 +16,6 @@ function obtenerCarrito() {
     return [];
 }
 
-// Cargar tabla de productos y calcular totales
 function renderizarCarrito() {
     const carrito = obtenerCarrito();
     const tbody = document.querySelector("#tbody-carrito");
@@ -27,7 +25,6 @@ function renderizarCarrito() {
 
     tbody.innerHTML = "";
 
-    // Si el carrito está vacío
     if (carrito.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -53,6 +50,11 @@ function renderizarCarrito() {
         subtotalGeneral += subtotalItem;
         totalItemsCount += cantidad;
 
+        // Texto informativo de color y tamaño
+        const detalles = (producto.colorElegido || producto.tamanoElegido)
+            ? `Color: ${producto.colorElegido || 'Estándar'} | Tamaño: ${producto.tamanoElegido || 'Estándar'}`
+            : (producto.categoria || '');
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>
@@ -60,7 +62,7 @@ function renderizarCarrito() {
                     <img src="${producto.imagen || '../ASSETS/img/regalo.png'}" alt="${producto.nombre}" class="cart-item-img">
                     <div>
                         <h6 class="mb-0 fw-bold">${producto.nombre}</h6>
-                        <small class="text-muted">${producto.categoria || ''}</small>
+                        <small class="text-muted d-block">${detalles}</small>
                     </div>
                 </div>
             </td>
@@ -89,7 +91,6 @@ function renderizarCarrito() {
     actualizarTotales(subtotalGeneral);
 }
 
-// Cambiar cantidad de un producto
 function cambiarCantidad(index, nuevaCantidad) {
     let carrito = obtenerCarrito();
     const cantidadNumerica = parseInt(nuevaCantidad);
@@ -101,7 +102,6 @@ function cambiarCantidad(index, nuevaCantidad) {
     }
 }
 
-//Eliminar producto del carrito
 function eliminarProducto(index) {
     let carrito = obtenerCarrito();
     carrito.splice(index, 1);
@@ -109,13 +109,11 @@ function eliminarProducto(index) {
     renderizarCarrito();
 }
 
-// Vaciar todo el carrito
 function vaciarCarrito() {
     localStorage.removeItem("carritoGiftcraft");
     renderizarCarrito();
 }
 
-// Recalcular Subtotal, Envío y Total en la UI
 function actualizarTotales(subtotal) {
     const costoEnvio = subtotal > 0 ? 12000 : 0;
     const total = subtotal + costoEnvio;
@@ -131,7 +129,6 @@ function actualizarTotales(subtotal) {
     if (btnPagar) btnPagar.innerHTML = `<i class="bi bi-lock-fill"></i> Pagar $${total.toLocaleString("es-CO")}`;
 }
 
-//Métodos de pago 
 function inicializarMetodosPago() {
     document.querySelectorAll('.payment-option').forEach(option => {
         option.addEventListener('click', () => {

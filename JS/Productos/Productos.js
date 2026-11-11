@@ -11,7 +11,7 @@ const botonModalAgregar = document.getElementById("btnAgregarDesdeModal");
 // Variable global para saber qué producto está cargado actualmente en el modal
 let productoActualModal = null;
 
-// Función auxiliar para obtener el carrito de localStorage
+// Obtener el carrito guardado para el offcanvas
 function obtenerCarritoLocal() {
     const carritoGuardado = localStorage.getItem("carritoGiftcraft");
     if (carritoGuardado && carritoGuardado !== "undefined") {
@@ -26,12 +26,13 @@ function obtenerCarritoLocal() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    //Json para traer los productos cargados por admin en el LS
     const productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
     const contenedor = document.getElementById("contenedorProductos");
 
     if (!contenedor) return;
 
-    // 1. SI NO HAY PRODUCTOS
+    //SI NO HAY PRODUCTOS
     if (productos.length === 0) {
         contenedor.innerHTML = `
             <div class="col-12 text-center py-5">
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // 2. GENERAR CARDS DINÁMICAS
+    // GENERAR CARDS DINÁMICAS
     contenedor.innerHTML = "";
     productos.forEach((producto) => {
         const columna = document.createElement("div");
@@ -90,10 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.appendChild(columna);
     });
 
-    // 3. ACTIVAR EVENTOS DE LOS BOTONES "AGREGAR AL CARRITO" DE LAS CARDS
+    // ACTIVAR EVENTOS DE LOS BOTONES 
     escucharBotonesCarrito(productos);
 
-    // 4. MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL (Delegación de eventos)
+    // MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL CUANDO SE DA CLIC EN "PERSONALIZAR"
     contenedor.addEventListener("click", (e) => {
         const btnPersonalizar = e.target.closest("button[data-bs-target='#modalPersonalizarProducto']");
 
@@ -106,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!productoSeleccionado) return;
 
-        // Guardamos la referencia global del producto seleccionado
+        // Guardamos la referencia global del producto que se está personalizando
         productoActualModal = productoSeleccionado;
 
-        // Llenar datos en el modal
+        // Llenar datos básicos en el modal
         if (imagen) {
             imagen.src = productoSeleccionado.imagen || "";
             imagen.alt = productoSeleccionado.nombre;
@@ -125,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         }
 
-        // GENERAR OPCIONES DE COLOR
+        // GENERAR RADIO BUTTONS DE COLOR
         if (colores) {
             colores.replaceChildren();
             const listaColores = productoSeleccionado.colores || [];
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     input.id = `colorProducto${index}`;
                     input.value = color;
                     input.autocomplete = "off";
-                    if (index === 0) input.checked = true;
+                    if (index === 0) input.checked = true; // Seleccionar el primero por defecto
 
                     const label = document.createElement("label");
                     label.className = "btn btn-outline-secondary";
@@ -153,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // GENERAR OPCIONES DE TAMAÑO
+        // GENERAR RADIO BUTTONS DE TAMAÑO
         if (tamanios) {
             tamanios.replaceChildren();
             const listaTamanios = productoSeleccionado.tamanios || [];
@@ -167,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     input.id = `tamanoProducto${index}`;
                     input.value = tamano;
                     input.autocomplete = "off";
-                    if (index === 0) input.checked = true;
+                    if (index === 0) input.checked = true; // Seleccionar el primero por defecto
 
                     const label = document.createElement("label");
                     label.className = "btn btn-tamanio";
@@ -182,22 +183,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 5. ACCIÓN DEL BOTÓN DENTRO DEL MODAL (AGREGAR PRODUCTO PERSONALIZADO)
+    //ESCUCHAR EL BOTÓN DENTRO DEL MODAL Y TOMAR LA PERSONALIZACIÓN ELEGIDA
     if (botonModalAgregar) {
         botonModalAgregar.addEventListener("click", () => {
             if (!productoActualModal) return;
 
-            // Obtener color y tamaño seleccionados en el modal
-            const colorSeleccionado = document.querySelector("input[name='opcionColor']:checked")?.value || null;
-            const tamanoSeleccionado = document.querySelector("input[name='opcionTamano']:checked")?.value || null;
+            // BUSCAR LOS RADIOS SELECCIONADOS DIRECTAMENTE DENTRO DE SUS CONTENEDORES
+            const colorChecked = colores ? colores.querySelector("input[name='opcionColor']:checked") : null;
+            const tamanoChecked = tamanios ? tamanios.querySelector("input[name='opcionTamano']:checked") : null;
+
+            const colorElegido = colorChecked ? colorChecked.value : "Estándar";
+            const tamanoElegido = tamanoChecked ? tamanoChecked.value : "Estándar";
 
             let carrito = obtenerCarritoLocal();
 
-            // Buscar si ya existe el producto exactamente con ese mismo color y tamaño
-            const indexExistente = carrito.findIndex(p => 
+            // Buscar si ya existe el producto con la MISMA combinación de ID, Color y Tamaño
+            const indexExistente = carrito.findIndex(p =>
                 String(p.id) === String(productoActualModal.id) &&
-                p.colorElegido === colorSeleccionado &&
-                p.tamanoElegido === tamanoSeleccionado
+                p.colorElegido === colorElegido &&
+                p.tamanoElegido === tamanoElegido
             );
 
             if (indexExistente !== -1) {
@@ -205,17 +209,24 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 carrito.push({
                     ...productoActualModal,
-                    colorElegido: colorSeleccionado,
-                    tamanoElegido: tamanoSeleccionado,
+                    colorElegido: colorElegido,
+                    tamanoElegido: tamanoElegido,
                     cantidad: 1
                 });
             }
 
+            // Guardar carrito actualizado
             localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
 
-            // Alerta visual de éxito
+            // Feedback visual al usuario
             if (typeof Swal !== "undefined") {
-                Swal.fire("¡Agregado!", "El producto se añadió al carrito satisfactoriamente.", "success");
+                Swal.fire({
+                    title: "¡Producto agregado!",
+                    text: `${productoActualModal.nombre} (${colorElegido}, ${tamanoElegido}) fue añadido a tu carrito.`,
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             }
 
             // Cerrar el modal de Bootstrap
@@ -226,38 +237,41 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-});
 
-// Función encargada de vincular el clic a todos los botones simples de "Agregar al carrito" en la card
-function escucharBotonesCarrito(productos) {
-    const botonesCarrito = document.querySelectorAll(".btn-carrito");
+    // Función para el botón directo de carrito de las cards 
+    function escucharBotonesCarrito(productos) {
+        const botonesCarrito = document.querySelectorAll(".btnAgregarDesdeModal");
 
-    botonesCarrito.forEach((boton) => {
-        boton.addEventListener("click", (e) => {
-            const idSeleccionado = e.currentTarget.dataset.productoId;
-            const productoEncontrado = productos.find(
-                (p) => String(p.id) === String(idSeleccionado)
-            );
-
-            if (productoEncontrado) {
-                let carrito = obtenerCarritoLocal();
-
-                const indexExistente = carrito.findIndex(
-                    (p) => String(p.id) === String(idSeleccionado) && !p.colorElegido
+        botonesCarrito.forEach((boton) => {
+            boton.addEventListener("click", (e) => {
+                const idSeleccionado = e.currentTarget.dataset.productoId;
+                const productoEncontrado = productos.find(
+                    (p) => String(p.id) === String(idSeleccionado)
                 );
 
-                if (indexExistente !== -1) {
-                    carrito[indexExistente].cantidad = (carrito[indexExistente].cantidad || 1) + 1;
-                } else {
-                    carrito.push({
-                        ...productoEncontrado,
-                        cantidad: 1
-                    });
-                }
+                if (productoEncontrado) {
+                    let carrito = obtenerCarritoLocal();
 
-                localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-                console.log("Producto agregado al carrito:", productoEncontrado.nombre);
-            }
+                    // Buscar un producto que se haya agregado directamente sin opciones personalizadas
+                    const indexExistente = carrito.findIndex(
+                        (p) => String(p.id) === String(idSeleccionado) && !p.colorElegido
+                    );
+
+                    if (indexExistente !== -1) {
+                        carrito[indexExistente].cantidad += 1;
+                    } else {
+                        carrito.push({
+                            ...productoEncontrado,
+                            colorElegido: "Estándar",
+                            tamanoElegido: "Estándar",
+                            cantidad: 1
+                        });
+                    }
+
+                    localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
+                    console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
+                }
+            });
         });
-    });
-}
+    }
+});
