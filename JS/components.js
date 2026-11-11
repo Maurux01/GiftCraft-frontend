@@ -131,3 +131,37 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarComponente('footer-placeholder', 'footer.html');
 });
 
+// Función global para actualizar todos los contadores del carrito
+function actualizarContadorCarrito() {
+    const datos = localStorage.getItem("carritoGiftcraft");
+    const carrito = (datos && datos !== "undefined") ? JSON.parse(datos) : [];
+
+    // Sumar la cantidad total de artículos
+    const totalArticulos = carrito.reduce((sum, item) => sum + (Number(item.cantidad) || 1), 0);
+
+    // Buscar los badges en el HTML
+    const elementosContador = document.querySelectorAll(".contador-carrito, #contador-articulos");
+    
+    elementosContador.forEach(el => {
+        el.textContent = totalArticulos;
+    });
+}
+
+// Ejecutar al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+    actualizarContadorCarrito();
+    
+    // Si usas renderizado dinámico de componentes (header-placeholder), reintentamos a los 300ms
+    setTimeout(actualizarContadorCarrito, 300);
+});
+
+// 2. Escuchar cambios desde otras pestañas
+window.addEventListener("storage", (e) => {
+    if (e.key === "carritoGiftcraft") {
+        actualizarContadorCarrito();
+        if (typeof renderizarCarrito === "function") {
+            renderizarCarrito();
+        }
+    }
+});
+

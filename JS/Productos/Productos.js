@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // 2. GENERAR CARDS DINÁMICAS
+    //GENERAR CARDS DINÁMICAS
     contenedor.innerHTML = "";
     productos.forEach((producto) => {
         const columna = document.createElement("div");
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.appendChild(columna);
     });
 
-    // 3. ACTIVAR EVENTOS DE LOS BOTONES "AGREGAR AL CARRITO" DE LAS CARDS
+    // ACTIVAR EVENTOS DE LOS BOTONES "AGREGAR AL CARRITO" DE LAS CARDS
     escucharBotonesCarrito(productos);
 
     // Renderizar offcanvas del carrito con lo guardado en localStorage
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL (Delegación de eventos)
+    // MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL (Delegación de eventos)
     contenedor.addEventListener("click", (e) => {
         const btnPersonalizar = e.target.closest("button[data-bs-target='#modalPersonalizarProducto']");
 
@@ -278,7 +278,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-
+            //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+            actualizarContadorCarrito();
             // Actualizar offcanvas del carrito
             renderizarOffcanvas();
 
@@ -346,6 +347,7 @@ function escucharBotonesCarrito(productos) {
                 }
 
                 localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
+                actualizarContadorCarrito();    
                 console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
 
                 // Actualizar offcanvas del carrito
@@ -354,3 +356,5 @@ function escucharBotonesCarrito(productos) {
         });
     });
 }
+
+
