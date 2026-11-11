@@ -11,7 +11,7 @@ const botonModalAgregar = document.getElementById("btnAgregarDesdeModal");
 // Variable global para saber qué producto está cargado actualmente en el modal
 let productoActualModal = null;
 
-// Obtener el carrito guardado para el offcanvas
+// Función auxiliar para obtener el carrito de localStorage
 function obtenerCarritoLocal() {
     const carritoGuardado = localStorage.getItem("carritoGiftcraft");
     if (carritoGuardado && carritoGuardado !== "undefined") {
@@ -25,14 +25,64 @@ function obtenerCarritoLocal() {
     return [];
 }
 
+// Renderiza el offcanvas del carrito a partir de localStorage
+function renderizarOffcanvas() {
+    const offcanvas = document.getElementById("offcanvasCart");
+    if (!offcanvas) return;
+    const lista = offcanvas.querySelector("ul.list-group");
+    if (!lista) return;
+    const totalLi = lista.querySelector("li.fw-bold");
+    // Limpiar items existentes (conservar el li de total)
+    lista.querySelectorAll("li[data-precio]").forEach((li) => li.remove());
+
+    const carrito = obtenerCarritoLocal();
+    carrito.forEach((producto) => {
+        const precio = Number(producto.precio) || 0;
+        const cantidad = Number(producto.cantidad) || 1;
+        const subtotal = precio * cantidad;
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.setAttribute("data-precio", String(subtotal));
+        li.setAttribute("data-nombre", producto.nombre);
+        li.innerHTML = `
+            <span>${producto.nombre}${cantidad > 1 ? ` x${cantidad}` : ""}</span>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary rounded-pill">$${subtotal.toLocaleString("es-CO")}</span>
+                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Eliminar ${producto.nombre}">Eliminar</button>
+            </div>
+        `;
+        if (totalLi) {
+            lista.insertBefore(li, totalLi);
+        } else {
+            lista.appendChild(li);
+        }
+    });
+
+    recalcularTotalOffcanvas();
+}
+
+function recalcularTotalOffcanvas() {
+    const offcanvas = document.getElementById("offcanvasCart");
+    if (!offcanvas) return;
+    const lista = offcanvas.querySelector("ul.list-group");
+    const totalBadge = offcanvas.querySelector("li.fw-bold .badge");
+    if (!lista) return;
+    let total = 0;
+    lista.querySelectorAll("li[data-precio]").forEach((li) => {
+        total += parseInt(li.getAttribute("data-precio"), 10) || 0;
+    });
+    if (totalBadge) {
+        totalBadge.textContent = "$" + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    //Json para traer los productos cargados por admin en el LS
     const productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
     const contenedor = document.getElementById("contenedorProductos");
 
     if (!contenedor) return;
 
-    //SI NO HAY PRODUCTOS
+    // 1. SI NO HAY PRODUCTOS
     if (productos.length === 0) {
         contenedor.innerHTML = `
             <div class="col-12 text-center py-5">
@@ -42,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // GENERAR CARDS DINÁMICAS
+    // 2. GENERAR CARDS DINÁMICAS
     contenedor.innerHTML = "";
     productos.forEach((producto) => {
         const columna = document.createElement("div");
@@ -60,29 +110,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="card-info">
                         <h5 class="card-title">${producto.nombre}</h5>
                         <p class="card-text">${producto.categoria || ''}</p>
-                        <p class="card-precio">$${Number(producto.precio).toLocaleString("es-CO")}</p>
-                    </div>
-                    <div class="d-flex gap-3">
-                        <button
-                            class="btn btn-personalizar"
-                            type="button"
-                            data-producto-id="${producto.id}"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalPersonalizarProducto"
-                        >
-                            <i class="bi bi-pencil"></i>
-                            Personalizar
-                        </button>
-                        <button
-                            class="btn btn-carrito"
-                            type="button"
-                            aria-label="Agregar al carrito"
-                            data-producto-id="${producto.id}"
-                            data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasCart"
-                        >
-                            <i class="bi bi-cart"></i>
-                        </button>
+                        <div class="d-flex align-items-center justify-content-between mt-2 gap-3">
+                            <p class="card-precio mb-0">$${Number(producto.precio).toLocaleString("es-CO")}</p>
+                            <button
+                                class="btn btn-personalizar"
+                                type="button"
+                                data-producto-id="${producto.id}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalPersonalizarProducto"
+                            >
+                                <i class="bi bi-cart"></i>
+                                Comprar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,10 +131,32 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.appendChild(columna);
     });
 
-    // ACTIVAR EVENTOS DE LOS BOTONES 
+    // 3. ACTIVAR EVENTOS DE LOS BOTONES "AGREGAR AL CARRITO" DE LAS CARDS
     escucharBotonesCarrito(productos);
 
-    // MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL CUANDO SE DA CLIC EN "PERSONALIZAR"
+    // Renderizar offcanvas del carrito con lo guardado en localStorage
+    renderizarOffcanvas();
+
+    // Eliminar productos del offcanvas y sincronizar localStorage
+    const offcanvasEl = document.getElementById("offcanvasCart");
+    if (offcanvasEl) {
+        offcanvasEl.addEventListener("click", (e) => {
+            const btnEliminar = e.target.closest("button.btn-outline-danger");
+            if (!btnEliminar) return;
+            const li = btnEliminar.closest("li[data-precio]");
+            if (!li) return;
+            const nombre = li.getAttribute("data-nombre");
+            let carrito = obtenerCarritoLocal();
+            const idx = carrito.findIndex((p) => p.nombre === nombre);
+            if (idx !== -1) {
+                carrito.splice(idx, 1);
+                localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
+            }
+            renderizarOffcanvas();
+        });
+    }
+
+    // 4. MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL (Delegación de eventos)
     contenedor.addEventListener("click", (e) => {
         const btnPersonalizar = e.target.closest("button[data-bs-target='#modalPersonalizarProducto']");
 
@@ -107,10 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!productoSeleccionado) return;
 
-        // Guardamos la referencia global del producto que se está personalizando
+        // Guardamos la referencia global del producto seleccionado
         productoActualModal = productoSeleccionado;
 
-        // Llenar datos básicos en el modal
+        // Llenar datos en el modal
         if (imagen) {
             imagen.src = productoSeleccionado.imagen || "";
             imagen.alt = productoSeleccionado.nombre;
@@ -126,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         }
 
-        // GENERAR RADIO BUTTONS DE COLOR
+        // GENERAR OPCIONES DE COLOR
         if (colores) {
             colores.replaceChildren();
             const listaColores = productoSeleccionado.colores || [];
@@ -140,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     input.id = `colorProducto${index}`;
                     input.value = color;
                     input.autocomplete = "off";
-                    if (index === 0) input.checked = true; // Seleccionar el primero por defecto
+                    if (index === 0) input.checked = true;
 
                     const label = document.createElement("label");
                     label.className = "btn btn-outline-secondary";
@@ -154,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // GENERAR RADIO BUTTONS DE TAMAÑO
+        // GENERAR OPCIONES DE TAMAÑO
         if (tamanios) {
             tamanios.replaceChildren();
             const listaTamanios = productoSeleccionado.tamanios || [];
@@ -168,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     input.id = `tamanoProducto${index}`;
                     input.value = tamano;
                     input.autocomplete = "off";
-                    if (index === 0) input.checked = true; // Seleccionar el primero por defecto
+                    if (index === 0) input.checked = true;
 
                     const label = document.createElement("label");
                     label.className = "btn btn-tamanio";
@@ -183,12 +245,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    //ESCUCHAR EL BOTÓN DENTRO DEL MODAL Y TOMAR LA PERSONALIZACIÓN ELEGIDA
+    // 5. ACCIÓN DEL BOTÓN DENTRO DEL MODAL (AGREGAR PRODUCTO PERSONALIZADO)
     if (botonModalAgregar) {
         botonModalAgregar.addEventListener("click", () => {
             if (!productoActualModal) return;
 
-            // BUSCAR LOS RADIOS SELECCIONADOS DIRECTAMENTE DENTRO DE SUS CONTENEDORES
+            // Obtener color y tamaño seleccionados en el modal
             const colorChecked = colores ? colores.querySelector("input[name='opcionColor']:checked") : null;
             const tamanoChecked = tamanios ? tamanios.querySelector("input[name='opcionTamano']:checked") : null;
 
@@ -197,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             let carrito = obtenerCarritoLocal();
 
-            // Buscar si ya existe el producto con la MISMA combinación de ID, Color y Tamaño
+            // Buscar si ya existe el producto exactamente con ese mismo color y tamaño
             const indexExistente = carrito.findIndex(p =>
                 String(p.id) === String(productoActualModal.id) &&
                 p.colorElegido === colorElegido &&
@@ -215,19 +277,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // Guardar carrito actualizado
             localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
 
-            // Feedback visual al usuario
-            if (typeof Swal !== "undefined") {
-                Swal.fire({
-                    title: "¡Producto agregado!",
-                    text: `${productoActualModal.nombre} (${colorElegido}, ${tamanoElegido}) fue añadido a tu carrito.`,
-                    icon: "success",
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            }
+            // Actualizar offcanvas del carrito
+            renderizarOffcanvas();
 
             // Cerrar el modal de Bootstrap
             const modalEl = document.getElementById("modalPersonalizarProducto");
@@ -235,43 +288,69 @@ document.addEventListener("DOMContentLoaded", () => {
                 const instancia = bootstrap.Modal.getOrCreateInstance(modalEl);
                 instancia.hide();
             }
-        });
-    }
 
-    // Función para el botón directo de carrito de las cards 
-    function escucharBotonesCarrito(productos) {
-        const botonesCarrito = document.querySelectorAll(".btnAgregarDesdeModal");
-
-        botonesCarrito.forEach((boton) => {
-            boton.addEventListener("click", (e) => {
-                const idSeleccionado = e.currentTarget.dataset.productoId;
-                const productoEncontrado = productos.find(
-                    (p) => String(p.id) === String(idSeleccionado)
-                );
-
-                if (productoEncontrado) {
-                    let carrito = obtenerCarritoLocal();
-
-                    // Buscar un producto que se haya agregado directamente sin opciones personalizadas
-                    const indexExistente = carrito.findIndex(
-                        (p) => String(p.id) === String(idSeleccionado) && !p.colorElegido
-                    );
-
-                    if (indexExistente !== -1) {
-                        carrito[indexExistente].cantidad += 1;
-                    } else {
-                        carrito.push({
-                            ...productoEncontrado,
-                            colorElegido: "Estándar",
-                            tamanoElegido: "Estándar",
-                            cantidad: 1
-                        });
+            // Alerta visual de éxito y, al confirmar/cerrar, abrir el offcanvas del carrito
+            if (typeof Swal !== "undefined") {
+                Swal.fire({
+                    title: "¡Producto agregado!",
+                    text: `${productoActualModal.nombre} (${colorElegido}, ${tamanoElegido}) fue añadido a tu carrito.`,
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    const offcanvasCartEl = document.getElementById("offcanvasCart");
+                    if (offcanvasCartEl && typeof bootstrap !== "undefined") {
+                        const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasCartEl);
+                        offcanvas.show();
                     }
-
-                    localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-                    console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
+                });
+            } else {
+                const offcanvasCartEl = document.getElementById("offcanvasCart");
+                if (offcanvasCartEl && typeof bootstrap !== "undefined") {
+                    const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasCartEl);
+                    offcanvas.show();
                 }
-            });
+            }
         });
     }
 });
+
+// Función encargada de vincular el clic a todos los botones de "Agregar al carrito" en la card
+function escucharBotonesCarrito(productos) {
+    const botonesCarrito = document.querySelectorAll(".btn-carrito");
+
+    botonesCarrito.forEach((boton) => {
+        boton.addEventListener("click", (e) => {
+            const idSeleccionado = e.currentTarget.dataset.productoId;
+            const productoEncontrado = productos.find(
+                (p) => String(p.id) === String(idSeleccionado)
+            );
+
+            if (productoEncontrado) {
+                let carrito = obtenerCarritoLocal();
+
+                // Buscar un producto que se haya agregado directamente sin opciones personalizadas
+                const indexExistente = carrito.findIndex(
+                    (p) => String(p.id) === String(idSeleccionado) && !p.colorElegido
+                );
+
+                if (indexExistente !== -1) {
+                    carrito[indexExistente].cantidad += 1;
+                } else {
+                    carrito.push({
+                        ...productoEncontrado,
+                        colorElegido: "Estándar",
+                        tamanoElegido: "Estándar",
+                        cantidad: 1
+                    });
+                }
+
+                localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
+                console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
+
+                // Actualizar offcanvas del carrito
+                renderizarOffcanvas();
+            }
+        });
+    });
+}
