@@ -86,7 +86,7 @@
                 <div class="card card-crema border-0 p-3 p-md-4 rounded-4 shadow-sm">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h2 class="h5 fw-bold mb-0"><i class="bi bi-bag-check-fill"></i> Productos en tu carrito</h2>
-                        <span class="badge bg-secondary rounded-pill">3 artículos</span>
+                        <span class="badge bg-secondary rounded-pill" id="contador-articulos"></span>
                     </div>
 
                     <div class="table-responsive">
@@ -100,68 +100,7 @@
                                     <th scope="col" class="text-center">Quitar</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- Item 1 -->
-                                <tr id="item1">
-                                    <td>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <img src="" alt="Figura Steve" class="cart-item-img">
-                                            <div>
-                                                <h6 class="mb-0 fw-bold">Figura Steve</h6>
-                                                <small class="text-muted">Madera, tamaño mediano, color clásico</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">$45.000</td>
-                                    <td class="text-center">
-                                        <input type="number" class="form-control form-control-sm qty-input mx-auto" value="1" min="1">
-                                    </td>
-                                    <td class="text-center fw-bold">$45.000</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-danger" aria-label="Quitar"><i class="bi bi-trash3"></i></button>
-                                    </td>
-                                </tr>
-                                <!-- Item 2 -->
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <img src="../ASSETS/img/mesadecrafteo.png" alt="Figura Creeper" class="cart-item-img">
-                                            <div>
-                                                <h6 class="mb-0 fw-bold">Figura Creeper</h6>
-                                                <small class="text-muted">Madera, tamaño pequeño, verde</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">$38.000</td>
-                                    <td class="text-center">
-                                        <input type="number" class="form-control form-control-sm qty-input mx-auto" value="2" min="1">
-                                    </td>
-                                    <td class="text-center fw-bold">$76.000</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-danger" aria-label="Quitar"><i class="bi bi-trash3"></i></button>
-                                    </td>
-                                </tr>
-                                <!-- Item 3 -->
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <img src="../ASSETS/img/bloque-tierra.png" alt="Bloque de tierra" class="cart-item-img">
-                                            <div>
-                                                <h6 class="mb-0 fw-bold">Bloque de Tierra</h6>
-                                                <small class="text-muted">Madera, tamaño grande</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">$25.000</td>
-                                    <td class="text-center">
-                                        <input type="number" class="form-control form-control-sm qty-input mx-auto" value="1" min="1">
-                                    </td>
-                                    <td class="text-center fw-bold">$25.000</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-danger" aria-label="Quitar"><i class="bi bi-trash3"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="tbody-carrito"></tbody>
                         </table>
                     </div>
 
@@ -183,29 +122,17 @@
                     <ul class="list-group list-group-flush mb-3">
                         <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
                             <span>Subtotal</span>
-                            <span class="fw-bold">$146.000</span>
+                            <span class="fw-bold" id="resumen-subtotal"></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
                             <span>Envío</span>
-                            <span class="fw-bold">$12.000</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
-                            <span>Descuento</span>
-                            <span class="text-success fw-bold">-$0</span>
+                            <span class="fw-bold" id="resumen-envio"></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between bg-transparent px-0 border-top">
                             <span class="fw-bold">Total</span>
-                            <span class="fw-bold fs-5 text-success">$158.000</span>
+                            <span class="fw-bold fs-5 text-success" id="resumen-total">$158.000</span>
                         </li>
                     </ul>
-
-                    <div class="mb-3">
-                        <label for="cupon" class="form-label small fw-bold">Código de descuento</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="cupon" placeholder="Ingresa tu cupón">
-                            <button class="btn btn-outline-secondary" type="button">Aplicar</button>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="card card-crema border-0 p-3 p-md-4 rounded-4 shadow-sm">
@@ -265,8 +192,8 @@
                         </label>
                     </div>
 
-                    <button type="button" class="btn btn-verde-minecraft w-100 py-2 fw-bold text-white rounded-pill shadow">
-                        <i class="bi bi-lock-fill"></i> Pagar $158.000
+                    <button type="button" class="btn btn-verde-minecraft w-100 py-2 fw-bold text-white rounded-pill shadow" id="btn-pagar">
+                        <i class="bi bi-lock-fill"></i>
                     </button>
 
                     <p class="text-center text-muted small mt-3 mb-0">
@@ -284,7 +211,7 @@
      <script src="../JS/Carrito/carrito.js"> </script>
     <script src="../JS/script.js"></script>
     <script src="../JS/components.js"></script>
-  
+    <script src="../JS/Carrito/Carrito.js"></script>
 </body>
 
 </html>
