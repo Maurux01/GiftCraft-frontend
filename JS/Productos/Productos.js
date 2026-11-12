@@ -42,10 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. SI NO HAY PRODUCTOS
     if (productos.length === 0) {
         contenedor.innerHTML = `
-            <div class="col-12 text-center py-5">
-                <h4>No hay productos registrados</h4>
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="mensaje-sin-productos-contenedor text-center">
+                <h4 class="mensaje-sin-productos">
+                    No hay productos registrados
+                </h4>
             </div>
-        `;
+        </div>`;
         return;
     }
 
@@ -304,7 +307,7 @@ function escucharBotonesCarrito(productos) {
                 }
 
                 localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-                actualizarContadorCarrito();    
+                actualizarContadorCarrito();
                 console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
 
                 // Actualizar offcanvas del carrito
