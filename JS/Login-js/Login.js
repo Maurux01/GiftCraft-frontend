@@ -1,23 +1,50 @@
-// Alternar pestañas y visibilidad de contraseña
-(function () {
+document.addEventListener("DOMContentLoaded", () => {
+    // --- ALTERNAR PESTAÑAS (TABS) ---
     const tabs = document.querySelectorAll('.mc-tab');
     const fLogin = document.getElementById('mcFormLogin');
     const fReg = document.getElementById('mcFormRegister');
+    const footerLogin = document.getElementById('mcFooterLogin');
+    const footerReg = document.getElementById('mcFooterRegister');
 
-    function show(name) {
+    function showTab(name) {
         tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+
         if (name === 'login') {
             fLogin.classList.add('active');
             fReg.classList.remove('active');
+            if (footerLogin) footerLogin.style.display = 'block';
+            if (footerReg) footerReg.style.display = 'none';
         } else {
             fReg.classList.add('active');
             fLogin.classList.remove('active');
+            if (footerLogin) footerLogin.style.display = 'none';
+            if (footerReg) footerReg.style.display = 'block';
         }
     }
 
-    tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.tab)));
+    tabs.forEach(t => {
+        t.addEventListener('click', () => showTab(t.dataset.tab));
+    });
 
-    // Función para alternar la visibilidad de la contraseña con el ícono de ojo
+    // Enlaces adicionales por si el usuario hace clic en "Regístrate" o "Inicia sesión" en el footer
+    const linkToRegister = document.getElementById('mcToRegister');
+    const linkToLogin = document.getElementById('mcToLogin');
+
+    if (linkToRegister) {
+        linkToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            showTab('register');
+        });
+    }
+
+    if (linkToLogin) {
+        linkToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showTab('login');
+        });
+    }
+
+    // --- VISIBILIDAD DE CONTRASEÑAS (ÍCONO DE OJO) ---
     const togglePassword = (inputId, iconId) => {
         const input = document.getElementById(inputId);
         const icon = document.getElementById(iconId);
@@ -31,67 +58,127 @@
         }
     };
 
-    // Activamos el ojo para los campos de contraseña
+    // Activamos el ojo para los tres campos de contraseña del login y registro
     togglePassword('mc-pass', 'togglePassLogin');
     togglePassword('mc-reg-pass', 'togglePassReg');
     togglePassword('mc-reg-pass-confirm', 'togglePassRegConfirm');
-})();
 
 
-// Función capturar datos del formulario de registro
-document.addEventListener("DOMContentLoaded", () => {
+    // --- 3. VALIDACIÓN Y CAPTURA DE DATOS EN EL REGISTRO ---
     const formUser = document.getElementById("mcFormRegister");
 
     if (formUser) {
         formUser.addEventListener("submit", (evento) => {
             evento.preventDefault(); // Evitamos que la página se recargue
 
-            // Validar opcionalmente si las contraseñas coinciden antes de guardar
+            // Limpiar mensajes de error previos
+            document.getElementById("campoVacio").textContent = "";
+            document.getElementById("campoNumero").textContent = "";
+            document.getElementById("campoMensaje").textContent = "";
+            document.getElementById("campoContraseña").textContent = "";
+            document.getElementById("MensajeError").textContent = "";
+
+            // Capturar elementos del DOM
+            const nombre = document.getElementById("mc-reg-name");
+            const celular = document.getElementById("mc-reg-phone");
+            const correo = document.getElementById("mc-reg-email");
             const pass = document.getElementById("mc-reg-pass").value;
             const passConfirm = document.getElementById("mc-reg-pass-confirm").value;
 
-            if (pass !== passConfirm) {
-                alert("Las contraseñas no coinciden. Por favor, revísalas.");
+            // Validación 1: Campo nombre vacío
+            if (nombre.value.trim() === '') {
+                document.getElementById("campoVacio").textContent = "¡El nombre completo no puede quedar vacío!";
+                nombre.focus();
                 return;
             }
 
-            // Llamamos la función para extraer los valores del formulario
-            const datosFormulario = capturarDatos();
+            // Validación 2: Número de celular (mínimo 10 dígitos)
+            if (celular.value.trim().length < 10) {
+                document.getElementById("campoNumero").textContent = "¡El número de celular debe tener al menos 10 dígitos!";
+                celular.focus();
+                return;
+            }
 
-            // Guardamos en el localStorage
+            // Validación 3: Verificar correos duplicados en localStorage
+            const usuariosRegistrados = JSON.parse(localStorage.getItem("usuariosRegistro")) || [];
+            const correoExistente = usuariosRegistrados.some(
+                usuario => usuario.email.toLowerCase() === correo.value.trim().toLowerCase()
+            );
+
+            if (correoExistente) {
+                document.getElementById("campoMensaje").textContent = "¡Este correo electrónico ya está registrado. Inicia sesión!";
+                correo.focus();
+                return;
+            }
+
+            // Validación 4: Contraseñas débiles
+            const errorContrasenia = esContraseniaDebil(pass);
+            if (errorContrasenia) {
+                document.getElementById("campoContraseña").textContent = errorContrasenia;
+                document.getElementById("mc-reg-pass").focus();
+                return;
+            }
+
+            // Validación 5: Coincidencia de contraseñas
+            if (pass !== passConfirm) {
+                document.getElementById("campoContraseña").textContent = "¡Las contraseñas no coinciden. Revísalas!";
+                return;
+            }
+
+            // --- 4. GUARDAR EN LOCALSTORAGE ---
+            const datosFormulario = {
+                id: Date.now(),
+                name: nombre.value.trim(),
+                phone: celular.value.trim(),
+                email: correo.value.trim(),
+                password: pass,
+                fechaRegistro: new Date().toLocaleDateString()
+            };
+
             guardarEnLocalStorage(datosFormulario, "usuariosRegistro");
 
-            // Limpiamos el form
+            // Limpiar formulario y mostrar mensaje de éxito en pantalla
             formUser.reset();
-            alert("¡Datos guardados con éxito!");
+            const mensajeExito = document.getElementById("MensajeError");
+            mensajeExito.style.color = "#5e8a3a"; // Color verde éxito opcional
+            mensajeExito.textContent = "¡Cuenta creada con éxito! Redirigiendo...";
+
+            // Esperar 2 segundos para que el usuario lea el mensaje y luego cambiar a login
+            setTimeout(() => {
+                mensajeExito.textContent = ""; // Limpiar mensaje
+                showTab('login');
+            }, 2000);
         });
     }
 });
 
-function capturarDatos() {
-    const nombre = document.getElementById("mc-reg-name").value;
-    const celular = document.getElementById("mc-reg-phone").value;
-    const correo = document.getElementById("mc-reg-email").value;
-    const contraseña = document.getElementById("mc-reg-pass").value;
+// Función para verificar si la contraseña es débil o común
+function esContraseniaDebil(password) {
+    const contraseniasProhibidas = [
+        "123456", "12345678", "123456789", "12345",
+        "abcdef", "qwerty", "password", "contraseña",
+        "admin", "111111", "000000"
+    ];
 
-    return {
-        id: Date.now(),
-        name: nombre,
-        phone: celular,
-        email: correo,
-        password: contraseña,
-        fechaRegistro: new Date().toLocaleDateString()
-    };
+    if (contraseniasProhibidas.includes(password.toLowerCase())) {
+        return "¡Esta contraseña es demasiado común y fácil de adivinar! Elige otra.";
+    }
+
+    const caracteresRepetidos = /^(.)\1+$/;
+    if (caracteresRepetidos.test(password)) {
+        return "La contraseña no puede estar formada por un solo carácter repetido.";
+    }
+
+    if (password.length < 6) {
+        return "La contraseña debe tener al menos 6 caracteres.";
+    }
+
+    return null;
 }
 
-// Función para guardar en el localStorage
+// Función auxiliar para guardar en localStorage
 function guardarEnLocalStorage(nuevoObjeto, claveStorage) {
-    // Obtenemos los datos actuales, si no hay nada devuelve un array vacío
     let registrosActuales = JSON.parse(localStorage.getItem(claveStorage)) || [];
-    
-    // Agregamos el nuevo objeto al array
     registrosActuales.push(nuevoObjeto);
-
-    // Convertimos el array a texto JSON y guardamos en el localStorage
     localStorage.setItem(claveStorage, JSON.stringify(registrosActuales));
 }
