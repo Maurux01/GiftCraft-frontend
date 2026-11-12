@@ -15,6 +15,9 @@
 
 body {
     margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- CARRUSEL (ESCRITORIO) --- */
@@ -59,6 +62,19 @@ body {
     background-color: #ffe4ef; /* mismo tono para todas las cards */
     box-shadow: 5px 5px 0 #3b2a1a;
     transition: transform 0.3s, box-shadow 0.3s;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
 }
 
 .card-valor {

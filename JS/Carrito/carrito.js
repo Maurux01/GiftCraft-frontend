@@ -1,6 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     renderizarCarrito();
     inicializarMetodosPago();
+
+    const btnVaciarCarrito = document.querySelector("#btn-vaciar-carrito");
+
+    if (btnVaciarCarrito) {
+        btnVaciarCarrito.addEventListener("click", vaciarCarrito);
+    }
 });
 
 //Obtener carrito de localStorage de forma segura
@@ -110,9 +116,48 @@ function eliminarProducto(index) {
 }
 
 // Vaciar todo el carrito
+// Vaciar todo el carrito
 function vaciarCarrito() {
-    localStorage.removeItem("carritoGiftcraft");
-    renderizarCarrito();
+    const carrito = obtenerCarrito();
+
+    // Verificar si el carrito ya está vacío
+    if (carrito.length === 0) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Carrito vacío',
+            text: 'No tienes productos para eliminar.',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#C77D9F'
+        });
+        return;
+    }
+
+    // Solicitar confirmación
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Se eliminarán todos los productos de tu carrito.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#C77D9F',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, vaciar carrito',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("carritoGiftcraft");
+
+            renderizarCarrito();
+
+            Swal.fire({
+                icon: 'success',
+                title: '¡Carrito vaciado!',
+                text: 'Todos los productos fueron eliminados correctamente.',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#C77D9F'
+            });
+        }
+    });
 }
 
 // Recalcular Subtotal, Envío y Total en la UI

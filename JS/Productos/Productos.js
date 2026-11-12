@@ -25,56 +25,13 @@ function obtenerCarritoLocal() {
     return [];
 }
 
-// Renderiza el offcanvas del carrito a partir de localStorage
-function renderizarOffcanvas() {
-    const offcanvas = document.getElementById("offcanvasCart");
-    if (!offcanvas) return;
-    const lista = offcanvas.querySelector("ul.list-group");
-    if (!lista) return;
-    const totalLi = lista.querySelector("li.fw-bold");
-    // Limpiar items existentes (conservar el li de total)
-    lista.querySelectorAll("li[data-precio]").forEach((li) => li.remove());
 
-    const carrito = obtenerCarritoLocal();
-    carrito.forEach((producto) => {
-        const precio = Number(producto.precio) || 0;
-        const cantidad = Number(producto.cantidad) || 1;
-        const subtotal = precio * cantidad;
-        const li = document.createElement("li");
-        li.className = "list-group-item d-flex justify-content-between align-items-center";
-        li.setAttribute("data-precio", String(subtotal));
-        li.setAttribute("data-nombre", producto.nombre);
-        li.innerHTML = `
-            <span>${producto.nombre}${cantidad > 1 ? ` x${cantidad}` : ""}</span>
-            <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-primary rounded-pill">$${subtotal.toLocaleString("es-CO")}</span>
-                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Eliminar ${producto.nombre}">Eliminar</button>
-            </div>
-        `;
-        if (totalLi) {
-            lista.insertBefore(li, totalLi);
-        } else {
-            lista.appendChild(li);
-        }
-    });
-
-    recalcularTotalOffcanvas();
-}
-
-function recalcularTotalOffcanvas() {
-    const offcanvas = document.getElementById("offcanvasCart");
-    if (!offcanvas) return;
-    const lista = offcanvas.querySelector("ul.list-group");
-    const totalBadge = offcanvas.querySelector("li.fw-bold .badge");
-    if (!lista) return;
-    let total = 0;
-    lista.querySelectorAll("li[data-precio]").forEach((li) => {
-        total += parseInt(li.getAttribute("data-precio"), 10) || 0;
-    });
-    if (totalBadge) {
-        totalBadge.textContent = "$" + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+// Cuando el header (y su offcanvas) terminen de cargar, renderizar el carrito
+window.addEventListener("headerLoaded", () => {
+    if (typeof renderizarOffcanvas === "function") {
+        renderizarOffcanvas();
     }
-}
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
@@ -85,10 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. SI NO HAY PRODUCTOS
     if (productos.length === 0) {
         contenedor.innerHTML = `
-            <div class="col-12 text-center py-5">
-                <h4>No hay productos registrados</h4>
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="mensaje-sin-productos-contenedor text-center">
+                <h4 class="mensaje-sin-productos">
+                    No hay productos registrados
+                </h4>
             </div>
-        `;
+        </div>`;
         return;
     }
 
@@ -347,7 +307,7 @@ function escucharBotonesCarrito(productos) {
                 }
 
                 localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-                actualizarContadorCarrito();    
+                actualizarContadorCarrito();
                 console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
 
                 // Actualizar offcanvas del carrito
