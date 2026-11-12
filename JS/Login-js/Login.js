@@ -1,3 +1,13 @@
+
+
+// Función para guardar en el localStorage (por compatibilidad)
+function guardarEnLocalStorage(producto) {
+    let productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
+    productos.push(producto);
+    localStorage.setItem("productosGiftcraft", JSON.stringify(productos));
+}
+
+
 //Alternar pestañas
 (function () {
     const tabs = document.querySelectorAll('.mc-tab');
