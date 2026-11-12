@@ -13,6 +13,10 @@
     --font-body: "Inter", sans-serif;
 }
 
+main{
+    min-height: 90vh;
+}
+
 body {
     background-image: url(../ASSETS/img/carrusel/fondo2-carrusel.png);
 }
@@ -117,5 +121,36 @@ body {
 .btn-add-cart:hover{
     background-color:var(--CremaCrafteo);
     color:#EA6181;
+}
+
+/* Tarjeta de cuando no hay productos */
+main {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#contenedorProductos {
+    flex: 1;
+    min-height: 70vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.mensaje-sin-productos-contenedor {
+    width: min(90%, 650px);
+    padding: 35px 25px;
+    background-color: var(--VerdeMundo);
+    border: 2px solid var(--VerdeMundo);
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.mensaje-sin-productos {
+    margin: 0;
+    font-family: var(--font-pixel-sub);
+    font-size: 1.5rem;
+    color: var(--MarronTierra);
+    text-align: center;
 }
 
