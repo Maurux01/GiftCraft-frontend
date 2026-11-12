@@ -35,12 +35,13 @@
         <div class="mc-card">
             <div class="mc-block"></div>
             <h1 class="mc-title">GIFTCRAFT</h1>
+            <div> <label id="mainTitle"></label></div>
 
             <div class="mc-tabs">
                 <button class="mc-tab active" data-tab="login">INICIAR SESIÓN</button>
                 <button class="mc-tab" data-tab="register">REGISTRARSE</button>
             </div>
-
+            <!--LOGIN-->
             <form class="mc-form active" id="mcFormLogin">
                 <div class="mc-field">
                     <label for="mc-user">Correo</label>
@@ -56,17 +57,17 @@
             <form class="mc-form" id="mcFormRegister">
                 <div class="mc-field">
                     <label for="mc-reg-name"><i class="bi bi-person-fill me-1"></i> Nombre completo</label>
-                    <input type="text" id="mc-reg-name" class="mc-input" placeholder="Ej. Briyit Natalia" required>
+                    <input type="text" id="mc-reg-name" class="mc-input" placeholder="Ej. Steve Minecraft" required>
                 </div>
 
                 <div class="mc-field">
                     <label for="mc-reg-phone"><i class="bi bi-telephone-fill me-1"></i> Número de teléfono</label>
-                    <input type="tel" id="mc-reg-phone" class="mc-input" placeholder="Ej. 3001234567" required>
+                    <input type="number" id="mc-reg-phone" class="mc-input" placeholder="Ej. 3001234567" required>
                 </div>
 
                 <div class="mc-field">
-                    <label for="mc-reg-email"><i class="bi bi-envelope-at-fill me-1"></i> Usuario / Correo</label>
-                    <input type="text" id="mc-reg-email" class="mc-input" placeholder="usuario o tu@correo.com"
+                    <label for="mc-reg-email"><i class="bi bi-envelope-at-fill me-1"></i> Correo Electronico</label>
+                    <input type="email" id="mc-reg-email" class="mc-input" placeholder="usuario o tu@correo.com"
                         required>
                 </div>
 
@@ -82,6 +83,7 @@
                 <div class="mc-field">
                     <label for="mc-reg-pass-confirm"><i class="bi bi-shield-lock-fill me-1"></i> Verificar
                         contraseña</label>
+
                     <div class="mc-password-wrapper">
                         <input type="password" id="mc-reg-pass-confirm" class="mc-input"
                             placeholder="Repite tu contraseña" required>
@@ -90,7 +92,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="mc-btn">Crear cuenta</button>
+                <button type="submit" class="mc-btn" id="mc-btn-crear">Crear cuenta</button>
             </form>
 
             <div class="mc-footer" id="mcFooterLogin">
@@ -110,7 +112,6 @@
     <!-- personal JS -->
     <script src="/JS/Login-js/Login.js"> </script>
     <script src="../../JS/components.js"></script>
-    <script src="../../JS/Admin-JS/Dashboard.js"></script>
 </body>
 
 </html>
