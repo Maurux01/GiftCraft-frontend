@@ -1,1 +1,4 @@
 node_modules/
+
+!JS\Productos\Productos.js
+!JS\Carrito\carrito.js

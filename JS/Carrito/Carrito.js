@@ -1,9 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     renderizarCarrito();
     inicializarMetodosPago();
+
+    const btnVaciarCarrito = document.querySelector("#btn-vaciar-carrito");
+
+    if (btnVaciarCarrito) {
+        btnVaciarCarrito.addEventListener("click", vaciarCarrito);
+    }
 });
 
-//Obtener carrito de localStorage de forma segura
 function obtenerCarrito() {
     const datos = localStorage.getItem("carritoGiftcraft");
     if (datos && datos !== "undefined") {
@@ -17,7 +22,6 @@ function obtenerCarrito() {
     return [];
 }
 
-// Cargar tabla de productos y calcular totales
 function renderizarCarrito() {
     const carrito = obtenerCarrito();
     const tbody = document.querySelector("#tbody-carrito");
@@ -27,7 +31,6 @@ function renderizarCarrito() {
 
     tbody.innerHTML = "";
 
-    // Si el carrito está vacío
     if (carrito.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -53,6 +56,11 @@ function renderizarCarrito() {
         subtotalGeneral += subtotalItem;
         totalItemsCount += cantidad;
 
+        // Texto informativo de color y tamaño
+        const detalles = (producto.colorElegido || producto.tamanoElegido)
+            ? `Color: ${producto.colorElegido || 'Estándar'} | Tamaño: ${producto.tamanoElegido || 'Estándar'}`
+            : (producto.categoria || '');
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>
@@ -60,7 +68,7 @@ function renderizarCarrito() {
                     <img src="${producto.imagen || '../ASSETS/img/regalo.png'}" alt="${producto.nombre}" class="cart-item-img">
                     <div>
                         <h6 class="mb-0 fw-bold">${producto.nombre}</h6>
-                        <small class="text-muted">${producto.categoria || ''}</small>
+                        <small class="text-muted d-block">${detalles}</small>
                     </div>
                 </div>
             </td>
@@ -89,7 +97,6 @@ function renderizarCarrito() {
     actualizarTotales(subtotalGeneral);
 }
 
-// Cambiar cantidad de un producto
 function cambiarCantidad(index, nuevaCantidad) {
     let carrito = obtenerCarrito();
     const cantidadNumerica = parseInt(nuevaCantidad);
@@ -98,24 +105,62 @@ function cambiarCantidad(index, nuevaCantidad) {
         carrito[index].cantidad = cantidadNumerica;
         localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
         renderizarCarrito();
+        //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+        actualizarContadorCarrito();
     }
 }
 
-//Eliminar producto del carrito
 function eliminarProducto(index) {
     let carrito = obtenerCarrito();
     carrito.splice(index, 1);
     localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
     renderizarCarrito();
+    //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+    actualizarContadorCarrito();
 }
 
-// Vaciar todo el carrito
 function vaciarCarrito() {
-    localStorage.removeItem("carritoGiftcraft");
-    renderizarCarrito();
-}
+    const carrito = obtenerCarrito();
+    // Evitar confirmación si el carrito está vacío
+    if (carrito.length === 0) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Carrito vacío',
+            text: 'No tienes productos para eliminar.',
+            confirmButtonText: 'Entendido'
+        });
+        return;
+    }
 
-// Recalcular Subtotal, Envío y Total en la UI
+    // Confirmar antes de eliminar todos los productos
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Se eliminarán todos los productos de tu carrito.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, vaciar carrito',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("carritoGiftcraft");
+
+            renderizarCarrito();
+
+            //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+            actualizarContadorCarrito();
+
+            Swal.fire({
+                icon: 'success',
+                title: '¡Carrito vaciado!',
+                text: 'Todos los productos fueron eliminados correctamente.',
+                confirmButtonText: 'Entendido'
+            });
+        }
+    });
+}
 function actualizarTotales(subtotal) {
     const costoEnvio = subtotal > 0 ? 12000 : 0;
     const total = subtotal + costoEnvio;
@@ -131,7 +176,6 @@ function actualizarTotales(subtotal) {
     if (btnPagar) btnPagar.innerHTML = `<i class="bi bi-lock-fill"></i> Pagar $${total.toLocaleString("es-CO")}`;
 }
 
-//Métodos de pago 
 function inicializarMetodosPago() {
     document.querySelectorAll('.payment-option').forEach(option => {
         option.addEventListener('click', () => {
