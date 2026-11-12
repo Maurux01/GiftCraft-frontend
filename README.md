@@ -4,7 +4,7 @@ REPOSITORIO NUEVO POR CAMBIOS EN EL GRUPO!
 
 - LINK DEL DEPLOY: https://maurux01.github.io/GiftCraft-frontend/
 - LINK DEL DEPLOY ADMIN: https://maurux01.github.io/GiftCraft-frontend/HTML/Admin/Dashboard.html
-- LINK DEPLOY BACJKUP:https://giftcraft-frontend.netlify.app
+- LINK DEPLOY BACKUP:https://giftcraft-frontend.netlify.app
 
 - Problemática 
     Una emprendedora quiere vender productos DIY online pero no tiene dinero para comprar un host, le pide ayuda a sus amigos para que le ayuden a armar su  
