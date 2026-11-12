@@ -33,6 +33,13 @@ function cargarComponente(id, archivo) {
                 if (id === 'header-placeholder') {
                     ajustarRutasHeader(contenedor);
                     marcarActivoHeader(contenedor);
+                    // Inicializar offcanvas global del carrito
+                    if (typeof renderizarOffcanvas === 'function') {
+                        renderizarOffcanvas();
+                    }
+                    inicializarEventosOffcanvas();
+                    actualizarContadorCarrito();
+                    window.dispatchEvent(new CustomEvent('headerLoaded'));
                 }
                 if (id === 'footer-placeholder') {
                     ajustarRutasFooter(contenedor);
@@ -162,6 +169,130 @@ window.addEventListener("storage", (e) => {
         if (typeof renderizarCarrito === "function") {
             renderizarCarrito();
         }
+        if (typeof renderizarOffcanvas === "function") {
+            renderizarOffcanvas();
+        }
     }
 });
+
+// --- Offcanvas global del carrito ---
+function obtenerCarritoLocal() {
+    const carritoGuardado = localStorage.getItem("carritoGiftcraft");
+    if (carritoGuardado && carritoGuardado !== "undefined") {
+        try {
+            return JSON.parse(carritoGuardado);
+        } catch (error) {
+            console.error("Error al leer el carrito de localStorage:", error);
+            return [];
+        }
+    }
+    return [];
+}
+
+function renderizarOffcanvas() {
+    const offcanvas = document.getElementById("offcanvasCart");
+    if (!offcanvas) return;
+    const lista = offcanvas.querySelector("ul.list-group");
+    if (!lista) return;
+    const totalLi = lista.querySelector("li.fw-bold");
+    // Limpiar items existentes (conservar el li de total)
+    lista.querySelectorAll("li[data-precio]").forEach((li) => li.remove());
+
+    const carrito = obtenerCarritoLocal();
+    carrito.forEach((producto, index) => {
+        const precio = Number(producto.precio) || 0;
+        const cantidad = Number(producto.cantidad) || 1;
+        const subtotal = precio * cantidad;
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center gc-cart-item";
+        li.setAttribute("data-precio", String(subtotal));
+        li.setAttribute("data-nombre", producto.nombre);
+        li.setAttribute("data-index", String(index));
+        li.innerHTML = `
+            <span class="gc-cart-item-name">${producto.nombre}</span>
+            <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                <div class="gc-qty-control d-flex align-items-center gap-1">
+                    <button type="button" class="btn btn-sm gc-qty-btn gc-qty-dec" data-index="${index}" aria-label="Disminuir cantidad">-</button>
+                    <span class="gc-qty-value">${cantidad}</span>
+                    <button type="button" class="btn btn-sm gc-qty-btn gc-qty-inc" data-index="${index}" aria-label="Aumentar cantidad">+</button>
+                </div>
+                <span class="badge bg-primary rounded-pill">$${subtotal.toLocaleString("es-CO")}</span>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-index="${index}" aria-label="Eliminar ${producto.nombre}">Eliminar</button>
+            </div>
+        `;
+        if (totalLi) {
+            lista.insertBefore(li, totalLi);
+        } else {
+            lista.appendChild(li);
+        }
+    });
+
+    recalcularTotalOffcanvas();
+}
+
+function recalcularTotalOffcanvas() {
+    const offcanvas = document.getElementById("offcanvasCart");
+    if (!offcanvas) return;
+    const lista = offcanvas.querySelector("ul.list-group");
+    const totalBadge = offcanvas.querySelector("li.fw-bold .badge");
+    if (!lista) return;
+    let total = 0;
+    lista.querySelectorAll("li[data-precio]").forEach((li) => {
+        total += parseInt(li.getAttribute("data-precio"), 10) || 0;
+    });
+    if (totalBadge) {
+        totalBadge.textContent = "$" + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+}
+
+let _offcanvasEventosInicializados = false;
+function inicializarEventosOffcanvas() {
+    if (_offcanvasEventosInicializados) return;
+    const offcanvasEl = document.getElementById("offcanvasCart");
+    if (!offcanvasEl) return;
+    _offcanvasEventosInicializados = true;
+    offcanvasEl.addEventListener("click", (e) => {
+        const btnInc = e.target.closest("button.gc-qty-inc");
+        const btnDec = e.target.closest("button.gc-qty-dec");
+        const btnEliminar = e.target.closest("button.btn-outline-danger");
+
+        let carrito = obtenerCarritoLocal();
+        let changed = false;
+
+        if (btnInc || btnDec) {
+            const btn = btnInc || btnDec;
+            const idx = parseInt(btn.getAttribute("data-index"), 10);
+            if (!isNaN(idx) && carrito[idx]) {
+                const delta = btnInc ? 1 : -1;
+                const nuevaCantidad = (Number(carrito[idx].cantidad) || 1) + delta;
+                if (nuevaCantidad < 1) {
+                    carrito.splice(idx, 1);
+                } else {
+                    carrito[idx].cantidad = nuevaCantidad;
+                }
+                changed = true;
+            }
+        } else if (btnEliminar) {
+            const idx = parseInt(btnEliminar.getAttribute("data-index"), 10);
+            if (!isNaN(idx) && carrito[idx]) {
+                carrito.splice(idx, 1);
+                changed = true;
+            } else {
+                const li = btnEliminar.closest("li[data-precio]");
+                const nombre = li ? li.getAttribute("data-nombre") : null;
+                const i = carrito.findIndex((p) => p.nombre === nombre);
+                if (i !== -1) {
+                    carrito.splice(i, 1);
+                    changed = true;
+                }
+            }
+        }
+
+        if (changed) {
+            localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
+            renderizarOffcanvas();
+            actualizarContadorCarrito();
+        }
+    });
+}
 

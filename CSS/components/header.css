@@ -105,6 +105,38 @@
     color: #d63384;
 }
 
+/* Offcanvas carrito */
+#offcanvasCart .offcanvas-title {
+    font-family: 'Press Start 2P', 'Pixelify Sans', monospace;
+    font-size: 1rem;
+}
+
+/* Offcanvas carrito: contador de cantidad estilo Minecraft */
+.gc-cart-item-name {
+    font-family: 'Pixelify Sans', 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+.gc-qty-control {
+    font-family: 'Press Start 2P', 'Pixelify Sans', monospace;
+}
+
+.gc-qty-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    line-height: 1;
+    font-size: 0.75rem;
+    border-radius: 6px;
+}
+
+.gc-qty-value {
+    min-width: 24px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
 /* Badge del carrito */
 .gc-cart {
     position: relative;
