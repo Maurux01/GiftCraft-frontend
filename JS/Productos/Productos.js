@@ -97,25 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Renderizar offcanvas del carrito con lo guardado en localStorage
     renderizarOffcanvas();
 
-    // Eliminar productos del offcanvas y sincronizar localStorage
-    const offcanvasEl = document.getElementById("offcanvasCart");
-    if (offcanvasEl) {
-        offcanvasEl.addEventListener("click", (e) => {
-            const btnEliminar = e.target.closest("button.btn-outline-danger");
-            if (!btnEliminar) return;
-            const li = btnEliminar.closest("li[data-precio]");
-            if (!li) return;
-            const nombre = li.getAttribute("data-nombre");
-            let carrito = obtenerCarritoLocal();
-            const idx = carrito.findIndex((p) => p.nombre === nombre);
-            if (idx !== -1) {
-                carrito.splice(idx, 1);
-                localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-            }
-            renderizarOffcanvas();
-        });
-    }
-
     // MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL (Delegación de eventos)
     contenedor.addEventListener("click", (e) => {
         const btnPersonalizar = e.target.closest("button[data-bs-target='#modalPersonalizarProducto']");
@@ -238,10 +219,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-            //ACTUALIZAR EL CONTADORES EN TIEMPO REAL
+
+            // Actualizar contador y toggle
             actualizarContadorCarrito();
-            // Actualizar offcanvas del carrito
             renderizarOffcanvas();
+
+            // Notificar a la pasarela
+            window.dispatchEvent(new Event("carritoActualizado"));
 
             // Cerrar el modal de Bootstrap
             const modalEl = document.getElementById("modalPersonalizarProducto");
@@ -307,11 +291,14 @@ function escucharBotonesCarrito(productos) {
                 }
 
                 localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-                actualizarContadorCarrito();
-                console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
 
-                // Actualizar offcanvas del carrito
+                actualizarContadorCarrito();
                 renderizarOffcanvas();
+
+                // Notificar a la pasarela
+                window.dispatchEvent(new Event("carritoActualizado"));
+
+                console.log("Producto básico agregado al carrito:", productoEncontrado.nombre);
             }
         });
     });

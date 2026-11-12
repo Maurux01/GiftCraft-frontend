@@ -72,11 +72,7 @@ function renderizarCarrito() {
             </td>
             <td class="text-center">$${precioUnitario.toLocaleString("es-CO")}</td>
             <td class="text-center">
-                <input type="number" 
-                       class="form-control form-control-sm qty-input mx-auto" 
-                       value="${cantidad}" 
-                       min="1" 
-                       onchange="cambiarCantidad(${index}, this.value)">
+                <span class="fw-semibold">${cantidad}</span>
             </td>
             <td class="text-center fw-bold">$${subtotalItem.toLocaleString("es-CO")}</td>
             <td class="text-center">
@@ -95,27 +91,49 @@ function renderizarCarrito() {
     actualizarTotales(subtotalGeneral);
 }
 
-// Cambiar cantidad de un producto
-function cambiarCantidad(index, nuevaCantidad) {
-    let carrito = obtenerCarrito();
-    const cantidadNumerica = parseInt(nuevaCantidad);
-
-    if (cantidadNumerica > 0 && carrito[index]) {
-        carrito[index].cantidad = cantidadNumerica;
-        localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-        renderizarCarrito();
-    }
-}
-
 //Eliminar producto del carrito
 function eliminarProducto(index) {
     let carrito = obtenerCarrito();
     carrito.splice(index, 1);
     localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
-    renderizarCarrito();
+    window.dispatchEvent(new Event("carritoActualizado"));
 }
 
-// Vaciar todo el carrito
+function actualizarVistasCarrito() {
+    renderizarCarrito();
+
+    if (typeof renderizarOffcanvas === "function") {
+        renderizarOffcanvas();
+    }
+
+    if (typeof actualizarContadorCarrito === "function") {
+        actualizarContadorCarrito();
+    }
+}
+
+// Cambios realizados en la misma página
+window.addEventListener("carritoActualizado", actualizarVistasCarrito);
+
+// Cambios realizados desde otra pestaña
+window.addEventListener("storage", (event) => {
+    if (event.key === "carritoGiftcraft" || event.key === null) {
+        actualizarVistasCarrito();
+    }
+});
+
+
+window.addEventListener("carritoActualizado", () => {
+    renderizarCarrito();
+
+    if (typeof renderizarOffcanvas === "function") {
+        renderizarOffcanvas();
+    }
+
+    if (typeof actualizarContadorCarrito === "function") {
+        actualizarContadorCarrito();
+    }
+});
+
 // Vaciar todo el carrito
 function vaciarCarrito() {
     const carrito = obtenerCarrito();
@@ -146,7 +164,7 @@ function vaciarCarrito() {
     }).then((result) => {
         if (result.isConfirmed) {
             localStorage.removeItem("carritoGiftcraft");
-
+            window.dispatchEvent(new Event("carritoActualizado"));
             renderizarCarrito();
 
             Swal.fire({
@@ -157,6 +175,10 @@ function vaciarCarrito() {
                 confirmButtonColor: '#C77D9F'
             });
         }
+
+        localStorage.removeItem("carritoGiftcraft");
+
+        window.dispatchEvent(new Event("carritoActualizado"));
     });
 }
 

@@ -148,16 +148,20 @@ function actualizarContadorCarrito() {
 
     // Buscar los badges en el HTML
     const elementosContador = document.querySelectorAll(".contador-carrito, #contador-articulos");
-    
+
     elementosContador.forEach(el => {
         el.textContent = totalArticulos;
     });
 }
 
+function notificarCambioCarrito() {
+    window.dispatchEvent(new Event("carritoActualizado"));
+}
+
 // Ejecutar al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
     actualizarContadorCarrito();
-    
+
     // Si usas renderizado dinámico de componentes (header-placeholder), reintentamos a los 300ms
     setTimeout(actualizarContadorCarrito, 300);
 });
@@ -290,8 +294,12 @@ function inicializarEventosOffcanvas() {
 
         if (changed) {
             localStorage.setItem("carritoGiftcraft", JSON.stringify(carrito));
+
             renderizarOffcanvas();
             actualizarContadorCarrito();
+
+            // Avisar a las demás vistas que el carrito cambió
+            notificarCambioCarrito();
         }
     });
 }
