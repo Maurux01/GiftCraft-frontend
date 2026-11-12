@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giftcraft</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Iconos Bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css">
+
+    <!-- Fuentes: pixel (títulos) + Inter (texto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Gugi&family=Londrina+Shadow&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Rubik+Spray+Paint&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Electrolize&family=Erica+One&family=Fascinate&family=Gugi&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Londrina+Shadow&family=Oswald:wght@200..700&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Rubik+Spray+Paint&family=Silkscreen:wght@400;700&family=Stardos+Stencil:wght@400;700&family=Stick+No+Bills:wght@200..800&family=Unica+One&family=WDXL+Lubrifont+JP+N&display=swap"
+        rel="stylesheet">
+
+
+    <!--css-->
+    <link href="../../CSS/style.css" rel="stylesheet">
+    <link href="../../CSS/Admin-CSS/dashboard-admin.css" rel="stylesheet">
+</head>
+
+
+<body>
+    <!--Header-->
+    <div id="header-placeholder"></div>
+
+    <style>
+        .mc-bg {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: url('../../ASSETS/img/fondo-login.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .mc-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 0;
+        }
+        .mc-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+            background: #c6c6c6;
+            border: 4px solid #000;
+            box-shadow: inset 2px 2px 0 #fff, inset -2px -2px 0 #555, 6px 6px 0 rgba(0,0,0,0.4);
+            padding: 24px 22px;
+            image-rendering: pixelated;
+        }
+        .mc-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 1rem;
+            color: #3f3f3f;
+            text-align: center;
+            margin-bottom: 18px;
+            text-shadow: 2px 2px 0 #fff;
+        }
+        .mc-field {
+            margin-bottom: 14px;
+        }
+        .mc-field label {
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 0.95rem;
+            color: #3f3f3f;
+            margin-bottom: 4px;
+            display: block;
+            font-weight: 700;
+        }
+        .mc-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #373737;
+            border: 3px solid #000;
+            color: #fff;
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 1rem;
+            box-shadow: inset 2px 2px 0 #1a1a1a, inset -1px -1px 0 #555;
+        }
+        .mc-input:focus {
+            outline: none;
+            background: #4a4a4a;
+        }
+        .mc-btn {
+            width: 100%;
+            padding: 12px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.85rem;
+            color: #fff;
+            background: #5e8a3a;
+            border: 3px solid #000;
+            cursor: pointer;
+            box-shadow: inset 2px 2px 0 #8bc34a, inset -2px -2px 0 #2e4a1a, 4px 4px 0 rgba(0,0,0,0.4);
+            transition: transform 0.05s;
+            margin-top: 8px;
+        }
+        .mc-btn:hover { background: #6fa045; }
+        .mc-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: inset 2px 2px 0 #2e4a1a, inset -2px -2px 0 #8bc34a, 2px 2px 0 rgba(0,0,0,0.4);
+        }
+        .mc-block {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 16px;
+            background:
+                linear-gradient(135deg, #5e8a3a 0 50%, #4e7a2f 50% 100%);
+            border: 3px solid #000;
+            box-shadow: inset 2px 2px 0 #8bc34a, inset -2px -2px 0 #2e4a1a;
+            image-rendering: pixelated;
+        }
+        .mc-footer {
+            text-align: center;
+            margin-top: 14px;
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 0.9rem;
+            color: #3f3f3f;
+        }
+        .mc-footer a { color: #3f3f3f; font-weight: 700; text-decoration: underline; }
+    </style>
+
+    <style>
+        .mc-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 16px;
+            border: 3px solid #000;
+            box-shadow: inset 2px 2px 0 #1a1a1a;
+        }
+        .mc-tab {
+            flex: 1;
+            padding: 8px 6px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.6rem;
+            color: #fff;
+            background: #373737;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .mc-tab + .mc-tab { border-left: 3px solid #000; }
+        .mc-tab.active {
+            background: #5e8a3a;
+            box-shadow: inset 2px 2px 0 #8bc34a, inset -2px -2px 0 #2e4a1a;
+        }
+        .mc-form { display: none; }
+        .mc-form.active { display: block; }
+    </style>
+
+    <div class="mc-bg">
+        <div class="mc-card">
+            <div class="mc-block"></div>
+            <h1 class="mc-title">GIFTCRAFT</h1>
+
+            <div class="mc-tabs">
+                <button class="mc-tab active" data-tab="login">INICIAR SESIÓN</button>
+                <button class="mc-tab" data-tab="register">REGISTRARSE</button>
+            </div>
+
+            <form class="mc-form active" id="mcFormLogin">
+                <div class="mc-field">
+                    <label for="mc-user">Usuario o correo</label>
+                    <input type="text" id="mc-user" class="mc-input" placeholder="Steve" required>
+                </div>
+                <div class="mc-field">
+                    <label for="mc-pass">Contraseña</label>
+                    <input type="password" id="mc-pass" class="mc-input" placeholder="••••••" required>
+                </div>
+                <button type="submit" class="mc-btn">ENTRAR</button>
+            </form>
+
+            <form class="mc-form" id="mcFormRegister">
+                <div class="mc-field">
+                    <label for="mc-reg-name">Nombre</label>
+                    <input type="text" id="mc-reg-name" class="mc-input" placeholder="Tu nombre" required>
+                </div>
+                <div class="mc-field">
+                    <label for="mc-reg-email">Correo</label>
+                    <input type="email" id="mc-reg-email" class="mc-input" placeholder="tu@correo.com" required>
+                </div>
+                <div class="mc-field">
+                    <label for="mc-reg-pass">Contraseña</label>
+                    <input type="password" id="mc-reg-pass" class="mc-input" placeholder="••••••" required>
+                </div>
+                <button type="submit" class="mc-btn">CREAR CUENTA</button>
+            </form>
+
+            <div class="mc-footer" id="mcFooterLogin">
+                ¿No tienes cuenta? <a href="#" id="mcToRegister">Regístrate</a>
+            </div>
+            <div class="mc-footer" id="mcFooterRegister" style="display:none;">
+                ¿Ya tienes cuenta? <a href="#" id="mcToLogin">Inicia sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var tabs = document.querySelectorAll('.mc-tab');
+            var fLogin = document.getElementById('mcFormLogin');
+            var fReg = document.getElementById('mcFormRegister');
+            var fl = document.getElementById('mcFooterLogin');
+            var fr = document.getElementById('mcFooterRegister');
+            function show(name) {
+                tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.tab === name); });
+                if (name === 'login') {
+                    fLogin.classList.add('active'); fReg.classList.remove('active');
+                    fl.style.display = ''; fr.style.display = 'none';
+                } else {
+                    fReg.classList.add('active'); fLogin.classList.remove('active');
+                    fl.style.display = 'none'; fr.style.display = '';
+                }
+            }
+            tabs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.tab); }); });
+            document.getElementById('mcToRegister').addEventListener('click', function (e) { e.preventDefault(); show('register'); });
+            document.getElementById('mcToLogin').addEventListener('click', function (e) { e.preventDefault(); show('login'); });
+        })();
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- personal JS -->
+     <script src="/JS/Login-js/Login.js"> </script>
+    <script src="../../JS/components.js"></script>
+    <script src="../../JS/Admin-JS/Dashboard.js"></script>
+</body>
+
+</html>
