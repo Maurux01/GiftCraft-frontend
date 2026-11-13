@@ -283,6 +283,28 @@ body {
   color: #fff;
 }
 
+/* Estado seleccionado de los botones de tamaño (btn-check) */
+.contenido-principal .modal-body .btn-check:checked + .btn,
+.contenido-principal .modal-body .btn-check:checked + label {
+  background-color: #83a854 !important;
+  color: #fff !important;
+  border-color: #5c7b37 !important;
+  box-shadow: 0 3px 0 #425b25 !important;
+  transform: scale(1.06);
+}
+
+/* Transiciones suaves para los botones de tamaño */
+.contenido-principal .modal-body .btn-outline-secondary,
+.contenido-principal .modal-body .btn-check + .btn,
+.contenido-principal .modal-body .btn-check + label {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.contenido-principal .modal-body .btn-check:focus + .btn,
+.contenido-principal .modal-body .btn-check:focus + label {
+  box-shadow: 0 0 0 0.15rem rgba(131, 168, 84, 0.25) !important;
+}
+
 .contenido-principal .modal-footer .btn-primary {
   background-color: #83a854 !important;
   font-family: var(--font-pixel-title);

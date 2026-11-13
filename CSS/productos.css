@@ -112,9 +112,41 @@ body {
 }
 
 .modal-tamaños:hover{
-    background-color: #FBE8EE;
-    border-color: #A92B56;
-    color: #A92B56;
+    background-color: transparent;
+    border-color: var(--MarronTierra);
+    color: inherit;
+}
+
+/* Botones de tamaño en el modal: estado seleccionado claro */
+#modalTamanios .btn-tamanio {
+    border: 2px solid var(--MarronTierra, #8B6955);
+    border-radius: 10px;
+    font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
+    font-weight: 700;
+    background-color: #fff;
+    color: #5a3e2b;
+    padding: 0.35rem 0.9rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+#modalTamanios .btn-tamanio:hover {
+    background-color: #f0e6d6;
+    color: #5a3e2b;
+    box-shadow: none;
+    transform: none;
+}
+
+#modalTamanios .btn-check:checked + .btn-tamanio {
+    background-color: var(--MoradoCreativo, #8B5CF6);
+    color: #fff;
+    border-color: #5a3e2b;
+    box-shadow: 0 3px 0 #3d291c;
+    transform: translateY(-1px);
+}
+
+#modalTamanios .btn-check:focus + .btn-tamanio {
+    box-shadow: none;
+    outline: none;
 }
 
 .btn-add-cart{
