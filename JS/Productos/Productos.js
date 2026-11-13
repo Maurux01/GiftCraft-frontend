@@ -1,3 +1,39 @@
+// Convierte un HEX a un nombre de color aproximado
+function nombreColorHex(hex) {
+    const valor = String(hex ?? "").trim();
+    if (!valor) return "Color";
+    if (!valor.startsWith("#")) return valor; // ya es un nombre
+    const limpio = valor.replace("#", "");
+    let full = limpio;
+    if (limpio.length === 3) full = limpio.split("").map(c => c + c).join("");
+    if (full.length !== 6) return valor;
+    const r = parseInt(full.slice(0, 2), 16);
+    const g = parseInt(full.slice(2, 4), 16);
+    const b = parseInt(full.slice(4, 6), 16);
+    const paleta = [
+        { nombre: "Rojo", hex: "FF0000" }, { nombre: "Verde", hex: "008000" },
+        { nombre: "Azul", hex: "0000FF" }, { nombre: "Amarillo", hex: "FFFF00" },
+        { nombre: "Naranja", hex: "FFA500" }, { nombre: "Morado", hex: "800080" },
+        { nombre: "Rosa", hex: "FFC0CB" }, { nombre: "Negro", hex: "000000" },
+        { nombre: "Blanco", hex: "FFFFFF" }, { nombre: "Gris", hex: "808080" },
+        { nombre: "Marrón", hex: "8B4513" }, { nombre: "Turquesa", hex: "40E0D0" },
+        { nombre: "Celeste", hex: "87CEEB" }, { nombre: "Verde lima", hex: "00FF00" },
+        { nombre: "Magenta", hex: "FF00FF" }, { nombre: "Cian", hex: "00FFFF" },
+        { nombre: "Dorado", hex: "FFD700" }, { nombre: "Plateado", hex: "C0C0C0" },
+        { nombre: "Beige", hex: "F5F5DC" }, { nombre: "Coral", hex: "FF7F50" }
+    ];
+    let mejor = paleta[0];
+    let minDist = Infinity;
+    paleta.forEach(c => {
+        const cr = parseInt(c.hex.slice(0, 2), 16);
+        const cg = parseInt(c.hex.slice(2, 4), 16);
+        const cb = parseInt(c.hex.slice(4, 6), 16);
+        const dist = (r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2;
+        if (dist < minDist) { minDist = dist; mejor = c; }
+    });
+    return mejor.nombre;
+}
+
 // ELEMENTOS DEL MODAL (Variables globales)
 const imagen = document.getElementById("imagenVisualizacion");
 const nombre = document.getElementById("modalPersonalizarLabel");
@@ -148,7 +184,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     const label = document.createElement("label");
                     label.className = "btn btn-outline-secondary";
                     label.htmlFor = input.id;
-                    label.textContent = color;
+                    label.textContent = nombreColorHex(color);
+                    label.title = color;
+
+                    // Si el color es un HEX válido, pintar el botón con ese color
+                    const hexMatch = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(color.trim());
+                    if (hexMatch) {
+                        label.style.backgroundColor = color.trim();
+                        // Elegir color de texto legible según luminancia
+                        const hex = color.trim().replace("#", "");
+                        const full = hex.length === 3 ? hex.split("").map(c => c + c).join("") : hex;
+                        const r = parseInt(full.substring(0, 2), 16);
+                        const g = parseInt(full.substring(2, 4), 16);
+                        const b = parseInt(full.substring(4, 6), 16);
+                        const luminancia = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                        label.style.color = luminancia > 0.5 ? "#1a1a1a" : "#ffffff";
+                        label.style.borderColor = "#5a3e2b";
+                    }
 
                     colores.append(input, label);
                 });
@@ -195,16 +247,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const colorChecked = colores ? colores.querySelector("input[name='opcionColor']:checked") : null;
             const tamanoChecked = tamanios ? tamanios.querySelector("input[name='opcionTamano']:checked") : null;
 
-            const colorElegido = colorChecked ? colorChecked.value : "Estándar";
-            const tamanoElegido = tamanoChecked ? tamanoChecked.value : "Estándar";
+            const normalizar = (v) => String(v ?? "Estándar").trim();
+            const colorElegido = normalizar(colorChecked ? colorChecked.value : "Estándar");
+            const tamanoElegido = normalizar(tamanoChecked ? tamanoChecked.value : "Estándar");
 
             let carrito = obtenerCarritoLocal();
 
             // Buscar si ya existe el producto exactamente con ese mismo color y tamaño
             const indexExistente = carrito.findIndex(p =>
                 String(p.id) === String(productoActualModal.id) &&
-                p.colorElegido === colorElegido &&
-                p.tamanoElegido === tamanoElegido
+                normalizar(p.colorElegido) === colorElegido &&
+                normalizar(p.tamanoElegido) === tamanoElegido
             );
 
             if (indexExistente !== -1) {

@@ -150,7 +150,11 @@ function actualizarContadorCarrito() {
     const elementosContador = document.querySelectorAll(".contador-carrito, #contador-articulos");
 
     elementosContador.forEach(el => {
-        el.textContent = totalArticulos;
+        if (el.id === "contador-articulos") {
+            el.textContent = `${totalArticulos} ${totalArticulos === 1 ? 'elemento' : 'elementos'}`;
+        } else {
+            el.textContent = totalArticulos;
+        }
     });
 }
 
@@ -178,6 +182,42 @@ window.addEventListener("storage", (e) => {
         }
     }
 });
+
+// Convierte un HEX a un nombre de color aproximado
+function nombreColorHex(hex) {
+    const valor = String(hex ?? "").trim();
+    if (!valor) return "Color";
+    if (!valor.startsWith("#")) return valor;
+    const limpio = valor.replace("#", "");
+    let full = limpio;
+    if (limpio.length === 3) full = limpio.split("").map(c => c + c).join("");
+    if (full.length !== 6) return valor;
+    const r = parseInt(full.slice(0, 2), 16);
+    const g = parseInt(full.slice(2, 4), 16);
+    const b = parseInt(full.slice(4, 6), 16);
+    const paleta = [
+        { nombre: "Rojo", hex: "FF0000" }, { nombre: "Verde", hex: "008000" },
+        { nombre: "Azul", hex: "0000FF" }, { nombre: "Amarillo", hex: "FFFF00" },
+        { nombre: "Naranja", hex: "FFA500" }, { nombre: "Morado", hex: "800080" },
+        { nombre: "Rosa", hex: "FFC0CB" }, { nombre: "Negro", hex: "000000" },
+        { nombre: "Blanco", hex: "FFFFFF" }, { nombre: "Gris", hex: "808080" },
+        { nombre: "Marrón", hex: "8B4513" }, { nombre: "Turquesa", hex: "40E0D0" },
+        { nombre: "Celeste", hex: "87CEEB" }, { nombre: "Verde lima", hex: "00FF00" },
+        { nombre: "Magenta", hex: "FF00FF" }, { nombre: "Cian", hex: "00FFFF" },
+        { nombre: "Dorado", hex: "FFD700" }, { nombre: "Plateado", hex: "C0C0C0" },
+        { nombre: "Beige", hex: "F5F5DC" }, { nombre: "Coral", hex: "FF7F50" }
+    ];
+    let mejor = paleta[0];
+    let minDist = Infinity;
+    paleta.forEach(c => {
+        const cr = parseInt(c.hex.slice(0, 2), 16);
+        const cg = parseInt(c.hex.slice(2, 4), 16);
+        const cb = parseInt(c.hex.slice(4, 6), 16);
+        const dist = (r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2;
+        if (dist < minDist) { minDist = dist; mejor = c; }
+    });
+    return mejor.nombre;
+}
 
 // --- Offcanvas global del carrito ---
 function obtenerCarritoLocal() {
@@ -213,7 +253,10 @@ function renderizarOffcanvas() {
         li.setAttribute("data-nombre", producto.nombre);
         li.setAttribute("data-index", String(index));
         li.innerHTML = `
-            <span class="gc-cart-item-name">${producto.nombre}</span>
+            <div class="gc-cart-item-info">
+                <span class="gc-cart-item-name">${producto.nombre}</span>
+                <small class="gc-cart-item-meta d-block">${nombreColorHex(producto.colorElegido) || 'Estándar'} · ${producto.tamanoElegido || 'Estándar'}</small>
+            </div>
             <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                 <div class="gc-qty-control d-flex align-items-center gap-1">
                     <button type="button" class="btn btn-sm gc-qty-btn gc-qty-dec" data-index="${index}" aria-label="Disminuir cantidad">-</button>
@@ -221,7 +264,7 @@ function renderizarOffcanvas() {
                     <button type="button" class="btn btn-sm gc-qty-btn gc-qty-inc" data-index="${index}" aria-label="Aumentar cantidad">+</button>
                 </div>
                 <span class="badge bg-primary rounded-pill">$${subtotal.toLocaleString("es-CO")}</span>
-                <button type="button" class="btn btn-sm btn-outline-danger" data-index="${index}" aria-label="Eliminar ${producto.nombre}">Eliminar</button>
+                <button type="button" class="btn btn-sm btn-outline-danger gc-btn-trash" data-index="${index}" aria-label="Eliminar ${producto.nombre}"><i class="bi bi-trash3"></i></button>
             </div>
         `;
         if (totalLi) {
