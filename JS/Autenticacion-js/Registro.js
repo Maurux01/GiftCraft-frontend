@@ -181,17 +181,3 @@ function guardarEnLocalStorage(nuevoObjeto, claveStorage) {
     localStorage.setItem(claveStorage, JSON.stringify(registrosActuales));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    obtenerUsuariosRegistrados();
-});
-
-//Función para obtener los datos
-function obtenerUsuariosRegistrados() {
-    const usuarios = JSON.parse(localStorage.getItem("usuariosRegistro")) || [];
-    //console log
-    console.log("Usuarios registrados:", usuarios);
-    //Alerta super invasiva xd
-    alert(JSON.stringify(usuarios, null, 2));
-
-    return usuarios;
-}

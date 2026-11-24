@@ -84,6 +84,7 @@
 .gc-icons {
     margin-left: auto;
     flex-shrink: 0;
+    gap: 0.75rem;
 }
 
 .gc-icon {
@@ -97,12 +98,45 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    flex-shrink: 0;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .gc-icon:hover {
     background-color: #f0e6d6;
     color: var(--MoradoCreativo, #8B5CF6);
+}
+
+/* Cuando el enlace de perfil muestra el nombre del usuario */
+.gc-icon.gc-user-chip {
+    width: auto;
+    height: auto;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    gap: 0.4rem;
+    font-size: 1rem;
+    background-color: #f6efe4;
+}
+
+.gc-icon.gc-user-chip:hover {
+    background-color: #ece0ce;
+    color: #d41515;
+}
+
+.gc-user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.gc-logout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
 /* Offcanvas carrito */
