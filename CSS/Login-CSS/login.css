@@ -163,6 +163,10 @@
     box-shadow: 0 0 0 3px rgba(217, 136, 155, 0.15);
 }
 
+.mc-password-wrapper .mc-input {
+    padding-right: 42px;
+}
+
 /* Ícono de mostrar/ocultar contraseña */
 .mc-toggle-pass {
     position: absolute;
