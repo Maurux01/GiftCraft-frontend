@@ -141,20 +141,20 @@
 
 /* Offcanvas carrito */
 #offcanvasCart {
-    background-color: var(--CremaCrafteo, #FFF7E8);
-    border-left: 4px solid #5a3e2b;
+    background-color: #f5f0e6;
+    border-left: 1px solid #e6ddcc;
     border-radius: 16px 0 0 16px;
-    box-shadow: -8px 0 0 #3d291c;
+    box-shadow: none;
     width: min(420px, 92vw) !important;
 }
 
 #offcanvasCart .offcanvas-header {
     background-color: var(--MoradoCreativo, #8B5CF6);
     color: #fff;
-    border-bottom: 4px solid #5a3e2b;
-    border-radius: 12px 0 0 0;
+    border-bottom: 1px solid #6d43c9;
+    border-radius: 16px 0 0 0;
     padding: 1.1rem 1.25rem;
-    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: none;
 }
 
 #offcanvasCart .offcanvas-title {
@@ -162,7 +162,7 @@
     font-size: 0.95rem;
     color: #fff;
     letter-spacing: 1px;
-    text-shadow: 2px 2px 0 #3d291c;
+    text-shadow: none;
     line-height: 1.4;
 }
 
@@ -200,22 +200,17 @@
 }
 
 #offcanvasCart .list-group {
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
 }
 
 #offcanvasCart .list-group-item {
     background-color: #fff;
-    border: 3px solid #5a3e2b;
+    border: 3px solid #c7c5c3;
     border-radius: 12px;
     margin-bottom: 0.6rem;
     font-family: 'Pixelify Sans', 'Inter', sans-serif;
-    box-shadow: 3px 3px 0 #e6d9c5;
-}
-
-#offcanvasCart .list-group-item:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0 #d6c9b6;
+    box-shadow: none;
 }
 
 #offcanvasCart .list-group-item:last-child {
@@ -223,12 +218,12 @@
 }
 
 #offcanvasCart .list-group-item.fw-bold {
-    background-color: var(--VerdeMundo, #A8B89A);
-    color: #2a2a2a;
+    background-color: #ede4f0;
+    color: #3d291c;
     font-family: 'Press Start 2P', 'Pixelify Sans', monospace;
     font-size: 0.75rem;
-    border: 3px solid #5a3e2b;
-    box-shadow: 3px 3px 0 #3d291c;
+    border: 2px solid #c9b6e6;
+    box-shadow: none;
 }
 
 /* Offcanvas carrito: contador de cantidad estilo Minecraft */
@@ -275,8 +270,8 @@
 }
 
 #offcanvasCart .gc-qty-btn:hover {
-    background-color: var(--MoradoCreativo, #8B5CF6);
-    color: #fff;
+    background-color: #f0e6d6;
+    color: #5a3e2b;
     border-color: #5a3e2b;
 }
 
@@ -294,27 +289,19 @@
     color: #5a3e2b;
 }
 
-/* Badges y precios dentro del offcanvas */
-#offcanvasCart .list-group-item .badge.bg-primary {
-    background-color: var(--MoradoCreativo, #8B5CF6) !important;
-    color: #fff;
-    font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
+/* Valores de precio: texto normal, sin fondo, borde ni sombra */
+#offcanvasCart .gc-precio {
+    color: #241a12;
+    font-family: 'Silkscreen', var(--font-pixel-title, 'Silkscreen', monospace);
     font-weight: 700;
-    font-size: 0.8rem;
-    padding: 0.4rem 0.65rem;
-    border: 2px solid #5a3e2b;
-    border-radius: 999px;
-    box-shadow: 2px 2px 0 #3d291c;
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
 }
 
-#offcanvasCart li.fw-bold .badge {
-    background-color: var(--VerdeMundo, #A8B89A) !important;
-    color: #2a2a2a;
-    font-family: var(--font-pixel-style, 'Press Start 2P', monospace);
-    font-size: 0.75rem;
-    padding: 0.45rem 0.7rem;
-    border: 2px solid #5a3e2b;
-    box-shadow: 2px 2px 0 #3d291c;
+#offcanvasCart li.fw-bold .gc-precio {
+    font-size: 1.1rem;
 }
 
 /* Botón eliminar (siempre rojo) */
@@ -344,14 +331,15 @@
 }
 
 #offcanvasCart .gc-btn-trash {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 0.7rem;
     line-height: 1;
+    border-radius: 8px;
 }
 
 /* Badge del carrito */
