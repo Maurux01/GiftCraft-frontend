@@ -33,10 +33,16 @@
         <!-- Iconos de usuario a la derecha -->
         <div class="d-flex align-items-center gap-3 gc-icons">
             <a href="#" class="gc-icon" aria-label="Buscar"><i class="bi bi-search"></i></a>
-            <a href="#offcanvasCart" class="gc-icon gc-cart" aria-label="Carrito" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart" role="button">
+            <a href="#offcanvasCart" class="gc-icon gc-cart" aria-label="Carrito" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasCart" aria-controls="offcanvasCart" role="button">
                 <i class="bi bi-cart3"></i>
             </a>
-            <a href="/HTML/Login/Login.html" class="gc-icon" aria-label="Perfil"><i class="bi bi-person"></i></a>
+
+            <a href="/HTML/Login/Login.html" class="gc-icon d-flex align-items-center text-decoration-none"
+                id="gcPerfilLink" aria-label="Perfil">
+                <i class="bi bi-person" id="gcPerfilIcono"></i>
+                <span id="gcUsuarioNombre" class="small fw-semibold"></span>
+            </a>
         </div>
     </div>
 </nav>

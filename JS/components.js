@@ -41,6 +41,18 @@ function cargarComponente(id, archivo) {
                     actualizarContadorCarrito();
                     window.dispatchEvent(new CustomEvent('headerLoaded'));
                 }
+                if (id === 'header-placeholder') {
+                    ajustarRutasHeader(contenedor);
+                    marcarActivoHeader(contenedor);
+                    renderizarUsuarioHeader(contenedor);
+                    // Inicializar offcanvas global del carrito
+                    if (typeof renderizarOffcanvas === 'function') {
+                        renderizarOffcanvas();
+                    }
+                    inicializarEventosOffcanvas();
+                    actualizarContadorCarrito();
+                    window.dispatchEvent(new CustomEvent('headerLoaded'));
+                }
                 if (id === 'footer-placeholder') {
                     ajustarRutasFooter(contenedor);
                 }
@@ -59,6 +71,89 @@ function ajustarRutasHeader(contenedor) {
         const src = img.getAttribute('src');
         img.setAttribute('src', prefix + src.replace(/^\/+/, ''));
     });
+}
+
+function obtenerSesionActiva() {
+    const raw = localStorage.getItem("sesionActivaGiftcraft");
+    if (!raw || raw === "undefined") return null;
+    try {
+        return JSON.parse(raw);
+    } catch (error) {
+        console.error("Error al leer sesionActivaGiftcraft:", error);
+        localStorage.removeItem("sesionActivaGiftcraft");
+        return null;
+    }
+}
+
+function renderizarUsuarioHeader(contenedor = document) {
+    const perfilLink = contenedor.querySelector("#gcPerfilLink") ||
+        contenedor.querySelector('a[aria-label="Perfil"]') ||
+        contenedor.querySelector('a[href*="Login.html"]');
+
+    if (!perfilLink) return;
+
+    let iconoPerfil = perfilLink.querySelector("i");
+    let nombreSpan = perfilLink.querySelector("#gcUsuarioNombre");
+
+    if (!nombreSpan) {
+        nombreSpan = document.createElement("span");
+        nombreSpan.id = "gcUsuarioNombre";
+        nombreSpan.className = "gc-user-name";
+        perfilLink.appendChild(nombreSpan);
+    } else {
+        nombreSpan.classList.add("gc-user-name");
+    }
+
+    const sesion = obtenerSesionActiva();
+    let btnLogout = perfilLink.parentElement
+        ? perfilLink.parentElement.querySelector("#gcBtnLogout")
+        : null;
+
+    if (sesion && sesion.name) {
+        const primerNombre = String(sesion.name).trim().split(/\s+/)[0];
+        nombreSpan.textContent = primerNombre;
+        perfilLink.classList.add("gc-user-chip");
+        perfilLink.setAttribute("href", "#");
+        perfilLink.setAttribute("title", `Sesión iniciada como ${sesion.name}`);
+
+        if (iconoPerfil) {
+            iconoPerfil.classList.remove("bi-person");
+            iconoPerfil.classList.add("bi-person-check-fill");
+        }
+
+        if (!btnLogout && perfilLink.parentElement) {
+            btnLogout = document.createElement("button");
+            btnLogout.type = "button";
+            btnLogout.id = "gcBtnLogout";
+            btnLogout.className = "btn btn-sm btn-outline-secondary gc-logout-btn";
+            btnLogout.title = "Cerrar sesión";
+            btnLogout.setAttribute("aria-label", "Cerrar sesión");
+            btnLogout.innerHTML = '<i class="bi bi-box-arrow-right"></i>';
+
+            btnLogout.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                localStorage.removeItem("sesionActivaGiftcraft");
+                renderizarUsuarioHeader(document);
+            });
+
+            perfilLink.parentElement.appendChild(btnLogout);
+        }
+    } else {
+        nombreSpan.textContent = "";
+        perfilLink.classList.remove("gc-user-chip");
+        perfilLink.setAttribute("href", getRootPrefix() + "HTML/Login/Login.html");
+        perfilLink.removeAttribute("title");
+
+        if (iconoPerfil) {
+            iconoPerfil.classList.remove("bi-person-check-fill");
+            iconoPerfil.classList.add("bi-person");
+        }
+
+        if (btnLogout) {
+            btnLogout.remove();
+        }
+    }
 }
 
 function ajustarRutasFooter(contenedor) {
@@ -293,6 +388,7 @@ function recalcularTotalOffcanvas() {
 }
 
 let _offcanvasEventosInicializados = false;
+
 function inicializarEventosOffcanvas() {
     if (_offcanvasEventosInicializados) return;
     const offcanvasEl = document.getElementById("offcanvasCart");
@@ -345,5 +441,18 @@ function inicializarEventosOffcanvas() {
             notificarCambioCarrito();
         }
     });
+    window.addEventListener("storage", (e) => {
+        if (e.key === "carritoGiftcraft") {
+            actualizarContadorCarrito();
+            if (typeof renderizarCarrito === "function") {
+                renderizarCarrito();
+            }
+            if (typeof renderizarOffcanvas === "function") {
+                renderizarOffcanvas();
+            }
+        }
+        if (e.key === "sesionActivaGiftcraft") {
+            renderizarUsuarioHeader(document);
+        }
+    });
 }
-
