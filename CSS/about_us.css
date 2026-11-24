@@ -24,12 +24,12 @@ body{
 
 /*Hero con la imagen de nuebes en movimiento*/
 .hero-banner {
-  background-image: url('../ASSETS/gift/fondo_abeja_animado.gif'); 
+  background-image: url('https://lh3.googleusercontent.com/d/1XyoLfGQmRRh7hYAqrI84lHSJ0EFkaDlv'); 
   background-size: cover;   /*Cubre el 100% de la imagen*/
   background-position: center bottom;
   background-repeat: no-repeat;
   width: 100%; /* Asegura el 100% de ancho */
-  min-height: 450px;
+  min-height  : 750px;
 }
 
 /* Cartel de Madera */
