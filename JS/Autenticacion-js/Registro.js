@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // --- ALTERNAR PESTAÑAS (TABS) ---
+        // --- ALTERNAR PESTAÑAS (TABS) ---
     const tabs = document.querySelectorAll('.mc-tab');
     const fLogin = document.getElementById('mcFormLogin');
     const fReg = document.getElementById('mcFormRegister');
@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
             showTab('login');
         });
     }
-
     // --- VISIBILIDAD DE CONTRASEÑAS (ÍCONO DE OJO) ---
     const togglePassword = (inputId, iconId) => {
         const input = document.getElementById(inputId);
