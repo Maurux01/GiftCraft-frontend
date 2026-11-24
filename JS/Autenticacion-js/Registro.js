@@ -171,7 +171,6 @@ function esContraseniaDebil(password) {
     if (password.length < 6) {
         return "La contraseña debe tener al menos 6 caracteres.";
     }
-
     return null;
 }
 
@@ -180,4 +179,19 @@ function guardarEnLocalStorage(nuevoObjeto, claveStorage) {
     let registrosActuales = JSON.parse(localStorage.getItem(claveStorage)) || [];
     registrosActuales.push(nuevoObjeto);
     localStorage.setItem(claveStorage, JSON.stringify(registrosActuales));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    obtenerUsuariosRegistrados();
+});
+
+//Función para obtener los datos
+function obtenerUsuariosRegistrados() {
+    const usuarios = JSON.parse(localStorage.getItem("usuariosRegistro")) || [];
+    //console log
+    console.log("Usuarios registrados:", usuarios);
+    //Alerta super invasiva xd
+    alert(JSON.stringify(usuarios, null, 2));
+
+    return usuarios;
 }
