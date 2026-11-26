@@ -25,6 +25,30 @@
     <link href="../CSS/style.css" rel="stylesheet">
     <link href="../CSS/contact.css" rel="stylesheet">
     <style>
+        /* Secciones del carrito: cada una con su propio tono */
+        .card-productos {
+            background-color: #fbe8ee;
+            border: 2px solid #d98fa3 !important;
+            box-shadow: 5px 5px 0 #b8647c;
+        }
+
+        .card-productos .table,
+        .card-productos .table > :not(caption) > * > * {
+            background-color: transparent !important;
+        }
+
+        .card-resumen {
+            background-color: #eaf1e3;
+            border: 2px solid #a8b89a !important;
+            box-shadow: 4px 4px 0 #7d9070;
+        }
+
+        .card-pago {
+            background-color: #efe6f5;
+            border: 2px solid #b98fd6 !important;
+            box-shadow: 4px 4px 0 #7b4fa0;
+        }
+
         .cart-item-img {
             width: 72px;
             height: 72px;
@@ -38,20 +62,22 @@
         }
 
         .payment-option {
-            border: 2px solid #e2d2b8;
+            border: 2px solid #d8c6e2;
             border-radius: 12px;
             padding: 12px 16px;
+            background-color: rgba(255, 255, 255, 0.65);
             cursor: pointer;
             transition: all .2s ease;
         }
 
         .payment-option:hover {
-            border-color: #8B6955;
+            border-color: #8B5CF6;
+            background-color: #fff;
         }
 
         .payment-option.active {
-            border-color: #8B6955;
-            background-color: #FFF7E8;
+            border-color: #8B5CF6;
+            background-color: #fff;
         }
 
         .payment-option .form-check-input {
@@ -72,7 +98,7 @@
                         <h1 class="display-4 fw-bold text-white mb-0">Bienvenido a la Pasarela de pago</h1>
                     </div>
                     <div class="banner-subtitle d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm">
-                        <span class="fw-bold text-dark">Revisa tus productos y finaliza tu compra</span>
+                        <span class="fw-bold text-dark">Confirma tus productos y completa tu pago</span>
                         <span>🛒</span>
                     </div>
                 </div>
@@ -85,7 +111,7 @@
 
             <!-- COLUMNA IZQUIERDA: Productos del carrito -->
             <div class="col-12 col-lg-8">
-                <div class="card card-crema border-0 p-3 p-md-4 rounded-4 shadow-sm">
+                <div class="card card-crema card-productos border-0 p-3 p-md-4 rounded-4 shadow-sm">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h2 class="h5 fw-bold mb-0"><i class="bi bi-bag-check-fill"></i> Productos en tu carrito</h2>
                         <span class="badge rounded-pill px-3 py-2" id="contador-articulos" style="background-color: var(--MoradoCreativo, #8B5CF6); color: #fff; font-family: 'Silkscreen', monospace; font-size: 13px; font-weight: 700;"></span>
@@ -119,7 +145,7 @@
 
             <!-- COLUMNA DERECHA: Resumen y pago -->
             <div class="col-12 col-lg-4">
-                <div class="card card-crema border-0 p-3 p-md-4 rounded-4 shadow-sm mb-4">
+                <div class="card card-crema card-resumen border-0 p-3 p-md-4 rounded-4 shadow-sm mb-4">
                     <h2 class="h5 fw-bold mb-3"><i class="bi bi-receipt"></i> Resumen del pedido</h2>
                     <ul class="list-group list-group-flush mb-3">
                         <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
@@ -137,7 +163,7 @@
                     </ul>
                 </div>
 
-                <div class="card card-crema border-0 p-3 p-md-4 rounded-4 shadow-sm">
+                <div class="card card-crema card-pago border-0 p-3 p-md-4 rounded-4 shadow-sm">
                     <h2 class="h5 fw-bold mb-3"><i class="bi bi-credit-card-2-front"></i> Opciones de pago</h2>
 
                     <div class="d-grid gap-2 mb-3">

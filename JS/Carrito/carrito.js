@@ -107,9 +107,9 @@ function renderizarCarrito() {
                     </div>
                 </div>
             </td>
-            <td class="text-center">$${precioUnitario.toLocaleString("es-CO")}</td>
+            <td class="text-center fw-bold">$${precioUnitario.toLocaleString("es-CO")}</td>
             <td class="text-center">
-                <span class="fw-semibold">${cantidad}</span>
+                <span class="fw-bold">${cantidad}</span>
             </td>
             <td class="text-center fw-bold">$${subtotalItem.toLocaleString("es-CO")}</td>
             <td class="text-center">
@@ -212,10 +212,6 @@ function vaciarCarrito() {
                 confirmButtonColor: '#C77D9F'
             });
         }
-
-        localStorage.removeItem("carritoGiftcraft");
-
-        window.dispatchEvent(new Event("carritoActualizado"));
     });
 }
 
