@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     src="${producto.imagen || ''}"
                     class="card-img-top"
                     alt="${producto.nombre}"
-                    style="height: 250px; object-fit: contain;"
+                    style="height: 180px; object-fit: contain;"
                 >
                 <div class="card-body">
                     <div class="card-info">
@@ -176,10 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (index === 0) input.checked = true;
 
                     const label = document.createElement("label");
-                    label.className = "btn btn-outline-secondary";
+                    label.className = "btn btn-outline-secondary gc-color-swatch";
                     label.htmlFor = input.id;
-                    label.textContent = nombreColorHex(color);
                     label.title = color;
+                    label.setAttribute("aria-label", `Color ${nombreColorHex(color)}`);
 
                     // Si el color es un HEX válido, pintar el botón con ese color
                     const hexMatch = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(color.trim());
@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (typeof Swal !== "undefined") {
                 Swal.fire({
                     title: "¡Producto agregado!",
-                    text: `${productoActualModal.nombre} (${colorElegido}, ${tamanoElegido}) fue añadido a tu carrito.`,
+                    text: `${productoActualModal.nombre} (${nombreColorHex(colorElegido)}, ${tamanoElegido}) fue añadido a tu carrito.`,
                     icon: "success",
                     timer: 2000,
                     showConfirmButton: false
