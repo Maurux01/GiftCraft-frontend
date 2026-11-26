@@ -103,6 +103,11 @@ function renderizarUsuarioHeader(contenedor = document) {
 
     if (!perfilLink) return;
 
+    const estaEnLogin = window.location.pathname
+        .toLowerCase()
+        .endsWith("/login/login.html");
+    perfilLink.classList.toggle("active", estaEnLogin);
+
     let iconoPerfil = perfilLink.querySelector("i");
     let nombreSpan = perfilLink.querySelector("#gcUsuarioNombre");
 

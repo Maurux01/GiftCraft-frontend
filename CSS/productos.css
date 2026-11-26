@@ -52,6 +52,18 @@ body {
     padding: 0.5rem;
 }
 
+.product-card {
+    overflow: hidden;
+}
+
+.product-card-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 180px;
+    object-fit: contain;
+}
+
 .card-body {
     display: grid;
     justify-items: center;
@@ -82,7 +94,7 @@ body {
 }
 
 .card-precio {
-    font-family: var(--font-pixel-sub);
+    font-family: var(--font-pixel-style);
     color: var(--MoradoCreativo);
     font-size: 1.25rem;
     white-space: nowrap;
@@ -208,6 +220,12 @@ body {
 #modalPersonalizarProducto .modal-precio {
     font-size: 1.15rem;
     margin-bottom: 0.55rem;
+}
+
+.precio-moneda {
+    font-size: 0.7em;
+    vertical-align: middle;
+    white-space: nowrap;
 }
 
 .modal-tamaños{

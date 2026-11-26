@@ -166,6 +166,7 @@
                 <div class="card card-crema card-pago border-0 p-3 p-md-4 rounded-4 shadow-sm">
                     <h2 class="h5 fw-bold mb-3"><i class="bi bi-credit-card-2-front"></i> Opciones de pago</h2>
 
+                    <form id="formPago" novalidate>
                     <div class="d-grid gap-2 mb-3">
                         <label class="payment-option d-flex align-items-center gap-3 active">
                             <input class="form-check-input" type="radio" name="metodoPago" id="pagoTarjeta" checked>
@@ -199,16 +200,16 @@
                     <div id="datosTarjeta" class="mb-3">
                         <div class="mb-2">
                             <label for="numeroTarjeta" class="form-label small fw-bold">Número de tarjeta</label>
-                            <input type="text" class="form-control" id="numeroTarjeta" placeholder="1234 5678 9012 3456">
+                            <input type="text" class="form-control" id="numeroTarjeta" inputmode="numeric" autocomplete="cc-number" maxlength="19" pattern="[0-9 ]*" required placeholder="1234 5678 9012 3456">
                         </div>
                         <div class="row g-2">
                             <div class="col-6">
                                 <label for="fechaTarjeta" class="form-label small fw-bold">Vencimiento</label>
-                                <input type="text" class="form-control" id="fechaTarjeta" placeholder="MM/AA">
+                                <input type="text" class="form-control" id="fechaTarjeta" inputmode="numeric" autocomplete="cc-exp" maxlength="5" pattern="[0-9/]*" required placeholder="MM/AA">
                             </div>
                             <div class="col-6">
                                 <label for="cvvTarjeta" class="form-label small fw-bold">CVV</label>
-                                <input type="text" class="form-control" id="cvvTarjeta" placeholder="123">
+                                <input type="text" class="form-control" id="cvvTarjeta" inputmode="numeric" autocomplete="cc-csc" maxlength="4" pattern="[0-9]*" required placeholder="123">
                             </div>
                         </div>
                     </div>
@@ -220,13 +221,14 @@
                         </label>
                     </div>
 
-                    <button type="button" class="btn btn-verde-minecraft w-100 py-2 fw-bold text-white rounded-pill shadow" id="btn-pagar">
+                    <button type="submit" class="btn btn-verde-minecraft w-100 py-2 fw-bold text-white rounded-pill shadow" id="btn-pagar">
                         <i class="bi bi-lock-fill"></i>
                     </button>
 
                     <p class="text-center text-muted small mt-3 mb-0">
                         <i class="bi bi-shield-lock-fill"></i> Pago seguro y encriptado
                     </p>
+                    </form>
                 </div>
             </div>
 

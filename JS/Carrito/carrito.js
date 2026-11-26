@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     renderizarCarrito();
     inicializarMetodosPago();
+    inicializarFormularioPago();
 
     const btnVaciarCarrito = document.querySelector("#btn-vaciar-carrito");
 
@@ -231,16 +232,153 @@ function actualizarTotales(subtotal) {
     if (btnPagar) btnPagar.innerHTML = `<i class="bi bi-lock-fill"></i> Pagar $${total.toLocaleString("es-CO")}`;
 }
 
-//Métodos de pago 
+//Métodos de pago
 function inicializarMetodosPago() {
-    document.querySelectorAll('.payment-option').forEach(option => {
-        option.addEventListener('click', () => {
+    const radios = document.querySelectorAll('input[name="metodoPago"]');
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
             document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
-            option.classList.add('active');
-            const radio = option.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
-            const tarjeta = document.getElementById('datosTarjeta');
-            if (tarjeta) tarjeta.style.display = radio && radio.id === 'pagoTarjeta' ? 'block' : 'none';
+            const option = radio.closest('.payment-option');
+            if (option) option.classList.add('active');
+            actualizarCamposTarjeta(radio);
+        });
+    });
+
+    actualizarCamposTarjeta(document.querySelector('input[name="metodoPago"]:checked'));
+}
+
+function actualizarCamposTarjeta(radio) {
+    const esTarjeta = Boolean(radio && radio.id === 'pagoTarjeta');
+    const tarjeta = document.getElementById('datosTarjeta');
+    if (tarjeta) tarjeta.style.display = esTarjeta ? 'block' : 'none';
+
+    ['numeroTarjeta', 'fechaTarjeta', 'cvvTarjeta'].forEach(id => {
+        const campo = document.getElementById(id);
+        if (campo) campo.required = esTarjeta;
+    });
+}
+
+function soloDigitos(valor) {
+    return String(valor ?? '').replace(/\D/g, '');
+}
+
+function formatearNumeroTarjeta(valor) {
+    const digitos = soloDigitos(valor).slice(0, 16);
+    return digitos.match(/.{1,4}/g)?.join(' ') || '';
+}
+
+function formatearFechaTarjeta(valor) {
+    const digitos = soloDigitos(valor).slice(0, 4);
+    return digitos.length > 2 ? `${digitos.slice(0, 2)}/${digitos.slice(2)}` : digitos;
+}
+
+function formatearCvv(valor) {
+    return soloDigitos(valor).slice(0, 4);
+}
+
+function configurarCampoNumerico(id, formateador) {
+    const campo = document.getElementById(id);
+    if (!campo) return;
+
+    campo.addEventListener('input', () => {
+        campo.value = formateador(campo.value);
+    });
+}
+
+function validarFormularioPago() {
+    const metodo = document.querySelector('input[name="metodoPago"]:checked');
+    if (!metodo) {
+        return {
+            valido: false,
+            mensaje: 'Selecciona un método de pago.',
+            campo: document.querySelector('input[name="metodoPago"]')
+        };
+    }
+
+    const aceptaTerminos = document.getElementById('aceptaTerminos');
+    if (aceptaTerminos && !aceptaTerminos.checked) {
+        return {
+            valido: false,
+            mensaje: 'Debes aceptar los términos y condiciones de compra.',
+            campo: aceptaTerminos
+        };
+    }
+
+    if (metodo.id === 'pagoTarjeta') {
+        const numero = document.getElementById('numeroTarjeta');
+        if (!numero || soloDigitos(numero.value).length !== 16) {
+            return {
+                valido: false,
+                mensaje: 'Ingresa los 16 dígitos de la tarjeta.',
+                campo: numero
+            };
+        }
+
+        const fecha = document.getElementById('fechaTarjeta');
+        const digitosFecha = soloDigitos(fecha ? fecha.value : '');
+        const mes = Number(digitosFecha.slice(0, 2));
+        if (digitosFecha.length !== 4 || mes < 1 || mes > 12) {
+            return {
+                valido: false,
+                mensaje: 'Ingresa un vencimiento válido en formato MM/AA.',
+                campo: fecha
+            };
+        }
+
+        const cvv = document.getElementById('cvvTarjeta');
+        if (!cvv || !/^\d{3,4}$/.test(soloDigitos(cvv.value))) {
+            return {
+                valido: false,
+                mensaje: 'Ingresa un CVV válido de 3 o 4 dígitos.',
+                campo: cvv
+            };
+        }
+    }
+
+    return { valido: true };
+}
+
+function generarNumeroCompra() {
+    const ahora = new Date();
+    const anio = ahora.getFullYear();
+    const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+    const dia = String(ahora.getDate()).padStart(2, '0');
+    const consecutivo = Math.floor(1000 + Math.random() * 9000);
+    return `GC-${anio}${mes}${dia}-${consecutivo}`;
+}
+
+function inicializarFormularioPago() {
+    configurarCampoNumerico('numeroTarjeta', formatearNumeroTarjeta);
+    configurarCampoNumerico('fechaTarjeta', formatearFechaTarjeta);
+    configurarCampoNumerico('cvvTarjeta', formatearCvv);
+
+    const formulario = document.getElementById('formPago');
+    if (!formulario) return;
+
+    formulario.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const resultado = validarFormularioPago();
+        if (!resultado.valido) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Revisa tus datos',
+                text: resultado.mensaje,
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#8B5CF6'
+            });
+            if (resultado.campo) resultado.campo.focus();
+            return;
+        }
+
+        const numeroCompra = generarNumeroCompra();
+        Swal.fire({
+            icon: 'success',
+            title: '¡Gracias por comprar!',
+            html: `Tu número de compra es <strong>${numeroCompra}</strong> y será enviado al correo con el que vinculaste tu cuenta.`,
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#8B5CF6'
         });
     });
 }
