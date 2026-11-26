@@ -88,7 +88,8 @@ function renderizarCarrito() {
 
     carrito.forEach((producto, index) => {
         const precioUnitario = Number(producto.precio) || 0;
-        const cantidad = Number(producto.cantidad) || 1;
+        const cantidadGuardada = Number(producto.cantidad);
+        const cantidad = Number.isFinite(cantidadGuardada) ? Math.max(0, cantidadGuardada) : 1;
         const subtotalItem = precioUnitario * cantidad;
 
         subtotalGeneral += subtotalItem;

@@ -231,12 +231,30 @@
     box-shadow: 3px 3px 0 #3d291c;
 }
 
-/* Offcanvas carrito: contador de cantidad estilo Minecraft */
+/* Offcanvas carrito: miniatura + información del producto */
+#offcanvasCart .gc-cart-item-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+#offcanvasCart .gc-cart-thumb {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border: 2px solid #5a3e2b;
+    border-radius: 8px;
+    background-color: #f8f1e5;
+}
+
 #offcanvasCart .gc-cart-item-info {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    max-width: 55%;
+    min-width: 0;
 }
 
 #offcanvasCart .gc-cart-item-name {
@@ -288,33 +306,24 @@
 #offcanvasCart .gc-qty-value {
     min-width: 24px;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    font-family: var(--font-pixel-style, 'Press Start 2P', monospace);
+    font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
     color: #5a3e2b;
 }
 
-/* Badges y precios dentro del offcanvas */
-#offcanvasCart .list-group-item .badge.bg-primary {
-    background-color: var(--MoradoCreativo, #8B5CF6) !important;
-    color: #fff;
+/* Valores de texto dentro del offcanvas (sin aspecto de botón) */
+#offcanvasCart .gc-cart-item-price {
     font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
     font-weight: 700;
-    font-size: 0.8rem;
-    padding: 0.4rem 0.65rem;
-    border: 2px solid #5a3e2b;
-    border-radius: 999px;
-    box-shadow: 2px 2px 0 #3d291c;
+    font-size: 0.9rem;
+    color: var(--MoradoCreativo, #8B5CF6);
 }
 
-#offcanvasCart li.fw-bold .badge {
-    background-color: var(--VerdeMundo, #A8B89A) !important;
-    color: #2a2a2a;
+#offcanvasCart .gc-cart-total-value {
     font-family: var(--font-pixel-style, 'Press Start 2P', monospace);
     font-size: 0.75rem;
-    padding: 0.45rem 0.7rem;
-    border: 2px solid #5a3e2b;
-    box-shadow: 2px 2px 0 #3d291c;
+    color: #2a2a2a;
 }
 
 /* Botón eliminar (siempre rojo) */
