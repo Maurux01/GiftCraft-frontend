@@ -59,32 +59,20 @@ body {
 }
 
 .btn-personalizar {
-    border: 2px solid var(--MarronTierra, #8B6955);
     border-radius: 10px;
+    border-color: var(--MoradoCreativo);
     font-family: var(--font-pixel-sub);
-    font-weight: 700;
-    background-color: #6E2D86;
-    color: var(--CremaCrafteo, #FFF7E8);
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+    background-color: #E7D2F0;
+    color: #6E2D86;
 }
 
 .btn-personalizar i {
-    padding: 0 5px;
-    color: var(--CremaCrafteo, #FFF7E8);
+    padding: 0px 5px;
 }
 
 .btn-personalizar:hover {
-    background-color: var(--CremaCrafteo, #FFF7E8);
-    color: #6E2D86;
-    border-color: #6E2D86;
-}
-
-.btn-personalizar:hover i {
-    color: #6E2D86;
-}
-
-.btn-personalizar:active {
-    transform: translateY(2px);
+    background-color: #6E2D86;
+    color: #E7D2F0;
 }
 
 .btn-carrito {
@@ -119,52 +107,6 @@ body {
     color: var(--MoradoCreativo);
 }
 
-/* Cuadros de colores en el modal: solo el color, sin nombres visibles */
-#modalColores .btn-color {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    border: 2px solid #5a3e2b;
-    border-radius: 10px;
-    background-color: #f8f1e5;
-    box-shadow: 0 2px 0 rgba(90, 62, 43, 0.35);
-    cursor: pointer;
-    font-size: 0;
-    color: transparent;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-}
-
-#modalColores .btn-color:hover {
-    border-color: var(--MoradoCreativo, #8B5CF6);
-    box-shadow: 0 3px 0 rgba(139, 92, 246, 0.45);
-    transform: translateY(-1px);
-}
-
-#modalColores .btn-check:checked + .btn-color {
-    border: 3px solid var(--MoradoCreativo, #8B5CF6);
-    box-shadow: 0 0 0 3px var(--CremaCrafteo, #FFF7E8), 0 4px 0 #3d291c;
-    transform: translateY(-1px);
-}
-
-#modalColores .btn-check:checked + .btn-color::after {
-    content: "✓";
-    color: var(--gc-check-color, #ffffff);
-    font-family: var(--font-pixel-sub, "Pixelify Sans", sans-serif);
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
-}
-
-#modalColores .btn-check:focus + .btn-color {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.35);
-}
-
 .modal-tamaños{
     border-color: var(--MarronTierra);
 }
@@ -179,7 +121,6 @@ body {
 #modalTamanios .btn-tamanio {
     border: 2px solid var(--MarronTierra, #8B6955);
     border-radius: 10px;
-    margin-left: 4px;
     font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
     font-weight: 700;
     background-color: #fff;
@@ -211,19 +152,11 @@ body {
 .btn-add-cart{
     background-color: #EA6181;
     color: var(--CremaCrafteo);
-    border: 1px solid #b02a37;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
 
 .btn-add-cart:hover{
-    background-color: #d63384;
-    border-color: #842029;
-    color: var(--CremaCrafteo);
-    transform: translateY(-1px);
-}
-
-.btn-add-cart:active{
-    transform: translateY(0);
+    background-color:var(--CremaCrafteo);
+    color:#EA6181;
 }
 
 /* Tarjeta de cuando no hay productos */
