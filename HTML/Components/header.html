@@ -84,9 +84,34 @@
             </li>
         </ul>
         <div class="d-grid gap-2">
-            <a href="/HTML/Carrito.html" class="btn btn-primary">Ir a pasarela de pagos</a>
+            <button type="button" id="btnIrPasarela" class="btn btn-primary">Ir a pasarela de pagos</button>
             <a href="/HTML/productos.html" class="btn btn-outline-primary">Seguir
                 comprando</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: invitación a iniciar sesión antes de ir a la pasarela -->
+<div class="modal fade" id="modalLoginRequerido" tabindex="-1"
+    aria-labelledby="modalLoginRequeridoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLoginRequeridoLabel">
+                    <i class="bi bi-box-arrow-in-right"></i> Inicia sesión para continuar
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="gc-modal-login-icon"><i class="bi bi-lock-fill"></i></span>
+                    <p class="mb-0">Debes iniciar sesión para ir a la pasarela de pagos.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="/HTML/Login/Login.html" class="btn btn-primary" id="btnIrLogin">Iniciar sesión</a>
+            </div>
         </div>
     </div>
 </div>

@@ -429,3 +429,101 @@
         padding: 0.5rem 0;
     }
 }
+
+/* Modal: invitación a iniciar sesión (mismo estilo del carrito/header) */
+#modalLoginRequerido .modal-content {
+    background-color: var(--CremaCrafteo, #FFF7E8);
+    border: 3px solid #5a3e2b;
+    border-radius: 14px;
+    box-shadow: 0 6px 0 #3d291c;
+    font-family: var(--font-pixel-sub, 'Pixelify Sans', 'Inter', sans-serif);
+    overflow: hidden;
+}
+
+#modalLoginRequerido .modal-header {
+    background-color: var(--MoradoCreativo, #8B5CF6);
+    border-bottom: 3px solid #5a3e2b;
+    border-radius: 10px 10px 0 0;
+    padding: 1rem 1.25rem;
+}
+
+#modalLoginRequerido .modal-title {
+    font-family: var(--font-pixel-style, 'Press Start 2P', monospace);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    letter-spacing: 1px;
+    color: #fff;
+    text-shadow: 2px 2px 0 #3d291c;
+}
+
+#modalLoginRequerido .btn-close {
+    filter: invert(1) grayscale(1) brightness(2);
+    opacity: 0.9;
+}
+
+#modalLoginRequerido .modal-body {
+    color: #5a3e2b;
+    font-size: 1rem;
+    padding: 1.5rem 1.25rem;
+}
+
+#modalLoginRequerido .modal-body p {
+    line-height: 1.5;
+}
+
+#modalLoginRequerido .gc-modal-login-icon {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    color: #fff;
+    background-color: var(--VerdeMundo, #A8B89A);
+    border: 2px solid #5a3e2b;
+    border-radius: 10px;
+    box-shadow: 0 3px 0 #3d291c;
+}
+
+#modalLoginRequerido .modal-footer {
+    background-color: #f8f1e5;
+    border-top: 2px solid #e6d9c5;
+    border-radius: 0 0 10px 10px;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+}
+
+#modalLoginRequerido .modal-footer .btn {
+    font-family: var(--font-pixel-sub, 'Pixelify Sans', 'Inter', sans-serif);
+    font-weight: 700;
+    border: 2px solid #5a3e2b;
+    border-radius: 10px;
+    box-shadow: 0 4px 0 #3d291c;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+}
+
+#modalLoginRequerido .modal-footer .btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #3d291c;
+}
+
+#modalLoginRequerido .btn-outline-secondary {
+    background-color: #fff;
+    color: #5a3e2b;
+}
+
+#modalLoginRequerido .btn-outline-secondary:hover {
+    background-color: #f0e6d6;
+    color: #5a3e2b;
+}
+
+#btnIrLogin {
+    background-color: var(--MoradoCreativo, #8B5CF6);
+    color: #fff;
+}
+
+#btnIrLogin:hover {
+    background-color: #6d38d3;
+    color: #fff;
+}
