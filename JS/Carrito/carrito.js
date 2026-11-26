@@ -340,12 +340,12 @@ function validarFormularioPago() {
 }
 
 function generarNumeroCompra() {
-    const ahora = new Date();
-    const anio = ahora.getFullYear();
-    const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-    const dia = String(ahora.getDate()).padStart(2, '0');
-    const consecutivo = Math.floor(1000 + Math.random() * 9000);
-    return `GC-${anio}${mes}${dia}-${consecutivo}`;
+    const clave = 'contadorComprasGiftcraft';
+    const numeroActual = Number(localStorage.getItem(clave)) || 0;
+    const siguiente = numeroActual + 1;
+
+    localStorage.setItem(clave, String(siguiente));
+    return `GC-${siguiente}`;
 }
 
 function inicializarFormularioPago() {
@@ -375,8 +375,8 @@ function inicializarFormularioPago() {
         const numeroCompra = generarNumeroCompra();
         Swal.fire({
             icon: 'success',
-            title: '¡Gracias por comprar!',
-            html: `Tu número de compra es <strong>${numeroCompra}</strong> y será enviado al correo con el que vinculaste tu cuenta.`,
+            title: '¡Compra confirmada!',
+            html: `Tu compra se registró con el número <strong>${numeroCompra}</strong>. Guarda este número para hacer seguimiento; el detalle será enviado al correo vinculado a tu cuenta.`,
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#8B5CF6'
         });
