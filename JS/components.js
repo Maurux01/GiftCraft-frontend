@@ -18,6 +18,15 @@ function getComponentsBasePath() {
     return getRootPrefix() + 'HTML/Components/';
 }
 
+function moverModalLoginAlBody(contenedor) {
+    const modal = contenedor.querySelector('#modalLoginRequerido');
+    if (modal && modal.parentElement !== document.body) {
+        // #header-placeholder es sticky (z-index 1030): sacar el modal del body
+        // evita que el backdrop de Bootstrap quede por encima de él.
+        document.body.appendChild(modal);
+    }
+}
+
 function cargarComponente(id, archivo) {
     const url = getComponentsBasePath() + archivo;
 
@@ -32,6 +41,7 @@ function cargarComponente(id, archivo) {
                 contenedor.innerHTML = data;
                 if (id === 'header-placeholder') {
                     ajustarRutasHeader(contenedor);
+                    moverModalLoginAlBody(contenedor);
                     marcarActivoHeader(contenedor);
                     // Inicializar offcanvas global del carrito
                     if (typeof renderizarOffcanvas === 'function') {
@@ -43,6 +53,7 @@ function cargarComponente(id, archivo) {
                 }
                 if (id === 'header-placeholder') {
                     ajustarRutasHeader(contenedor);
+                    moverModalLoginAlBody(contenedor);
                     marcarActivoHeader(contenedor);
                     renderizarUsuarioHeader(contenedor);
                     // Inicializar offcanvas global del carrito
@@ -358,7 +369,7 @@ function renderizarOffcanvas() {
                     <span class="gc-qty-value">${cantidad}</span>
                     <button type="button" class="btn btn-sm gc-qty-btn gc-qty-inc" data-index="${index}" aria-label="Aumentar cantidad">+</button>
                 </div>
-                <span class="gc-precio">$${subtotal.toLocaleString("es-CO")}</span>
+                <span class="badge bg-primary rounded-pill">$${subtotal.toLocaleString("es-CO")}</span>
                 <button type="button" class="btn btn-sm btn-outline-danger gc-btn-trash" data-index="${index}" aria-label="Eliminar ${producto.nombre}"><i class="bi bi-trash3"></i></button>
             </div>
         `;
@@ -376,7 +387,7 @@ function recalcularTotalOffcanvas() {
     const offcanvas = document.getElementById("offcanvasCart");
     if (!offcanvas) return;
     const lista = offcanvas.querySelector("ul.list-group");
-    const totalBadge = offcanvas.querySelector("li.fw-bold .gc-precio");
+    const totalBadge = offcanvas.querySelector("li.fw-bold .badge");
     if (!lista) return;
     let total = 0;
     lista.querySelectorAll("li[data-precio]").forEach((li) => {
@@ -395,6 +406,22 @@ function inicializarEventosOffcanvas() {
     if (!offcanvasEl) return;
     _offcanvasEventosInicializados = true;
     offcanvasEl.addEventListener("click", (e) => {
+        // Redirección a la pasarela: requiere sesión iniciada
+        const btnPasarela = e.target.closest("#btnIrPasarela");
+        if (btnPasarela) {
+            e.preventDefault();
+            if (obtenerSesionActiva()) {
+                window.location.href = getRootPrefix() + "HTML/Carrito.html";
+            } else if (typeof bootstrap !== "undefined") {
+                bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl).hide();
+                const modalEl = document.getElementById("modalLoginRequerido");
+                if (modalEl) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                }
+            }
+            return;
+        }
+
         const btnInc = e.target.closest("button.gc-qty-inc");
         const btnDec = e.target.closest("button.gc-qty-dec");
         const btnEliminar = e.target.closest("button.btn-outline-danger");
