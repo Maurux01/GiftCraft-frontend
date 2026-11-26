@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Redirigir a la vista de productos / tienda
                 setTimeout(() => {
-                    window.location.href = "../../index.html";
+                    window.location.href = "../productos.html";
                 }, 1200);
             }
 

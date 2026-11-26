@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const categoria = document.getElementById("categoriaProducto").value;
         const descripcion = document.getElementById("descripcionProducto").value;
         const precio = document.getElementById("precioProducto").value;
-        const stock = document.getElementById("stockProducto").value;
+
         
         // Capturar colores
         const inputColor = document.querySelectorAll(".input-color");
@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             categoria,
                             descripcion,
                             precio,
-                            stock,
                             tamanios,
                             colores,
                             // Si no seleccionó una nueva foto al editar, mantiene la anterior
@@ -62,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     categoria,
                     descripcion,
                     precio,
-                    stock,
                     tamanios,
                     colores,
                     imagen: imagenBase64 ? imagenBase64 : "../../ASSETS/img/abeja.webp"
@@ -155,9 +153,6 @@ function cargarProductos() {
                 $ ${producto.precio}
             </div>
             <div class="col-6 col-md-1">
-                <span class="badge bg-secondary-subtle text-dark px-2 py-1">${producto.stock}</span>
-            </div>
-            <div class="col-6 col-md-1">
                 <div class="d-flex gap-1 align-items-center flex-wrap">
                     ${circulosColores}
                 </div>
@@ -195,7 +190,7 @@ function prepararEdicion(id) {
     document.getElementById("categoriaProducto").value = productoAEditar.categoria;
     document.getElementById("descripcionProducto").value = productoAEditar.descripcion;
     document.getElementById("precioProducto").value = productoAEditar.precio;
-    document.getElementById("stockProducto").value = productoAEditar.stock;
+
 
     // Marcar tamaños si existen
     document.getElementById("sizeS").checked = productoAEditar.tamanios.includes("S");

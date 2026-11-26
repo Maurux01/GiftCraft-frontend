@@ -39,7 +39,6 @@ const imagen = document.getElementById("imagenVisualizacion");
 const nombre = document.getElementById("modalPersonalizarLabel");
 const descripcion = document.getElementById("modalDescripcion");
 const precio = document.getElementById("modalPrecio");
-const stock = document.getElementById("modalStock");
 const colores = document.getElementById("modalColores");
 const tamanios = document.getElementById("modalTamanios");
 const botonModalAgregar = document.getElementById("btnAgregarDesdeModal");
@@ -158,12 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (descripcion) descripcion.textContent = productoSeleccionado.descripcion || "Sin descripción disponible.";
         if (precio) precio.textContent = `$${Number(productoSeleccionado.precio).toLocaleString("es-CO")}`;
 
-        if (stock) {
-            stock.innerHTML = `
-                <i class="bi bi-box-seam"></i>
-                Stock: ${productoSeleccionado.stock ?? 0} disponibles
-            `;
-        }
+       
 
         // GENERAR OPCIONES DE COLOR
         if (colores) {
