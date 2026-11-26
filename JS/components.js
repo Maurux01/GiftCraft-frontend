@@ -249,8 +249,8 @@ function actualizarContadorCarrito() {
     const datos = localStorage.getItem("carritoGiftcraft");
     const carrito = (datos && datos !== "undefined") ? JSON.parse(datos) : [];
 
-    // Sumar la cantidad total de artículos
-    const totalArticulos = carrito.reduce((sum, item) => sum + (Number(item.cantidad) || 1), 0);
+    // Sumar la cantidad total de artículos (un item en 0 no cuenta como 1)
+    const totalArticulos = carrito.reduce((sum, item) => sum + normalizarCantidadItem(item), 0);
 
     // Buscar los badges en el HTML
     const elementosContador = document.querySelectorAll(".contador-carrito, #contador-articulos");
@@ -326,6 +326,13 @@ function nombreColorHex(hex) {
 }
 
 // --- Offcanvas global del carrito ---
+// Devuelve una cantidad válida (>= 0). Un producto reducido a 0 se conserva,
+// pero no debe contarse como 1 en el badge ni en el carrito.
+function normalizarCantidadItem(item) {
+    const cantidad = Number(item && item.cantidad);
+    return Number.isFinite(cantidad) ? Math.max(0, cantidad) : 1;
+}
+
 function obtenerCarritoLocal() {
     const carritoGuardado = localStorage.getItem("carritoGiftcraft");
     if (carritoGuardado && carritoGuardado !== "undefined") {
@@ -351,17 +358,21 @@ function renderizarOffcanvas() {
     const carrito = obtenerCarritoLocal();
     carrito.forEach((producto, index) => {
         const precio = Number(producto.precio) || 0;
-        const cantidad = Number(producto.cantidad) || 1;
+        const cantidad = normalizarCantidadItem(producto);
         const subtotal = precio * cantidad;
+        const imagen = producto.imagen || getRootPrefix() + 'ASSETS/img/header/footer/regalo.png';
         const li = document.createElement("li");
         li.className = "list-group-item d-flex justify-content-between align-items-center gc-cart-item";
         li.setAttribute("data-precio", String(subtotal));
         li.setAttribute("data-nombre", producto.nombre);
         li.setAttribute("data-index", String(index));
         li.innerHTML = `
-            <div class="gc-cart-item-info">
-                <span class="gc-cart-item-name">${producto.nombre}</span>
-                <small class="gc-cart-item-meta d-block">${nombreColorHex(producto.colorElegido) || 'Estándar'} · ${producto.tamanoElegido || 'Estándar'}</small>
+            <div class="gc-cart-item-left">
+                <img src="${imagen}" alt="" class="gc-cart-thumb">
+                <div class="gc-cart-item-info">
+                    <span class="gc-cart-item-name">${producto.nombre}</span>
+                    <small class="gc-cart-item-meta d-block">${nombreColorHex(producto.colorElegido) || 'Estándar'} · ${producto.tamanoElegido || 'Estándar'}</small>
+                </div>
             </div>
             <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                 <div class="gc-qty-control d-flex align-items-center gap-1">
@@ -369,7 +380,7 @@ function renderizarOffcanvas() {
                     <span class="gc-qty-value">${cantidad}</span>
                     <button type="button" class="btn btn-sm gc-qty-btn gc-qty-inc" data-index="${index}" aria-label="Aumentar cantidad">+</button>
                 </div>
-                <span class="badge bg-primary rounded-pill">$${subtotal.toLocaleString("es-CO")}</span>
+                <span class="gc-cart-item-price">$${subtotal.toLocaleString("es-CO")}</span>
                 <button type="button" class="btn btn-sm btn-outline-danger gc-btn-trash" data-index="${index}" aria-label="Eliminar ${producto.nombre}"><i class="bi bi-trash3"></i></button>
             </div>
         `;
@@ -387,14 +398,14 @@ function recalcularTotalOffcanvas() {
     const offcanvas = document.getElementById("offcanvasCart");
     if (!offcanvas) return;
     const lista = offcanvas.querySelector("ul.list-group");
-    const totalBadge = offcanvas.querySelector("li.fw-bold .badge");
+    const totalValor = offcanvas.querySelector("li.fw-bold .gc-cart-total-value");
     if (!lista) return;
     let total = 0;
     lista.querySelectorAll("li[data-precio]").forEach((li) => {
         total += parseInt(li.getAttribute("data-precio"), 10) || 0;
     });
-    if (totalBadge) {
-        totalBadge.textContent = "$" + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    if (totalValor) {
+        totalValor.textContent = "$" + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 }
 
@@ -434,12 +445,8 @@ function inicializarEventosOffcanvas() {
             const idx = parseInt(btn.getAttribute("data-index"), 10);
             if (!isNaN(idx) && carrito[idx]) {
                 const delta = btnInc ? 1 : -1;
-                const nuevaCantidad = (Number(carrito[idx].cantidad) || 1) + delta;
-                if (nuevaCantidad < 1) {
-                    carrito.splice(idx, 1);
-                } else {
-                    carrito[idx].cantidad = nuevaCantidad;
-                }
+                // Conservar la fila aunque llegue a 0: solo se quita con el botón de eliminar.
+                carrito[idx].cantidad = Math.max(0, normalizarCantidadItem(carrito[idx]) + delta);
                 changed = true;
             }
         } else if (btnEliminar) {
