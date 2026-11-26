@@ -103,8 +103,13 @@
 }
 
 .gc-icon:hover {
-    background-color: #f0e6d6;
-    color: var(--MoradoCreativo, #8B5CF6);
+    background-color: var(--MoradoCreativo, #8B5CF6);
+    color: var(--CremaCrafteo, #FFF7E8);
+}
+
+.gc-icon.active {
+    background-color: var(--MoradoCreativo, #8B5CF6);
+    color: var(--CremaCrafteo, #FFF7E8);
 }
 
 /* Cuando el enlace de perfil muestra el nombre del usuario */
@@ -116,13 +121,18 @@
     gap: 0.4rem;
     font-size: 1rem;
     background-color: #f6efe4;
+    color: var(--MoradoCreativo, #8B5CF6);
 }
 
 .gc-icon.gc-user-chip:hover {
     background-color: #ece0ce;
-    color: #d41515;
+    color: var(--MoradoCreativo, #8B5CF6);
 }
-
+.gc-icon.gc-user-chip.active,
+.gc-icon.gc-user-chip.active:hover {
+    background-color: var(--MoradoCreativo, #8B5CF6);
+    color: var(--CremaCrafteo, #FFF7E8);
+}
 .gc-user-name {
     font-size: 0.9rem;
     font-weight: 600;

@@ -94,19 +94,18 @@ document.addEventListener("DOMContentLoaded", () => {
         columna.classList.add("col");
 
         columna.innerHTML = `
-            <div class="card h-100">
+            <div class="card h-100 product-card">
                 <img
                     src="${producto.imagen || ''}"
-                    class="card-img-top"
+                    class="card-img-top product-card-image"
                     alt="${producto.nombre}"
-                    style="height: 250px; object-fit: contain;"
                 >
                 <div class="card-body">
                     <div class="card-info">
                         <h5 class="card-title">${producto.nombre}</h5>
                         <p class="card-text">${producto.categoria || ''}</p>
                         <div class="d-flex align-items-center justify-content-between mt-2 gap-3">
-                            <p class="card-precio mb-0">$${Number(producto.precio).toLocaleString("es-CO")}</p>
+                            <p class="card-precio mb-0"><span class="precio-moneda">COP</span> $${Number(producto.precio).toLocaleString("es-CO")}</p>
                             <button
                                 class="btn btn-personalizar"
                                 type="button"
@@ -155,7 +154,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (nombre) nombre.textContent = productoSeleccionado.nombre;
         if (descripcion) descripcion.textContent = productoSeleccionado.descripcion || "Sin descripción disponible.";
-        if (precio) precio.textContent = `$${Number(productoSeleccionado.precio).toLocaleString("es-CO")}`;
+        if (precio) {
+            const moneda = document.createElement("span");
+            moneda.className = "precio-moneda";
+            moneda.textContent = "COP";
+            precio.textContent = "";
+            precio.appendChild(moneda);
+            precio.appendChild(document.createTextNode(
+                ` $${Number(productoSeleccionado.precio).toLocaleString("es-CO")}`
+            ));
+        }
 
        
 
@@ -285,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (typeof Swal !== "undefined") {
                 Swal.fire({
                     title: "¡Producto agregado!",
-                    text: `${productoActualModal.nombre} (${colorElegido}, ${tamanoElegido}) fue añadido a tu carrito.`,
+                    text: `${productoActualModal.nombre} (${nombreColorHex(colorElegido)}, ${tamanoElegido}) fue añadido a tu carrito.`,
                     icon: "success",
                     timer: 2000,
                     showConfirmButton: false

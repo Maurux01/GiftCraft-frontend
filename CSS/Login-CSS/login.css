@@ -208,6 +208,10 @@
     transform: translateY(1px);
 }
 
+.mc-footer {
+    margin-top: 16px;
+}
+
 /* Bloque inferior con el cubo de tierra */
 .mc-card-footer-block {
     margin-top: 20px;
