@@ -182,30 +182,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (index === 0) input.checked = true;
 
                     const label = document.createElement("label");
-                    label.className = "btn-color";
+                    label.className = "btn btn-outline-secondary";
                     label.htmlFor = input.id;
-                    // El cuadro muestra únicamente el color; el nombre queda solo para lectores de pantalla.
-                    label.setAttribute("aria-label", `Color ${nombreColorHex(color)} (${color})`);
+                    label.textContent = nombreColorHex(color);
                     label.title = color;
 
-                    // Pintar el cuadro con el color del producto y definir el contraste de la marca de selección.
-                    const valorColor = String(color ?? "").trim();
-                    const hexMatch = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(valorColor);
+                    // Si el color es un HEX válido, pintar el botón con ese color
+                    const hexMatch = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(color.trim());
                     if (hexMatch) {
-                        label.style.backgroundColor = valorColor;
-                        const hex = valorColor.replace("#", "");
+                        label.style.backgroundColor = color.trim();
+                        // Elegir color de texto legible según luminancia
+                        const hex = color.trim().replace("#", "");
                         const full = hex.length === 3 ? hex.split("").map(c => c + c).join("") : hex;
                         const r = parseInt(full.substring(0, 2), 16);
                         const g = parseInt(full.substring(2, 4), 16);
                         const b = parseInt(full.substring(4, 6), 16);
                         const luminancia = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                        label.style.setProperty("--gc-check-color", luminancia > 0.5 ? "#1a1a1a" : "#ffffff");
-                    } else if (valorColor && typeof CSS !== "undefined" && CSS.supports("background-color", valorColor)) {
-                        label.style.backgroundColor = valorColor;
-                        label.style.setProperty("--gc-check-color", "#ffffff");
-                    } else {
-                        label.style.backgroundColor = "#f8f1e5";
-                        label.style.setProperty("--gc-check-color", "#5a3e2b");
+                        label.style.color = luminancia > 0.5 ? "#1a1a1a" : "#ffffff";
+                        label.style.borderColor = "#5a3e2b";
                     }
 
                     colores.append(input, label);

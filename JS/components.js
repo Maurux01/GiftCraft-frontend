@@ -358,7 +358,7 @@ function renderizarOffcanvas() {
                     <span class="gc-qty-value">${cantidad}</span>
                     <button type="button" class="btn btn-sm gc-qty-btn gc-qty-inc" data-index="${index}" aria-label="Aumentar cantidad">+</button>
                 </div>
-                <span class="gc-precio">$${subtotal.toLocaleString("es-CO")}</span>
+                <span class="badge bg-primary rounded-pill">$${subtotal.toLocaleString("es-CO")}</span>
                 <button type="button" class="btn btn-sm btn-outline-danger gc-btn-trash" data-index="${index}" aria-label="Eliminar ${producto.nombre}"><i class="bi bi-trash3"></i></button>
             </div>
         `;
@@ -376,7 +376,7 @@ function recalcularTotalOffcanvas() {
     const offcanvas = document.getElementById("offcanvasCart");
     if (!offcanvas) return;
     const lista = offcanvas.querySelector("ul.list-group");
-    const totalBadge = offcanvas.querySelector("li.fw-bold .gc-precio");
+    const totalBadge = offcanvas.querySelector("li.fw-bold .badge");
     if (!lista) return;
     let total = 0;
     lista.querySelectorAll("li[data-precio]").forEach((li) => {
