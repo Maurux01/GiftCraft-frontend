@@ -28,10 +28,29 @@
     <div id="header-placeholder"></div>
 
     <main class="container py-4">
+        <div class="product-filter d-none" id="filtroProductosContenedor">
+            <span class="form-label">
+                <i class="bi bi-funnel-fill" aria-hidden="true"></i>
+            <div class="product-filter-options" role="group" aria-label="Filtrar productos por categoría">
+                <button type="button" class="product-filter-option is-selected" data-categoria-filtro="todos"
+                    aria-pressed="true">
+                    Todos
+                </button>
+                <button type="button" class="product-filter-option" data-categoria-filtro="plantas"
+                    aria-pressed="false">
+                    Plantas
+                </button>
+                <button type="button" class="product-filter-option" data-categoria-filtro="animales"
+                    aria-pressed="false">
+                    Animales
+                </button>
+            </div>
+        </div>
         <div class="row row-cols-1 row-cols-md-3 g-3" id="contenedorProductos">
             <!-- Aquí se insertan dinámicamente las cards -->
 
         </div>
+        <p class="product-filter-empty d-none" id="mensajeFiltroVacio">No hay productos en esta categoría.</p>
     </main>
 
     <!-- MODAL personalizar-->
