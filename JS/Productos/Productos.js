@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. SI NO HAY PRODUCTOS
     if (productos.length === 0) {
         contenedor.innerHTML = `
-        <div class="col-12 d-flex justify-content-center align-items-center">
+        <div class="w-100 d-flex justify-content-center align-items-center">
             <div class="mensaje-sin-productos-contenedor text-center">
                 <h4 class="mensaje-sin-productos">
                     No hay productos registrados
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     contenedor.innerHTML = "";
     productos.forEach((producto) => {
         const columna = document.createElement("div");
-        columna.classList.add("col");
+        columna.classList.add("producto-slide");
 
         columna.innerHTML = `
             <div class="card h-100 product-card">
@@ -100,11 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     class="card-img-top product-card-image"
                     alt="${producto.nombre}"
                 >
-                <div class="card-body">
-                    <div class="card-info">
+                <div class="card-body h-100">
+                    <div class="card-info h-100 d-flex flex-column">
                         <h5 class="card-title">${producto.nombre}</h5>
                         <p class="card-text">${producto.categoria || ''}</p>
-                        <div class="d-flex align-items-center justify-content-between mt-2 gap-3">
+                        <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-3">
                             <p class="card-precio mb-0"><span class="precio-moneda">COP</span> $${Number(producto.precio).toLocaleString("es-CO")}</p>
                             <button
                                 class="btn btn-personalizar"
