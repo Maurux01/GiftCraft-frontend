@@ -52,8 +52,8 @@ body {
 }
 
 .producto-slide {
-    flex: 0 0 300px;
-    max-width: 82vw;
+    flex: 0 0 320px;
+    max-width: 86vw;
     scroll-snap-align: start;
 }
 
@@ -74,7 +74,7 @@ body {
 
 .card-img-top {
     background-color: #faf6ee;
-    padding: 0.75rem;
+    padding: 0.9rem;
 }
 
 .product-card {
@@ -85,13 +85,13 @@ body {
     display: block;
     width: 100%;
     max-width: 100%;
-    height: 170px;
+    height: 220px;
     object-fit: contain;
 }
 
 .card-body {
     display: flex;
-    padding: 0.9rem 1rem 1rem;
+    padding: 1rem 1.1rem 1.15rem;
 }
 
 .card-info {
@@ -102,17 +102,17 @@ body {
 
 .card-title {
     font-family: var(--font-pixel-style);
-    font-size: 0.85rem;
+    font-size: 1rem;
     line-height: 1.5;
     color: #000;
     text-transform: none;
     padding: 0;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.45rem;
 }
 
 .card-text {
     font-family: var(--font-pixel-sub);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: #5a3e2b;
     margin-bottom: 0;
 }
@@ -121,44 +121,46 @@ body {
     font-family: var(--font-pixel-sub);
     font-weight: 700;
     color: var(--MoradoCreativo, #8B5CF6);
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     white-space: nowrap;
     margin-bottom: 0;
 }
 
 .btn-personalizar {
     font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
-    letter-spacing: 0.2px;
-    padding: 0.35rem 0.7rem;
-    color: #6E2D86;
-    background-color: #E7D2F0;
-    border: 2px solid var(--MoradoCreativo, #8B5CF6);
+    letter-spacing: 0.3px;
+    padding: 0.4rem 0.8rem;
+    color: #fff;
+    background: linear-gradient(135deg, #B98FD6 0%, #8B5CF6 100%);
+    border: 2px solid #6E2D86;
     border-radius: 10px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    box-shadow: 0 4px 0 #4B2361;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .btn-personalizar i {
-    margin-right: 0.35rem;
+    margin-right: 0.4rem;
 }
 
 .btn-personalizar:hover,
 .btn-personalizar:focus-visible {
-    color: #6E2D86;
-    background-color: #dcc0ec;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 0 rgba(110, 45, 134, 0.25);
+    color: #fff;
+    background: linear-gradient(135deg, #C9A6E2 0%, #9B6DF8 100%);
+    filter: brightness(1.03);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #4B2361;
 }
 
 .btn-personalizar:focus-visible {
-    outline: 2px solid var(--MoradoCreativo, #8B5CF6);
+    outline: 2px solid #fff;
     outline-offset: 2px;
 }
 
 .btn-personalizar:active {
-    transform: translateY(1px);
-    box-shadow: none;
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #4B2361;
 }
 
 .btn-carrito {
