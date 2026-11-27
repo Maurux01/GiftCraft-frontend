@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const correo = inputCorreo.value.toLowerCase();
                 const password = inputPass.value;
-
+                
                 if (!correo || !password) {
                     if (errorLogin) {
                         errorLogin.textContent = "¡Completa tu correo y contraseña!";
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     name: usuarioValido.name,
                     email: usuarioValido.email,
                     phone: usuarioValido.phone,
-                    rol: "cliente",
+                    rol: usuarioValido.rol || "cliente",
                     loginAt: new Date().toISOString()
                 };
 
@@ -52,12 +52,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (errorLogin) {
                     errorLogin.style.color = "#5e8a3a";
-                    errorLogin.textContent = `¡Hola, ${usuarioValido.name}! Volviendo a la tienda...`;
+                    errorLogin.textContent = `¡Hola, ${usuarioValido.name}! Redirigiendo...`;
                 }
 
                 // Redirigir a la vista de productos / tienda
                 setTimeout(() => {
-                    window.location.href = "../productos.html";
+                    const destino = sesionActiva.rol === "admin"
+                    ? "../Admin/Dashboard.html"
+                    : "../productos.html";
+
+                    window.location.href = destino;
                 }, 1200);
             }
 
