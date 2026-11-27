@@ -23,13 +23,16 @@ body{
 
 /*Hero con la imagen de nuebes en movimiento*/
 .hero-banner {
-  background-image: url('https://lh3.googleusercontent.com/d/16LUkIKtx2vsfW1yrHvEvCviR3m-3Oamw'); 
-  background-size: 100% auto;   /*Cubre el 100% de la imagen*/
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  width: 100%; /* Asegura el 100% de ancho */
-  min-height: 320px; 
-
+    background-image: url('https://lh3.googleusercontent.com/d/16LUkIKtx2vsfW1yrHvEvCviR3m-3Oamw');
+    background-size: 100% auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 /* Cartel de Madera */
@@ -219,6 +222,12 @@ label, input, select, textarea{
 
 /* Ajustes para celulares */
 @media (max-width: 768px) {
+    .hero-banner {
+        min-height: 320px;
+        background-size: auto 100%;
+        background-position: center center;
+    }
+
     .hero-banner .banner-madera {
         max-width: 95%;
         padding: 10px 15px !important;
@@ -227,6 +236,14 @@ label, input, select, textarea{
     .hero-banner .banner-madera h1 {
         font-size: 1.4rem;
         line-height: 1.5;
+    }
+}
+
+/* Pantallas grandes */
+@media (min-width: 1400px) {
+    .hero-banner {
+        min-height: 320px;
+        background-size: 100% auto;
     }
 }
 
