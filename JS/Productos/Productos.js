@@ -71,6 +71,9 @@ window.addEventListener("headerLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const productos = JSON.parse(localStorage.getItem("productosGiftcraft")) || [];
     const contenedor = document.getElementById("contenedorProductos");
+    const filtroContenedor = document.getElementById("filtroProductosContenedor");
+    const botonesFiltro = document.querySelectorAll("[data-categoria-filtro]");
+    const mensajeFiltroVacio = document.getElementById("mensajeFiltroVacio");
 
     if (!contenedor) return;
 
@@ -87,11 +90,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+    filtroContenedor?.classList.remove("d-none");
+
     //GENERAR CARDS DINÁMICAS
     contenedor.innerHTML = "";
     productos.forEach((producto) => {
         const columna = document.createElement("div");
-        columna.classList.add("producto-slide");
+        columna.classList.add("producto-slide", "col");
+        columna.dataset.categoria = String(producto.categoria || "").trim().toLocaleLowerCase("es");
 
         columna.innerHTML = `
             <div class="card h-100 product-card">
@@ -123,6 +129,31 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         contenedor.appendChild(columna);
+    });
+
+    botonesFiltro.forEach((boton) => {
+        boton.addEventListener("click", () => {
+        const categoriaBoton = boton.dataset.categoriaFiltro;
+        const categoriaSeleccionada = categoriaBoton === "todos"
+            ? "todos"
+            : boton.classList.contains("is-selected") ? "todos" : categoriaBoton;
+        let productosVisibles = 0;
+
+        botonesFiltro.forEach((opcion) => {
+            const seleccionado = opcion.dataset.categoriaFiltro === categoriaSeleccionada;
+            opcion.classList.toggle("is-selected", seleccionado);
+            opcion.setAttribute("aria-pressed", String(seleccionado));
+        });
+
+        contenedor.querySelectorAll(".col").forEach((columna) => {
+            const mostrar = categoriaSeleccionada === "todos" ||
+                columna.dataset.categoria === categoriaSeleccionada;
+            columna.classList.toggle("d-none", !mostrar);
+            if (mostrar) productosVisibles++;
+        });
+
+        mensajeFiltroVacio?.classList.toggle("d-none", productosVisibles > 0);
+        });
     });
 
     // ACTIVAR EVENTOS DE LOS BOTONES "AGREGAR AL CARRITO" DE LAS CARDS
