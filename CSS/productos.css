@@ -13,6 +13,11 @@
     --font-body: "Inter", sans-serif;
 }
 
+html {
+    /* Reserva el espacio de la scrollbar aunque Bootstrap bloquee el scroll al abrir el modal */
+    scrollbar-gutter: stable;
+}
+
 main{
     min-height: 90vh;
 }
@@ -25,10 +30,52 @@ body {
     background-attachment: fixed;
 }
 
-/*Tarjeta de productos*/
+/*Tarjeta de productos - estética pixel art / Minecraft*/
+.productos-carrusel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0.25rem;
+    padding: 0.25rem 0.25rem 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--VerdeMundo, #A8B89A) transparent;
+}
+
+.productos-carrusel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.productos-carrusel::-webkit-scrollbar-thumb {
+    background-color: var(--VerdeMundo, #A8B89A);
+    border-radius: 8px;
+}
+
+.producto-slide {
+    flex: 0 0 320px;
+    max-width: 86vw;
+    scroll-snap-align: start;
+}
+
 .card {
-    border-radius: 20px;
-    border-color: var(--VerdeMundo);
+    width: 100%;
+    border: 2px solid var(--VerdeMundo, #A8B89A);
+    border-radius: 16px;
+    background-color: #e8ddc9;
+    box-shadow: 0 4px 10px rgba(90, 62, 43, 0.08);
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(90, 62, 43, 0.14);
+}
+
+.card-img-top {
+    background-color: #f7efe1;
+    padding: 1rem;
+    box-shadow: inset 0 0 0 2px rgba(168, 184, 154, 0.35);
 }
 
 .product-card {
@@ -39,53 +86,89 @@ body {
     display: block;
     width: 100%;
     max-width: 100%;
-    height: 250px;
+    height: 230px;
     object-fit: contain;
+    filter: drop-shadow(3px 3px 0 rgba(61, 41, 28, 0.18));
+    transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.product-card:hover .product-card-image {
+    transform: scale(1.04);
+    filter: drop-shadow(5px 5px 0 rgba(61, 41, 28, 0.22));
 }
 
 .card-body {
-    display: grid;
-    justify-items: center;
-    align-items: center;
+    display: flex;
+    padding: 1rem 1.1rem 1.15rem;
+}
 
+.card-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-title {
     font-family: var(--font-pixel-style);
-    font-size: 1.5rem;
-    text-transform: uppercase;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #000;
+    text-transform: none;
     padding: 0;
-
+    margin-bottom: 0.45rem;
 }
 
 .card-text {
     font-family: var(--font-pixel-sub);
-    font-size: 1rem;
-    text-transform: uppercase;
+    font-size: 0.95rem;
+    color: #5a3e2b;
+    margin-bottom: 0;
 }
 
 .card-precio {
-    font-family: var(--font-pixel-style);
-    color: var(--MoradoCreativo);
-  
-    
+    font-family: var(--font-pixel-sub);
+    font-weight: 700;
+    color: var(--MoradoCreativo, #8B5CF6);
+    font-size: 1.25rem;
+    white-space: nowrap;
+    margin-bottom: 0;
 }
 
 .btn-personalizar {
+    font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    padding: 0.4rem 0.8rem;
+    color: #fff;
+    background: linear-gradient(135deg, #B98FD6 0%, #8B5CF6 100%);
+    border: 2px solid #6E2D86;
     border-radius: 10px;
-    border-color: var(--MoradoCreativo);
-    font-family: var(--font-pixel-sub);
-    background-color: #E7D2F0;
-    color: #6E2D86;
+    box-shadow: 0 4px 0 #4B2361;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .btn-personalizar i {
-    padding: 0px 5px;
+    margin-right: 0.4rem;
 }
 
-.btn-personalizar:hover {
-    background-color: #6E2D86;
-    color: #E7D2F0;
+.btn-personalizar:hover,
+.btn-personalizar:focus-visible {
+    color: #fff;
+    background: linear-gradient(135deg, #C9A6E2 0%, #9B6DF8 100%);
+    filter: brightness(1.03);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #4B2361;
+}
+
+.btn-personalizar:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.btn-personalizar:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #4B2361;
 }
 
 .btn-carrito {
@@ -103,10 +186,52 @@ body {
 }
 
 /*MODAL DE PERSONALIZACIÓN*/
+#modalPersonalizarProducto .modal-dialog.modal-producto {
+    width: min(630px, calc(100% - 1rem));
+    max-width: 630px;
+}
+
+#modalPersonalizarProducto .modal-content {
+    max-height: calc(100vh - 1rem);
+    background-color: #f5f0e6;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+#modalPersonalizarProducto .modal-header {
+    padding: 0.5rem 0.75rem;
+    flex-shrink: 0;
+}
+
+#modalPersonalizarProducto .modal-body {
+    padding: 1rem 1.25rem 1.25rem;
+    overflow-y: auto;
+}
+
+#modalPersonalizarProducto .modal-body hr {
+    margin: 0.85rem 0;
+}
+
+#modalPersonalizarProducto .form-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+#modalPersonalizarProducto #imagenVisualizacion {
+    max-height: 280px;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
 .modal-title {
     font-family: var(--font-pixel-style);
     text-transform: capitalize;
     color: black;
+}
+
+#modalPersonalizarProducto .modal-title {
+    font-size: 1.25rem;
 }
 
 .modal-descripcion {
@@ -114,10 +239,20 @@ body {
     text-transform: capitalize;
 }
 
+#modalPersonalizarProducto .modal-descripcion {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+}
+
 .modal-precio {
     font-family: var(--font-pixel-style);
     text-transform: capitalize;
     color: var(--MoradoCreativo);
+}
+
+#modalPersonalizarProducto .modal-precio {
+    font-size: 1.15rem;
+    margin-bottom: 0.55rem;
 }
 
 .precio-moneda {
@@ -134,6 +269,40 @@ body {
     background-color: transparent;
     border-color: var(--MarronTierra);
     color: inherit;
+}
+
+/* Casillas de color y tamaño: más grandes y legibles */
+#modalPersonalizarProducto #modalColores .btn,
+#modalPersonalizarProducto #modalTamanios .btn {
+    font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.15;
+    padding: 0.35rem 0.75rem;
+    min-height: 34px;
+    white-space: nowrap;
+    border-radius: 9px;
+}
+
+/* Muestras de color: solo referencia visual, sin texto */
+#modalPersonalizarProducto #modalColores .gc-color-swatch {
+    width: 34px;
+    height: 34px;
+    min-height: 34px;
+    padding: 0;
+    border: 2px solid #5a3e2b;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+#modalPersonalizarProducto #modalColores .btn-check:checked + .gc-color-swatch {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--MoradoCreativo, #8B5CF6);
+    transform: scale(1.05);
+}
+
+#modalPersonalizarProducto #modalColores .btn-check:focus + .gc-color-swatch {
+    outline: 2px solid var(--MoradoCreativo, #8B5CF6);
+    outline-offset: 2px;
 }
 
 /* Botones de tamaño en el modal: estado seleccionado claro */
@@ -168,14 +337,35 @@ body {
     outline: none;
 }
 
-.btn-add-cart{
-    background-color: #EA6181;
-    color: var(--CremaCrafteo);
+.btn-add-cart {
+    font-family: var(--font-pixel-sub, 'Pixelify Sans', sans-serif);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #fff;
+    background: linear-gradient(135deg, #EA6181 0%, #D94F73 100%);
+    border: 2px solid #5a3e2b;
+    border-radius: 10px;
+    box-shadow: 0 4px 0 #3d291c;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
-.btn-add-cart:hover{
-    background-color:var(--CremaCrafteo);
-    color:#EA6181;
+.btn-add-cart:hover,
+.btn-add-cart:focus-visible {
+    color: #fff;
+    background: linear-gradient(135deg, #F0728F 0%, #E05C7E 100%);
+    filter: brightness(1.03);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #3d291c;
+}
+
+.btn-add-cart:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.btn-add-cart:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #3d291c;
 }
 
 /* Tarjeta de cuando no hay productos */
@@ -185,11 +375,11 @@ main {
     flex-direction: column;
 }
 
-#contenedorProductos {
-    flex: 1;
-    min-height: 70vh;
-    justify-content: center;
-    align-items: center;
+#contenedorProductos.productos-carrusel {
+    flex: 0 0 auto;
+    min-height: auto;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 
 .product-filter {

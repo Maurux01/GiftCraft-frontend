@@ -31,6 +31,7 @@
         <div class="product-filter d-none" id="filtroProductosContenedor">
             <span class="form-label">
                 <i class="bi bi-funnel-fill" aria-hidden="true"></i>
+            </span>
             <div class="product-filter-options" role="group" aria-label="Filtrar productos por categoría">
                 <button type="button" class="product-filter-option is-selected" data-categoria-filtro="todos"
                     aria-pressed="true">
@@ -46,7 +47,7 @@
                 </button>
             </div>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 g-3" id="contenedorProductos">
+        <div class="productos-carrusel" id="contenedorProductos">
             <!-- Aquí se insertan dinámicamente las cards -->
 
         </div>
@@ -57,8 +58,8 @@
     <!-- Modal de Personalización Centrado -->
     <div class="modal fade" id="modalPersonalizarProducto" tabindex="-1" aria-labelledby="modalPersonalizarLabel"
         aria-hidden="true">
-        <!-- modal-xl o modal-lg para dar buen espacio a las dos columnas -->
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Modal compacto con dos columnas -->
+        <div class="modal-dialog modal-dialog-centered modal-producto">
             <div class="modal-content">
                 <!-- Encabezado con el botón de cerrar X -->
                 <div class="modal-header border-0">
@@ -67,7 +68,7 @@
 
                 <!-- Cuerpo del Modal en dos columnas -->
                 <div class="modal-body pt-0">
-                    <div class="row g-4 align-items-center">
+                    <div class="row g-3 align-items-center">
 
                         <!-- COLUMNA IZQUIERDA: Contenedor único para la Imagen Dinámica -->
                         <div class="col-md-6 text-center">
@@ -105,15 +106,16 @@
                                     📏 Tamaños disponibles
                                 </label>
 
-                                <div id="modalTamanios" class=" gap-2 flex-wrap modal-tamaños"></div>
+                                <div id="modalTamanios" class="d-flex gap-2 flex-wrap modal-tamaños"></div>
                             </div>
 
                             <!-- Agregar al carrito -->
                             <div class="d-grid">
                                 <button type="button"
-                                    class="btn btn-add-cart btn-lg d-flex align-items-center justify-content-center gap-2" 
+                                    class="btn btn-add-cart d-flex align-items-center justify-content-center gap-2"
                                     id="btnAgregarDesdeModal" data-id="101"    data-bs-target="#offcanvasCart">
-                                   <i class="bi bi-cart-plus-fill"> Agregar al carrito</i>
+                                   <i class="bi bi-cart-plus-fill" aria-hidden="true"></i>
+                                   <span>Agregar al carrito</span>
                                     
                                 </button>
                 
