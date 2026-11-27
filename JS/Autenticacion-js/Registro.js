@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-        // --- ALTERNAR PESTAÑAS (TABS) ---
+    // --- ALTERNAR PESTAÑAS (TABS) ---
     const tabs = document.querySelectorAll('.mc-tab');
     const fLogin = document.getElementById('mcFormLogin');
     const fReg = document.getElementById('mcFormRegister');
@@ -124,15 +124,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            const email = correo.value.trim().toLowerCase();
+            const rol = email.includes("giftcraft") ? "admin" : "cliente";
+
             // --- 4. GUARDAR EN LOCALSTORAGE ---
             const datosFormulario = {
                 id: Date.now(),
                 name: nombre.value.trim(),
                 phone: celular.value.trim(),
-                email: correo.value.trim(),
+                email,
                 password: pass,
+                rol,
                 fechaRegistro: new Date().toLocaleDateString()
             };
+
+
+
 
             guardarEnLocalStorage(datosFormulario, "usuariosRegistro");
 

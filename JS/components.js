@@ -129,7 +129,10 @@ function renderizarUsuarioHeader(contenedor = document) {
         const primerNombre = String(sesion.name).trim().split(/\s+/)[0];
         nombreSpan.textContent = primerNombre;
         perfilLink.classList.add("gc-user-chip");
-        perfilLink.setAttribute("href", "#");
+        perfilLink.setAttribute(
+            "href",
+            sesion.rol === "admin" ? getRootPrefix() + "HTML/Admin/Dashboard.html" : "#"
+        );
         perfilLink.setAttribute("title", `Sesión iniciada como ${sesion.name}`);
 
         if (iconoPerfil) {
@@ -150,6 +153,10 @@ function renderizarUsuarioHeader(contenedor = document) {
                 e.preventDefault();
                 e.stopPropagation();
                 localStorage.removeItem("sesionActivaGiftcraft");
+                if (sesion.rol === "admin") {
+                    window.location.href = getRootPrefix() + "HTML/productos.html";
+                    return;
+                }
                 renderizarUsuarioHeader(document);
             });
 

@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    const sesion = obtenerSesionActiva();
+
+    if (!sesion || sesion.rol !== "admin") {
+        window.location.replace("../Login/Login.html");
+        return;
+    }
     const formProducto = document.getElementById("formProducto");
 
     // 1. Cargar los productos guardados al abrir o refrescar la página
@@ -13,12 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const descripcion = document.getElementById("descripcionProducto").value;
         const precio = document.getElementById("precioProducto").value;
 
-        
+
         // Capturar colores
         const inputColor = document.querySelectorAll(".input-color");
         const colores = [];
         inputColor.forEach(input => {
-            colores.push(input.value); 
+            colores.push(input.value);
         });
 
         // Capturar Tamaños (S, M, L)
@@ -47,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             tamanios,
                             colores,
                             // Si no seleccionó una nueva foto al editar, mantiene la anterior
-                            imagen: imagenBase64 ? imagenBase64 : prod.imagen 
+                            imagen: imagenBase64 ? imagenBase64 : prod.imagen
                         };
                     }
                     return prod;
@@ -75,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Limpiar formulario y cerrar modal
             formProducto.reset();
             document.getElementById("productoId").value = ""; // Limpiar ID de edición
-            
+
             const modalElement = document.getElementById("modalAgregarProducto");
             const modal = bootstrap.Modal.getInstance(modalElement);
             if (modal) modal.hide();
