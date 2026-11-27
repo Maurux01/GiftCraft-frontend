@@ -5,6 +5,7 @@
     --MarronTierra: #8B6955;
     --RosaAventura: #D98FA3;
     --CremaCrafteo: #FFF7E8;
+    --ArenaFiltro: #e8d9b8;
 
     /*Fuentes*/
     --font-pixel-style: "Press Start 2P", system-ui;
@@ -382,6 +383,8 @@ main {
 }
 
 .product-filter {
+    position: relative;
+    z-index: 1020;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -389,7 +392,55 @@ main {
     width: fit-content;
     min-width: min(100%, 390px);
     margin-left: auto;
+    margin-top: -1.6rem;
     margin-bottom: 1rem;
+    padding: 0.5rem 0.9rem;
+    background-color: var(--ArenaFiltro);
+    border: 2px solid var(--MarronTierra);
+    border-top: 0;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 5px 0 rgba(61, 41, 28, 0.18);
+    transform-origin: top center;
+    opacity: 0;
+    animation: filtroDesdeNav 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Punta que conecta visualmente el filtro con el nav */
+.product-filter::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 24px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--ArenaFiltro);
+}
+
+@keyframes filtroDesdeNav {
+    0% {
+        opacity: 0;
+        transform: translateY(-120%) scaleY(0.92);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(6px) scaleY(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-filter {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .product-filter .form-label {
@@ -457,6 +508,13 @@ main {
         flex-direction: column;
         align-items: stretch;
         gap: 0.4rem;
+        padding: 0.45rem 0.65rem;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .product-filter::before {
+        right: 50%;
+        transform: translateX(50%);
     }
 
     .product-filter-options {
