@@ -74,8 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtroContenedor = document.getElementById("filtroProductosContenedor");
     const botonesFiltro = document.querySelectorAll("[data-categoria-filtro]");
     const mensajeFiltroVacio = document.getElementById("mensajeFiltroVacio");
+    const sesion = typeof obtenerSesionActiva === "function" ? obtenerSesionActiva() : null;
+    const esAdmin = sesion && sesion.rol === "admin";
 
     if (!contenedor) return;
+
+    botonModalAgregar?.classList.toggle("d-none", Boolean(esAdmin));
 
     // 1. SI NO HAY PRODUCTOS
     if (productos.length === 0) {
@@ -98,6 +102,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const columna = document.createElement("div");
         columna.classList.add("producto-slide", "col");
         columna.dataset.categoria = String(producto.categoria || "").trim().toLocaleLowerCase("es");
+        const botonCompra = esAdmin ? "" : `
+            <button
+                class="btn btn-personalizar"
+                type="button"
+                data-producto-id="${producto.id}"
+                data-bs-toggle="modal"
+                data-bs-target="#modalPersonalizarProducto"
+            >
+                <i class="bi bi-cart"></i>
+                Comprar
+            </button>`;
 
         columna.innerHTML = `
             <div class="card h-100 product-card">
@@ -112,16 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p class="card-text">${producto.categoria || ''}</p>
                         <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-3">
                             <p class="card-precio mb-0"><span class="precio-moneda">COP</span> $${Number(producto.precio).toLocaleString("es-CO")}</p>
-                            <button
-                                class="btn btn-personalizar"
-                                type="button"
-                                data-producto-id="${producto.id}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalPersonalizarProducto"
-                            >
-                                <i class="bi bi-cart"></i>
-                                Comprar
-                            </button>
+                            ${botonCompra}
                         </div>
                     </div>
                 </div>
@@ -157,13 +163,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ACTIVAR EVENTOS DE LOS BOTONES "AGREGAR AL CARRITO" DE LAS CARDS
-    escucharBotonesCarrito(productos);
+    if (!esAdmin) escucharBotonesCarrito(productos);
 
     // Renderizar offcanvas del carrito con lo guardado en localStorage
     renderizarOffcanvas();
 
     // MOSTRAR INFORMACIÓN DEL PRODUCTO EN EL MODAL (Delegación de eventos)
     contenedor.addEventListener("click", (e) => {
+        if (esAdmin) return;
+
         const btnPersonalizar = e.target.closest("button[data-bs-target='#modalPersonalizarProducto']");
 
         if (!btnPersonalizar) return;
@@ -274,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 5. ACCIÓN DEL BOTÓN DENTRO DEL MODAL (AGREGAR PRODUCTO PERSONALIZADO)
     if (botonModalAgregar) {
         botonModalAgregar.addEventListener("click", () => {
-            if (!productoActualModal) return;
+            if (esAdmin || !productoActualModal) return;
 
             // Obtener color y tamaño seleccionados en el modal
             const colorChecked = colores ? colores.querySelector("input[name='opcionColor']:checked") : null;

@@ -121,6 +121,14 @@ function renderizarUsuarioHeader(contenedor = document) {
     }
 
     const sesion = obtenerSesionActiva();
+    const esAdmin = sesion && sesion.rol === "admin";
+    const enlaceProductos = contenedor.querySelector('a[href*="productos.html"]');
+    const enlaceCarrito = contenedor.querySelector(".gc-cart");
+    const carritoOffcanvas = contenedor.querySelector("#offcanvasCart");
+    enlaceProductos?.classList.toggle("d-none", Boolean(esAdmin));
+    enlaceCarrito?.classList.toggle("d-none", Boolean(esAdmin));
+    carritoOffcanvas?.classList.toggle("d-none", Boolean(esAdmin));
+
     let btnLogout = perfilLink.parentElement
         ? perfilLink.parentElement.querySelector("#gcBtnLogout")
         : null;
@@ -429,6 +437,12 @@ function inicializarEventosOffcanvas() {
     if (!offcanvasEl) return;
     _offcanvasEventosInicializados = true;
     offcanvasEl.addEventListener("click", (e) => {
+        const sesion = obtenerSesionActiva();
+        if (sesion && sesion.rol === "admin") {
+            e.preventDefault();
+            return;
+        }
+
         // Redirección a la pasarela: requiere sesión iniciada
         const btnPasarela = e.target.closest("#btnIrPasarela");
         if (btnPasarela) {
