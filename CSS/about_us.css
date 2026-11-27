@@ -51,11 +51,6 @@ body{
     margin: 0 auto;
 }
 
-.hero-banner .banner-madera h1 {
-    font-size: 2.2rem;
-    letter-spacing: 1px;
-}
-
 /* Etiqueta Crema Sobrepuesta */
 .banner-subtitle {
   background-color: var(--CremaCrafteo, #FFF7E8); 
@@ -189,11 +184,89 @@ body{
   color: #fff;
 }
 
-/* Responsive: mostrar la abeja en m�vil */
+/* Centrado del banner principal */
+.hero-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-position: center center;
+}
+
+/* Cartel de madera principal */
+.hero-banner .banner-madera {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: fit-content;
+    max-width: 90%;
+    padding: 12px 25px !important;
+    text-align: center;
+}
+
+/* Hero principal */
+.hero-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-image: url('https://lh3.googleusercontent.com/d/1XyoLfGQmRRh7hYAqrI84lHSJ0EFkaDlv');
+    background-size: 100% auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    width: 100%;
+    min-height: 320px;
+    text-align: center;
+}
+
+/* Cartel principal de madera */
+.hero-banner .banner-madera {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    max-width: 95%;
+    margin: 0 auto;
+
+    padding: 12px 25px !important;
+    text-align: center;
+}
+
+/* Texto del cartel */
+.hero-banner .banner-madera h1 {
+    width: 100%;
+    margin: 0;
+
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Subtítulo */
+.hero-banner .banner-subtitle {
+    margin-top: 0;
+}
+
+/* Adaptación para celulares */
 @media (max-width: 768px) {
+
     .hero-banner {
+        min-height: 320px;
         background-size: auto 100%;
-        background-position: center bottom;
-        min-height: 350px;
+        background-position: center center;
+    }
+
+    .hero-banner .banner-madera {
+        max-width: 95%;
+        padding: 10px 15px !important;
+    }
+
+    .hero-banner .banner-madera h1 {
+        font-size: 1.4rem;
+        line-height: 1.5;
     }
 }
