@@ -80,10 +80,6 @@ body{
     margin: 0 auto;
 }
 
-.hero-banner .banner-madera h1 {
-    font-size: 2.2rem;
-    letter-spacing: 1px;
-}
 
 .banner-morado {
   background-color: #8B5CF6;
@@ -191,12 +187,46 @@ label, input, select, textarea{
   image-rendering: pixelated;
 }
 
-/* Responsive: mostrar la abeja en m�vil */
+/* Centrado del banner principal */
+.hero-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-position: center center;
+}
+
+/* Cartel de madera principal */
+.hero-banner .banner-madera {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: fit-content;
+    max-width: 90%;
+    padding: 12px 25px !important;
+    text-align: center;
+}
+
+/* Texto dentro del cartel */
+.hero-banner .banner-madera h1 {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+}
+
+/* Ajustes para celulares */
 @media (max-width: 768px) {
-    .hero-banner {
-        background-size: auto 100%;
-        background-position: center bottom;
-        min-height: 350px;
+    .hero-banner .banner-madera {
+        max-width: 95%;
+        padding: 10px 15px !important;
+    }
+
+    .hero-banner .banner-madera h1 {
+        font-size: 1.4rem;
+        line-height: 1.5;
     }
 }
 
