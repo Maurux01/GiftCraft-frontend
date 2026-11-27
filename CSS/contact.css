@@ -24,11 +24,11 @@ body{
 /*Hero con la imagen de nuebes en movimiento*/
 .hero-banner {
   background-image: url('https://lh3.googleusercontent.com/d/16LUkIKtx2vsfW1yrHvEvCviR3m-3Oamw'); 
-  background-size: cover;   /*Cubre el 100% de la imagen*/
+  background-size: 100% auto;   /*Cubre el 100% de la imagen*/
   background-position: center bottom;
   background-repeat: no-repeat;
   width: 100%; /* Asegura el 100% de ancho */
-  min-height: 750px; 
+  min-height: 320px; 
 
 }
 
@@ -72,6 +72,17 @@ body{
   border: 3px solid #5a3e2b;
   border-radius: 12px;
   box-shadow: 0 4px 0 #3d291c;
+}
+
+.hero-banner .banner-madera {
+    padding: 20px 30px !important;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.hero-banner .banner-madera h1 {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
 }
 
 .banner-morado {
@@ -182,8 +193,10 @@ label, input, select, textarea{
 
 /* Responsive: mostrar la abeja en m�vil */
 @media (max-width: 768px) {
-  .hero-banner {
-    background-position: right bottom;
-  }
+    .hero-banner {
+        background-size: auto 100%;
+        background-position: center bottom;
+        min-height: 350px;
+    }
 }
 
