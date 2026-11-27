@@ -55,14 +55,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     errorLogin.textContent = `¡Hola, ${usuarioValido.name}! Redirigiendo...`;
                 }
 
-                // Redirigir a la vista de productos / tienda
-                setTimeout(() => {
-                    const destino = sesionActiva.rol === "admin"
+                const destino = sesionActiva.rol === "admin"
                     ? "../Admin/Dashboard.html"
                     : "../productos.html";
 
+                const redirigir = () => {
                     window.location.href = destino;
-                }, 1200);
+                };
+
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "¡Inicio de sesión exitoso!",
+                        text: `Bienvenido, ${usuarioValido.name}.`,
+                        confirmButtonText: "Continuar"
+                    }).then(redirigir);
+                } else {
+                    window.alert(`¡Inicio de sesión exitoso! Bienvenido, ${usuarioValido.name}.`);
+                    redirigir();
+                }
             }
 
         });

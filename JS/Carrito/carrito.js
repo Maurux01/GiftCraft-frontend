@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const sesion = typeof obtenerSesionActiva === "function" ? obtenerSesionActiva() : null;
+    if (sesion && sesion.rol === "admin") {
+        window.location.replace("Admin/Dashboard.html");
+        return;
+    }
+
     renderizarCarrito();
     inicializarMetodosPago();
     inicializarFormularioPago();

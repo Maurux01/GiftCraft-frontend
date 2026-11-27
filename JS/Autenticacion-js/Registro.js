@@ -147,13 +147,24 @@ document.addEventListener("DOMContentLoaded", () => {
             formUser.reset();
             const mensajeExito = document.getElementById("MensajeError");
             mensajeExito.style.color = "#5e8a3a"; // Color verde éxito opcional
-            mensajeExito.textContent = "¡Cuenta creada con éxito! Redirigiendo...";
+            mensajeExito.textContent = "¡Cuenta creada con éxito!";
 
-            // Esperar 2 segundos para que el usuario lea el mensaje y luego cambiar a login
-            setTimeout(() => {
+            const continuarAlLogin = () => {
                 mensajeExito.textContent = ""; // Limpiar mensaje
                 showTab('login');
-            }, 2000);
+            };
+
+            if (typeof Swal !== "undefined") {
+                Swal.fire({
+                    icon: "success",
+                    title: "¡Registro completado!",
+                    text: "Tu cuenta se creó correctamente.",
+                    confirmButtonText: "Continuar"
+                }).then(continuarAlLogin);
+            } else {
+                window.alert("¡Registro completado! Tu cuenta se creó correctamente.");
+                continuarAlLogin();
+            }
         });
     }
 });
